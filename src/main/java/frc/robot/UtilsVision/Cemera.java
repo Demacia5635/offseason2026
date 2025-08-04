@@ -36,4 +36,8 @@ public class Cemera {
     public String getName() {
         return this.name;
     }
+
+    public String getTableName(){
+        return "limelight-"+name;
+    }
 }
