@@ -36,7 +36,7 @@ public class GoToPosePID extends Command {
 
   @Override
   public void initialize() {
-    this.diffVector = targetPose.minus(currentPose.get()).getTranslation();
+    this.diffVector = targetPose.minus(currentPose.get()).getTranslation();// מחשב את הוקטור על פי נקודת סוף פחות נקודת התחלה
 
   }
 
@@ -45,7 +45,7 @@ public class GoToPosePID extends Command {
   public void execute() {
     Pose2d curPose = currentPose.get();
     diffVector = targetPose.minus(curPose).getTranslation();
-    diffAngle = targetPose.getRotation().minus(curPose.getRotation());
+    diffAngle = targetPose.getRotation().minus(curPose.getRotation());//הפרש הזוויות בין נקודת הרובוט לנקודת הסוף
 
     setVelocities.accept(new ChassisSpeeds(drivePID.calculate(diffVector.getX()), drivePID.calculate(diffVector.getY()), rotatePID.calculate(diffAngle.getRadians())));
 
@@ -61,6 +61,6 @@ public class GoToPosePID extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return diffVector.getNorm() < 0.03 && Math.abs(diffAngle.getRadians()) < Math.toDegrees(0.5);
+    return diffVector.getNorm() < 0.03 && Math.abs(diffAngle.getRadians()) < Math.toRadians(0.5);
   }
 }
