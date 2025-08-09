@@ -3,14 +3,14 @@ package frc.robot.UtilsVision;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 
-public class Cemera {
+public class Camera {
     private String name;
     private Translation2d robotToCamPos;
     private double CamHight;
     private double pitch;
     private double yaw;
 
-    public Cemera(String name,Translation2d robotToCamPos,double CamHight,double pitch,double yaw){
+    public Camera(String name,Translation2d robotToCamPos,double CamHight,double pitch,double yaw){
         this.name = name;
         this.robotToCamPos = robotToCamPos;
         this.CamHight = CamHight;
