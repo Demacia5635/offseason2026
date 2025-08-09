@@ -21,7 +21,7 @@ public class object extends SubsystemBase {
   private Translation2d OriginToObject;
 
   private NetworkTable Table;
-  private double wantedPip = 0;
+
 
 
   private double camToObjectYaw;
