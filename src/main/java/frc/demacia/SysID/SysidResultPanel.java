@@ -1,4 +1,4 @@
-package frc.Demacia.Sysid;
+package frc.Demacia.SysID;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,8 +10,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import frc.Demacia.Sysid.SysidCalculate.KTypes;
-import frc.Demacia.Sysid.SysidCalculate.VelocityRange;
+import frc.Demacia.SysID.SysidCalculate.KTypes;
+import frc.Demacia.SysID.SysidCalculate.VelocityRange;
 
 public class SysidResultPanel extends JPanel {
     public static int nK = KTypes.values().length;

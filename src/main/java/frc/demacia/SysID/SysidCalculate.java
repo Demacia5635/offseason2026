@@ -1,11 +1,11 @@
-package frc.Demacia.Sysid;
+package frc.Demacia.SysID;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 
 import org.ejml.simple.SimpleMatrix;
 
-import frc.Demacia.Sysid.MotorData.MotorTimeData;
+import frc.Demacia.SysID.MotorData.MotorTimeData;
 
 public class SysidCalculate {
 

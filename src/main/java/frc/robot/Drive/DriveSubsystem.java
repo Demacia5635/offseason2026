@@ -232,7 +232,7 @@ public class DriveSubsystem extends SubsystemBase {
      * Limit the robot relative speeds based on max acceleration
      * @param speeds
      */
-    private void limitSpeeds(ChassisSpeeds speeds) {
+    void limitSpeeds(ChassisSpeeds speeds) {
         // limit robot relative speeds to account for MAX accelration
         if(Math.abs(speeds.vxMetersPerSecond) > 0.1) {
             double currentX = currentChassisSpeeds.vxMetersPerSecond;

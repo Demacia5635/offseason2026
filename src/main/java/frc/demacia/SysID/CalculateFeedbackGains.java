@@ -1,4 +1,4 @@
-package frc.Demacia.Sysid;
+package frc.Demacia.SysID;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.StateSpaceUtil;

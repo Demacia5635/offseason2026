@@ -1,4 +1,4 @@
-package frc.Demacia.Sysid;
+package frc.Demacia.SysID;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
