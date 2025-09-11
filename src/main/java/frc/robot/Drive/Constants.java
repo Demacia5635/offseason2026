@@ -1,6 +1,6 @@
 package frc.robot.Drive;
 
-import frc.Demacia.Geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.Demacia.utils.Motors.TalonConfig;
 import frc.Demacia.utils.Motors.BaseMotorConfig.Canbus;
 import frc.Demacia.utils.Sensors.CancoderConfig;

@@ -1,8 +1,10 @@
-package frc.Demacia.Geometry;
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package edu.wpi.first.math.geometry;
 
 import static edu.wpi.first.units.Units.Meters;
-
-import java.util.Objects;
 
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
@@ -11,14 +13,12 @@ import edu.wpi.first.math.geometry.proto.Transform2dProto;
 import edu.wpi.first.math.geometry.struct.Transform2dStruct;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.util.protobuf.ProtobufSerializable;
+import edu.wpi.first.util.struct.StructSerializable;
+import java.util.Objects;
 
-public class Transform2d extends edu.wpi.first.math.geometry.Transform2d {
-    /** Represents a transformation for a Pose2d in the pose's frame. */
-    /**
-     * A preallocated Transform2d representing no transformation.
-     *
-     * <p>This exists to avoid allocations for common transformations.
-     */
+/** Represents a transformation for a Pose2d in the pose's frame. */
+public class Transform2d implements ProtobufSerializable, StructSerializable {
     private Translation2d m_translation;
     private Rotation2d m_rotation;
   

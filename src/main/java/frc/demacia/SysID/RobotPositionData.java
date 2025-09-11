@@ -3,9 +3,9 @@ package frc.Demacia.Sysid;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.datalog.DataLogRecord;
-import frc.Demacia.Geometry.Pose2d;
-import frc.Demacia.Geometry.Rotation2d;
 
 /**
  * Reads robot position data from WPILib logs for field visualization

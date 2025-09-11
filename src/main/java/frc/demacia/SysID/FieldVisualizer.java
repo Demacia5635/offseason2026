@@ -2,7 +2,7 @@ package frc.Demacia.Sysid;
 
 import javax.swing.*;
 
-import frc.Demacia.Geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose2d;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

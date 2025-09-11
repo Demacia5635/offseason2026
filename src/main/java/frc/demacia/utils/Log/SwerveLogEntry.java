@@ -1,9 +1,9 @@
 package frc.Demacia.utils.Log;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.Demacia.Geometry.Pose2d;
 import frc.Demacia.utils.Log.LogManager.LOG_TARGET;
 
 public class SwerveLogEntry {

@@ -1,8 +1,7 @@
+package edu.wpi.first.math.geometry;
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
-package frc.Demacia.Geometry;
 
 import static edu.wpi.first.units.Units.Meters;
 
@@ -13,18 +12,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.geometry.proto.Pose2dProto;
 import edu.wpi.first.math.geometry.struct.Pose2dStruct;
+import edu.wpi.first.math.interpolation.Interpolatable;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.util.protobuf.ProtobufSerializable;
+import edu.wpi.first.util.struct.StructSerializable;
 import java.util.Objects;
 
 /** Represents a 2D pose containing translational and rotational elements. */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
-public class Pose2d extends edu.wpi.first.math.geometry.Pose2d {
+public class Pose2d implements Interpolatable<Pose2d>, ProtobufSerializable, StructSerializable {
   /**
+   * A preallocated Pose2d representing the origin.
+   *
+   * <p>This exists to avoid allocations for common poses.
+   */
+
+   /**
    * A preallocated Pose2d representing the origin.
    *
    * <p>This exists to avoid allocations for common poses.
@@ -105,10 +112,6 @@ public class Pose2d extends edu.wpi.first.math.geometry.Pose2d {
   public void set(Pose2d pose2d) {
     this.m_rotation = pose2d.m_rotation;
     this.m_translation = pose2d.m_translation;
-  }
-  public void set(edu.wpi.first.math.geometry.Pose2d pose2d) {
-    this.m_translation.set(pose2d.getX(), pose2d.getY());
-    this.m_rotation.set(pose2d.getRotation().getRadians());
   }
   /**
    * Transforms the pose by the given transformation and returns the new transformed pose.
@@ -436,3 +439,4 @@ public class Pose2d extends edu.wpi.first.math.geometry.Pose2d {
   /** Pose2d struct for serialization. */
   public static final Pose2dStruct struct = new Pose2dStruct();
 }
+

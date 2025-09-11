@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.Demacia.Geometry;
+package edu.wpi.first.math.geometry;
 
 import static edu.wpi.first.units.Units.Radians;
 
@@ -12,13 +12,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathSharedStore;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.proto.Rotation2dProto;
 import edu.wpi.first.math.geometry.struct.Rotation2dStruct;
+import edu.wpi.first.math.interpolation.Interpolatable;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.util.protobuf.ProtobufSerializable;
+import edu.wpi.first.util.struct.StructSerializable;
 import java.util.Objects;
 
 /**
@@ -31,7 +35,7 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Rotation2d
-    extends edu.wpi.first.math.geometry.Rotation2d {
+    implements Interpolatable<Rotation2d>, ProtobufSerializable, StructSerializable {
   /**
    * A preallocated Rotation2d representing no rotation.
    *
@@ -402,6 +406,12 @@ public class Rotation2d
   @Override
   public int hashCode() {
     return Objects.hash(m_value);
+  }
+
+  @Override
+  public Rotation2d interpolate(Rotation2d endValue, double t) {
+    return new Rotation2d(
+        MathUtil.interpolate(this.m_value, endValue.m_value, t));
   }
 
   /** Rotation2d protobuf for serialization. */
