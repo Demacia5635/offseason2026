@@ -113,6 +113,20 @@ public class Pose2d implements Interpolatable<Pose2d>, ProtobufSerializable, Str
     this.m_rotation = pose2d.m_rotation;
     this.m_translation = pose2d.m_translation;
   }
+  public void copy(Translation2d translation2d) {
+    this.m_translation = new Translation2d(translation2d.getX(), translation2d.getY());
+  }
+  public void copy(Rotation2d rotation2d) {
+    this.m_rotation = new Rotation2d(rotation2d.getRadians());
+  }
+  public void copy(Translation2d translation2d, Rotation2d rotation2d) {
+    copy(translation2d);
+    copy(rotation2d);
+  }
+  public void copy(Pose2d pose2d) {
+    copy(pose2d.m_rotation);
+    copy(pose2d.m_translation);
+  }
   /**
    * Transforms the pose by the given transformation and returns the new transformed pose.
    *

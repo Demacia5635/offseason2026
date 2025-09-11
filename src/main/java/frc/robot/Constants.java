@@ -19,52 +19,6 @@ import frc.Demacia.utils.Motors.BaseMotorConfig.Canbus;
  */
 public final class Constants {
 
-  public static class ModuleConstants {
-    public static final int STEER_ID = 1;
-    public static final int DRIVE_ID = 2;
-    public static final int CANBCODER_ID = 3;
-    public static final double MAX_STEER_AMPS = 20;
-    public static final double MAX_STEER_VOLTS = 8;
-    public static final boolean STEER_INVERTED = false;
-    public static final boolean DRIVE_INVERTED = false;
-    public static final double STEER_GERA_RATIO = 150.0/7.0;
-    public static final double DRIVE_GERA_RATIO = 6.75;
-    public static final double STEER_KP = 0.1;
-    public static final double STEER_KI = 0.0;
-    public static final double STEER_KD = 0.0;
-    public static final double STEER_KS = 0.1;
-    public static final double STEER_KV = 0.2;
-    public static final double STEER_KA = 0.01;
-    public static final double DRIVE_KP = 0.1;
-    public static final double DRIVE_KI = 0.0;
-    public static final double DRIVE_KD = 0.0;
-    public static final double DRIVE_KS = 0.1;
-    public static final double DRIVE_KV = 0.2;
-    public static final double DRIVE_KA = 0.01;
-    public static final double STEER_RAMP = 0.2;
-    public static final double DRIVE_RAMP = 0.2;
-    public static final double WHEEL_CIRCUMFERENCE = Math.PI * 4 * 0.0254;
-
-    public static final double STEER_VELOCITY_P = 2;
-    public static final double ABS_ENCODER_OFFSET = 10;
-  }
-
-  public static class BaseConfigs {
-    public static final TalonConfig BASE_TALON_CONFIG = new TalonConfig(0, Canbus.Rio, "base")
-        .withBrake(true)
-        .withCurrent(40)
-        .withRampTime(0.3)
-        .withVolts(12)
-        .withPID(0, 0, 0, 0, 0, 0, 0);
-
-    public static final SparkConfig BASE_SPARK_CONFIG = new SparkConfig(0, "base")
-        .withBrake(true)
-        .withCurrent(40)
-        .withRampTime(0.3)
-        .withVolts(12)
-        .withPID(0, 0, 0, 0, 0, 0, 0);
-  }
-
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }

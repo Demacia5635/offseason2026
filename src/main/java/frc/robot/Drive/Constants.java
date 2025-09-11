@@ -79,8 +79,5 @@ public class Constants {
         new ModuleConfig(8, 7, 9, -X_POSITION, Y_POSITION, -22.9),
         new ModuleConfig(11, 10, 12, -X_POSITION, -Y_POSITION, 139.7)
 };
-public static final ModuleConfig[] CONFIGS1 = {
-    new ModuleConfig(11, 10, 12, X_POSITION, Y_POSITION, 150.6)
-};
 
 }

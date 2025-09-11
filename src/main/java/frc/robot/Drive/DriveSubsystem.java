@@ -197,8 +197,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private void updatePose() {
         var p = poseEstimator.getEstimatedPosition();
-        pose.getTranslation().set(p.getX(), p.getY());
-        pose.getRotation().set(p.getRotation().getRadians());
+        pose.copy(p);
         robotField.setRobotPose(p);
     }
 
