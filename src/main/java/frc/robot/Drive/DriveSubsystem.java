@@ -99,9 +99,13 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putData("Set Drive Coast", new InstantCommand(()-> {for(SwerveModule m : modules) m.setCoast();}).ignoringDisable(true));
         SmartDashboard.putData("Reset Heading", new InstantCommand(this::setFieldHeading).ignoringDisable(true));
         // commands
+       
         controller.start().onTrue(new InstantCommand(this::setFieldHeading).ignoringDisable(true));
         SmartDashboard.putData("Drive Command", new RunCommand(this::drive, this));
-//        setDefaultCommand(new RunCommand(this::drive, this));
+        SmartDashboard.putData("Test Command", getTestCommand1());
+        SmartDashboard.putData("Reset to (0,6)", new InstantCommand(()->resetPose(new Translation2d(0,6), Rotation2d.kZero)));
+        SmartDashboard.putData("DRive To New", getNewTestCommand());
+        //        setDefaultCommand(new RunCommand(this::drive, this));
         showBaseCommands();
         // Log
         SwerveLogEntry.add(moduleNames, moduleStates, modulePositions, pose, currentChassisSpeeds, targetChassisSpeeds);
@@ -124,8 +128,8 @@ public class DriveSubsystem extends SubsystemBase {
      * the drive by controller function
      */
     private void drive() {
-        targetChassisSpeeds.vxMetersPerSecond = DriverUtils.getJSvalue(controller, JoystickSide.RightY) * Constants.MAX_SPEED;
-        targetChassisSpeeds.vyMetersPerSecond = -DriverUtils.getJSvalue(controller, JoystickSide.RightX) * Constants.MAX_SPEED;
+        targetChassisSpeeds.vxMetersPerSecond = DriverUtils.getJSvalue(controller, JoystickSide.LeftY) * Constants.MAX_SPEED;
+        targetChassisSpeeds.vyMetersPerSecond = -DriverUtils.getJSvalue(controller, JoystickSide.LeftX) * Constants.MAX_SPEED;
         targetChassisSpeeds.omegaRadiansPerSecond = DriverUtils.getTriggerValue(controller) * Constants.MAX_OMEGA;
         setSpeeds(targetChassisSpeeds);
     }
@@ -252,10 +256,38 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command getTestCommand() {
         return new InstantCommand(()->resetPose(new Translation2d(0,6),new Rotation2d(0))).andThen(
-            new DriveTo(4, 6, 1000, 2, 1, 90, this, false),
-            new DriveTo(6, 3, 2, -1000, -1, 90, this, false),
-            new DriveTo(2, 3, 2, 1000,  -1, 90, this, false),
-            new DriveTo(0, 6, 0, 2, 1, 90, this, true));
+            new DriveTo(4, 6, 1000, 2, 1, 90, this, true));
+    }
+    public Command getNewTestCommand(){
+        return new InstantCommand(()-> resetPose(new Translation2d(0,6), new Rotation2d()))
+            .andThen(new DriveToNew(this,new Pose2d(4, 6, Rotation2d.fromDegrees(180)), false)
+            .andThen(new DriveToNew(this, new Pose2d(5, 3, Rotation2d.kZero), false))
+            .andThen(new DriveToNew(this, new Pose2d(3.5, 0.5, Rotation2d.kZero), false))
+            .andThen(new DriveToNew(this, new Pose2d(0, 2.5, Rotation2d.kZero), false))
+            .andThen(new DriveToNew(this, new Pose2d(0, 6, Rotation2d.kZero), true))
+            .andThen(new Command(){
+                @Override
+                public void execute() {
+                    setSpeeds(new ChassisSpeeds(0, 0, -pose.getRotation().getDegrees() * 0.5));
+                }
+                @Override
+                public void end(boolean interrupted) {
+                    setSpeeds(new ChassisSpeeds());
+                }
+                @Override
+                public boolean isFinished() {
+                    return Math.abs(pose.getRotation().getDegrees()) < 1;
+                }
+            }));
+    }
+
+    public Command getTestCommand1() {
+        return new InstantCommand(()->resetPose(new Translation2d(0,6),new Rotation2d(0))).andThen(
+            new DriveTo(4.5, 6, 1000, 2, 1, 90, this, false),
+            new DriveTo(5.2, 3.5, 1000, 2, 2, 90, this, false),
+            new DriveTo(4.4, 1, 1000, 2,  2, 90, this, false),
+            new DriveTo(1, 1, 1000, 2, 1000, 90, this, false),
+            new DriveTo(0, 6, 0, 2, 2, 90, this, true));
     }
 
     @Override

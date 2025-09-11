@@ -47,6 +47,7 @@ public class DriveTo extends Command {
         this.targetHeading = Math.toRadians(heading);
         targetHeadingReal = Math.abs(heading) < Math.PI;
         currentSpeeds = drive.currentChassisSpeeds;
+        addRequirements(drive);
     }
 
     @Override
