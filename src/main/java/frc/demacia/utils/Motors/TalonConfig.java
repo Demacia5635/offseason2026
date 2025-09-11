@@ -1,4 +1,4 @@
-package frc.demacia.utils.Motors;
+package frc.Demacia.utils.Motors;
 
 /** 
  * Class to hold all Talon FX/SRX configuration

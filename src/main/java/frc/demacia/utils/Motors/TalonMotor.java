@@ -1,6 +1,5 @@
-package frc.demacia.utils.Motors;
+package frc.Demacia.utils.Motors;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
@@ -24,9 +23,10 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.demacia.utils.Motors.StatusSignalData;
-import frc.demacia.utils.Motors.UpdateArray;
-import frc.demacia.utils.Log.LogManager;
+import frc.Demacia.utils.StatusSignalData;
+import frc.Demacia.utils.Elastic.UpdateArray;
+import frc.Demacia.utils.Log.LogManager;
+import frc.Demacia.utils.Log.MotorLogEntry;
 
 public class TalonMotor extends TalonFX implements MotorInterface {
 
@@ -161,15 +161,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
     }
 
     private void addLog() {
-        LogManager.addEntry(name + "/Position and Velocity and Acceleration and Voltage and Current and CloseLoopError and CloseLoopSP",  new StatusSignal[] {
-      getPosition(),
-      getVelocity(),
-      getAcceleration(),
-      getMotorVoltage(),
-      getStatorCurrent(),
-      getClosedLoopError(),
-      getClosedLoopReference(),
-  }, 2,"motor");
+        MotorLogEntry.add(this);
     }
 
     public void checkElectronics() {

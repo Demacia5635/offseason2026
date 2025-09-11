@@ -4,75 +4,37 @@
 
 package frc.robot;
 
-import frc.demacia.utils.Log.LogManager;
-import frc.robot.Constants.OperatorConstants;
-import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Drive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
 
-  public static boolean isComp = DriverStation.isFMSAttached();
-  private static boolean hasRemovedFromLog = false;
-
+  public static Robot robot;
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
 
-  // The robot's subsystems and commands are defined here...
-
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
-    new LogManager();
-
-    // Configure the trigger bindings
-    // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
+  public CommandXboxController drivController = new CommandXboxController(0);
+  public DriveSubsystem drive = new DriveSubsystem(drivController); 
+  
+  public RobotContainer(Robot robot) {
+    RobotContainer.robot = robot;
+    RobotContainer.CYCLE_TIME = robot.getPeriod();
     configureBindings();
   }
-
-  public static boolean isComp() {
-    return isComp;
+  
+   private void configureBindings() {
   }
 
-  public static void setIsComp(boolean isComp) {
-    RobotContainer.isComp = isComp;
-    if(!hasRemovedFromLog && isComp) {
-      hasRemovedFromLog = true;
-      LogManager.removeInComp();
-    }
+  public static boolean isEnabled() {
+    return robot.isEnabled();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    
+  public void periodic() {
+    N_CYCLE++;
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
     return null;
   }
 }

@@ -1,26 +1,37 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+package frc.Demacia.utils.Sensors;
 
-package frc.demacia.utils.Sensors;
-
-import com.ctre.phoenix6.CANBus;
+import frc.Demacia.utils.Motors.BaseMotorConfig.Canbus;
 
 /** Add your docs here. */
-public class CancoderConfig extends BaseSensorConfig<CancoderConfig>{
+public class CancoderConfig {
+    public int id;                  // Canbus ID
+    public Canbus canbus;
+    public String name; 
     public double offset = 0;
+    public boolean inverted = false; // if to invert cancoderr
     /** 
      * Constructor
      * @param id - canbus ID
      * @param canbus - Name of canbus
-     * @param name - name of Cancoder for logging 
+     * @param name - name of Cancoder for logging
      */
-    public CancoderConfig(int id, CANBus canbus, String name) {
-        super(id, canbus, name);
+    public CancoderConfig(int id, Canbus canbus, String name) {
+        this.id = id;
+        this.canbus = canbus;
+        this.name = name;
     }
 
     public CancoderConfig withOffset(double offset) {
         this.offset = offset;
+        return this;
+    }
+
+    /** 
+     * @param invert
+     * @return CancoderConfig
+     */
+    public CancoderConfig withInvert(boolean invert) {
+        this.inverted = invert;
         return this;
     }
 }

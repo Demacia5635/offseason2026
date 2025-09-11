@@ -1,30 +1,31 @@
-package frc.demacia.utils.Sensors;
-
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
+package frc.Demacia.utils.Sensors;
+ 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
-import frc.demacia.utils.Log.LogManager;
+import frc.Demacia.utils.StatusSignalData;
+import frc.Demacia.utils.Log.LogEntry;
+import frc.Demacia.utils.Log.LogManager;
+import frc.Demacia.utils.Log.LogSupplier;
+import frc.Demacia.utils.Log.LogManager.LOG_TARGET;
 
-public class Cancoder extends CANcoder implements AnalogSensorInterface{
+public class Cancoder extends CANcoder {
 
     CancoderConfig config;
     String name;
 
-    StatusSignal<Angle> positionSignal;
-    StatusSignal<Angle> absPositionSignal;
-    StatusSignal<AngularVelocity> velocitySignal;
+    CANcoderConfiguration cfg = new CANcoderConfiguration();
+
+    StatusSignalData<Angle> positionSignal;
+    StatusSignalData<Angle> absPositionSignal;
+    StatusSignalData<AngularVelocity> velocitySignal;
     
-    double lastPosition;
-    double lastAbsPosition;
-    double lastVelocity;
 
     public Cancoder(CancoderConfig config) {
-        super(config.id, config.canbus);
+        super(config.id, config.canbus.canbus);
         this.config = config;
 		name = config.name;
 		configCancoder();
@@ -34,70 +35,49 @@ public class Cancoder extends CANcoder implements AnalogSensorInterface{
     }
     
     private void configCancoder() {
-        CANcoderConfiguration canConfig = new CANcoderConfiguration();
-		canConfig.MagnetSensor.MagnetOffset = config.offset;
-        canConfig.MagnetSensor.SensorDirection = config.isInverted ? SensorDirectionValue.Clockwise_Positive: SensorDirectionValue.CounterClockwise_Positive;
-        getConfigurator().apply(canConfig);
+		cfg.MagnetSensor.MagnetOffset = config.offset;
+        cfg.MagnetSensor.SensorDirection = config.inverted ? SensorDirectionValue.Clockwise_Positive: SensorDirectionValue.CounterClockwise_Positive;
+        getConfigurator().apply(cfg);
     }
     
     private void setStatusSignals() {
-        positionSignal = getPosition();
-        absPositionSignal = getAbsolutePosition();
-        velocitySignal = getVelocity();
-
-        lastPosition = positionSignal.getValueAsDouble();
-        lastAbsPosition = absPositionSignal.getValueAsDouble();
-        lastVelocity = velocitySignal.getValueAsDouble();
-    }
-
-    public void checkElectronics() {
-        if (getFaultField().getValue() != 0) {
-            LogManager.log(name + " have a fault: " + getFaultField().getValue());
-        }
+        positionSignal = new StatusSignalData<>(getPosition(),360);
+        absPositionSignal = new StatusSignalData<>(getAbsolutePosition(), 360);
+        velocitySignal = new StatusSignalData<>(getVelocity(), 360);
     }
 
     private void addLog() {
-
-        LogManager.addEntry(name + "Position and Velocity",  () -> new double[] {
-            getCurrentAbsPosition(),
-            getCurrentAcceleration(),
-            positionSignal.getValueAsDouble(),
-            velocitySignal.getValueAsDouble()
-        }, 2);
+        new LogEntry(
+            name, 
+            new LogSupplier[] {
+                new LogSupplier(positionSignal, "Position",null),
+                new LogSupplier(absPositionSignal, "AbsPosition",null),
+                new LogSupplier(velocitySignal, "Velocity",null),
+                            },
+            LOG_TARGET.LOG_AND_NT, 
+            "Cancoder", 
+            "", 
+            ""
+        );
     }
 
-    public String getName(){
-        return config.name;
-    }
-
-    public double get(){
-        return getCurrentPosition();
-    }
-    
     /**
      * when the cancoder opens its start at the absolute position
      * @return the none absolute amaunt of rotations the motor did in Radians
      */
     public double getCurrentPosition() {
-        lastPosition = StatusSignalHelper.getStatusSignalWith2Pi(positionSignal, lastPosition);
-        return lastPosition;
+        return positionSignal.get();
     }
-
+    /**
+     * @return the absolute amaunt of rotations the motor did in Radians
+     */
     public double getCurrentAbsPosition() {
-        lastAbsPosition = StatusSignalHelper.getStatusSignalWith2Pi(absPositionSignal, lastAbsPosition);
-        return lastAbsPosition;
+        return absPositionSignal.get();
     }
-
+    /** 
+     * @return the amount of rotations the motor do per second in Radians
+     */
     public double getCurrentVelocity(){
-        lastVelocity = StatusSignalHelper.getStatusSignalWith2Pi(velocitySignal, lastVelocity);
-        return lastVelocity;
-    }
-
-    public double getCurrentAcceleration() {
-        velocitySignal.refresh();
-        if (velocitySignal.getStatus() == StatusCode.OK) {
-            return (velocitySignal.getValueAsDouble() * 2 * Math.PI) - lastVelocity;
-        }
-        return 0;
+        return velocitySignal.get();
     }
 }

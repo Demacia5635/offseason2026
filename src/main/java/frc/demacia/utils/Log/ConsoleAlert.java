@@ -1,6 +1,6 @@
-package frc.demacia.utils.Log;
+package frc.Demacia.utils.Log;
 
-import static frc.demacia.utils.constants.UtilsContants.*;
+import static frc.Demacia.utils.constants.UtilsContants.*;
 
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;

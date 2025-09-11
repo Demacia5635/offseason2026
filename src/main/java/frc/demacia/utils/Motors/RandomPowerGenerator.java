@@ -1,4 +1,4 @@
-package frc.demacia.utils.Motors;
+package frc.Demacia.utils.Motors;
 
 import java.util.Random;
 import edu.wpi.first.math.MathUtil;

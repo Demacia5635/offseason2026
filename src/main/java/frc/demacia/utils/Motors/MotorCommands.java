@@ -1,4 +1,4 @@
-package frc.demacia.utils.Motors;
+package frc.Demacia.utils.Motors;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -95,6 +95,7 @@ public class MotorCommands {
         RandomPowerGenerator generator = new RandomPowerGenerator(minPower,maxPower,rampTime);
         return new RunCommand(()->{
             double p = generator.next();
+            System.out.println(" random power - " + p);
             for(MotorInterface motor : motors) {
                 motor.setDuty(p/12.0);
             }
