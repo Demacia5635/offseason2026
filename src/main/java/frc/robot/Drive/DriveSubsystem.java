@@ -214,7 +214,7 @@ public class DriveSubsystem extends SubsystemBase {
             return;
         }
         ChassisSpeeds robotRelativSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getHeadingRotation());
-        limitSpeeds(robotRelativSpeeds);
+//        limitSpeeds(robotRelativSpeeds);
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(robotRelativSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.MAX_SPEED);
         for(int i = 0; i < modules.length; i++) {
