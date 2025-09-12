@@ -5,4 +5,15 @@ public class KinematicsModuleCalculate {
         double velocity = (distance * alpha * 50) / Math.sin(alpha);
         return velocity;
     }
+
+    
+    public double position(double velocityX, double velocityY, double omega, double position){
+        position = (velocityX+velocityY+omega) * 0.02;
+        return position;
+    }
+
+    public static double calculateAngle(double wantedAngle, double currentAngle, double alpha){
+        return wantedAngle*alpha + currentAngle+ alpha * 2;
+    }
+
 }
