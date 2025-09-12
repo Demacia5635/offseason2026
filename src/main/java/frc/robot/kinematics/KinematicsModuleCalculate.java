@@ -13,7 +13,7 @@ public class KinematicsModuleCalculate {
     }
 
     public static double calculateAngle(double wantedAngle, double currentAngle, double alpha){
-        return wantedAngle*alpha + currentAngle+ alpha * 2;
+        return wantedAngle + currentAngle+ alpha * 2;
     }
 
 }
