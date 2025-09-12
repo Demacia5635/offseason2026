@@ -63,20 +63,4 @@ public final class Constants {
                 .withRadiansMotor(GEAR_RATIO)
                 .withRampTime(RAMP_TIME);
     }
-        public double wantedAngle(double wantedAngle){
-          return wantedAngle;
-        }
-
-        public double currendAngle(double currentAngle){
-          return currentAngle;
-        }
-
-        public double alpaha(double alpha){
-          return alpha;
-        }
-
-        public double culcoletAngele(double wantedAngle, double currentAngle, double alpha){
-          return wantedAngle*alpha + currentAngle+ alpha * 2;
-        }
-
 }
