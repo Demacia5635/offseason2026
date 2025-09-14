@@ -1,4 +1,4 @@
-package frc.Demacia.SysID;
+package frc.Demacia.Sysid;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

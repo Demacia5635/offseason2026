@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Trapezoid2",
+      "request": "launch",
+      "mainClass": "frc.Demacia.utils.Trapezoid2",
+      "projectName": "offseason2026"
+    },
+    {
+      "type": "java",
       "name": "Sysid",
       "request": "launch",
       "mainClass": "frc.demacia.SysID.Sysid",

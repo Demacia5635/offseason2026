@@ -1,4 +1,4 @@
-package frc.Demacia.SysID;
+package frc.Demacia.Sysid;
 import java.io.IOException;
 import java.util.Arrays;
 

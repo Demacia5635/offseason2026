@@ -1,4 +1,4 @@
-package frc.Demacia.SysID;
+package frc.Demacia.Sysid;
 
 import org.ejml.simple.SimpleMatrix;
 import org.ejml.dense.row.CommonOps_DDRM;

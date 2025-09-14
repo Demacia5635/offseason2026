@@ -1,5 +1,6 @@
 package frc.Demacia.utils;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotContainer;
 
