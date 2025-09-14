@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.Demacia.utils.Trapezoid2;
 import frc.Demacia.utils.Utilities;
 
 public class DriveTo extends Command {
@@ -27,11 +28,12 @@ public class DriveTo extends Command {
     double targetHeading;
     boolean targetHeadingReal;
 
+    Trapezoid2 velocityTrapezoid = null;
+    Trapezoid2 omegTrapezoid = null;
+
 
     public static final double NON_FINAL_DISTANCE_ERROR = 0.5;
     public static final double FINAL_DISTANCE_ERROR = 0.05;
-    public static final double KVelocity = 0.5;
-    public static final double KOmega = 0.5;
     public static final double MAX_INITIAL_TURN_ERROR = 0.1;
 
 
@@ -55,7 +57,8 @@ public class DriveTo extends Command {
         toEnd.set(x - pose.getX(), y - pose.getY());
         remainingDistance = toEnd.getNorm();
         turnedToTarget = false;
-
+        velocityTrapezoid = new Trapezoid2(v, 6, Utilities.distance(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond), isFinal? 0 : v, remainingDistance);
+        omegTrapezoid = new Trapezoid2(maxOmega, 8, currentSpeeds.omegaRadiansPerSecond, 0, MathUtil.angleModulus(targetHeading - pose.getRotation().getRadians()));
     }
 
     @Override
@@ -79,12 +82,12 @@ public class DriveTo extends Command {
         if(turnedToTarget) {
             alpha = 2*toTargetHeading - initialHeading;
         }
-        double vel = isFinal ? Math.min(remainingDistance * KVelocity, v) : v;
+        double vel = velocityTrapezoid.calculate(remainingDistance, Utilities.distance(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond));
         double headingError = targetHeading - pose.getRotation().getRadians();
         if(targetHeadingReal) {
             headingError = MathUtil.angleModulus(headingError);
         }
-        double omega = Utilities.clamp(headingError*KOmega, maxOmega);
+        double omega = omegTrapezoid.calculate(driveHeadingError, currentSpeeds.omegaRadiansPerSecond);
         drive.setSpeeds(new ChassisSpeeds(vel*Math.cos(alpha),vel*Math.sin(alpha),omega));
     } 
 

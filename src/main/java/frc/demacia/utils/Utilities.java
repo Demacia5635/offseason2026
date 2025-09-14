@@ -15,4 +15,8 @@ public class Utilities {
         return value > deadband ? 1 : value < -deadband ? -1 : 0;
     }
 
+    public static double distance(double x, double y) {
+        return Math.sqrt(x*x + y*y);
+    }
+
 }

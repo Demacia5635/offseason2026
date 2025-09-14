@@ -4,9 +4,6 @@
 
 package frc.robot.Drive;
 
-import static edu.wpi.first.units.Units.Rotation;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -34,10 +31,6 @@ public class DriveToNew extends Command {
   @Override
   public void initialize() {
     toEndVector = pose.minus(drive.pose).getTranslation();
-
-
-
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
