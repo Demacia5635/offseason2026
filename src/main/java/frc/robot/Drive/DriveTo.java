@@ -57,8 +57,6 @@ public class DriveTo extends Command {
         toEnd.set(x - pose.getX(), y - pose.getY());
         remainingDistance = toEnd.getNorm();
         turnedToTarget = false;
-        velocityTrapezoid = new Trapezoid2(v, 6, Utilities.distance(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond), isFinal? 0 : v, remainingDistance);
-        omegTrapezoid = new Trapezoid2(maxOmega, 8, currentSpeeds.omegaRadiansPerSecond, 0, MathUtil.angleModulus(targetHeading - pose.getRotation().getRadians()));
     }
 
     @Override
@@ -82,12 +80,12 @@ public class DriveTo extends Command {
         if(turnedToTarget) {
             alpha = 2*toTargetHeading - initialHeading;
         }
-        double vel = velocityTrapezoid.calculate(remainingDistance, Utilities.distance(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond));
+        double vel = Trapezoid2.calculate(remainingDistance, Utilities.distance(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond), isFinal ? 0 : v, v, 6);
         double headingError = targetHeading - pose.getRotation().getRadians();
         if(targetHeadingReal) {
             headingError = MathUtil.angleModulus(headingError);
         }
-        double omega = omegTrapezoid.calculate(driveHeadingError, currentSpeeds.omegaRadiansPerSecond);
+        double omega = Trapezoid2.calculate(headingError, currentSpeeds.omegaRadiansPerSecond, targetHeadingReal ? 0 : maxOmega, maxOmega, 8 );
         drive.setSpeeds(new ChassisSpeeds(vel*Math.cos(alpha),vel*Math.sin(alpha),omega));
     } 
 

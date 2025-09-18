@@ -2,83 +2,44 @@ package frc.Demacia.utils;
 
 
 public class Trapezoid2 {
-    double maxVelocity; // Maximum permissible velocity
-    double maxAcceleration; // Maximum permissible acceleration
-    double startVelocity;
-    double endVelocity;
-    double distance;
-    double startDeaccelraionDistance = 0;
-    double endAccelerationDistance = 0;
-    double dir = 1;
-
-
-    // Constructor to initialize with maximum velocity and acceleration
-    public Trapezoid2(double maxVelocity, double maxAcceleration, double startVelocity, double endVelocity, double distance) {
-        this.maxAcceleration = maxAcceleration;
-        this.maxVelocity = maxVelocity;
-        if(distance > 0) {
-            this.startVelocity = startVelocity;
-            this.endVelocity = endVelocity;
-            this.distance = distance;
-            dir = 1;
-        } else {
-            this.startVelocity = -startVelocity;
-            this.endVelocity = -endVelocity;
-            this.distance = -distance;
-            dir = -1;
-
-        }
-        calculateDistances();
-
-    }
-
-    private void calculateDistances() {
-        double deaccelrateTime = (maxVelocity - endVelocity) / maxAcceleration;
-        startDeaccelraionDistance = (endVelocity + maxVelocity) * deaccelrateTime / 2;
-        double accelrateTime = (maxVelocity - startVelocity) / maxAcceleration;
-        double accelerateDistance = (maxVelocity + startVelocity) * accelrateTime / 2;
-        if(distance >= startDeaccelraionDistance + accelerateDistance) {
-            endAccelerationDistance = distance - accelerateDistance;
-        } else {
-            double maxV = Math.sqrt(distance * maxAcceleration + startVelocity*startVelocity + endVelocity * endVelocity);
-            deaccelrateTime = (maxV - endVelocity) / maxAcceleration;
-            startDeaccelraionDistance = (endVelocity + maxV) * deaccelrateTime / 2;
-            endAccelerationDistance = startDeaccelraionDistance;
+    public static double calculate(double remainingDistance, double curentVelocity, double targetVelocity, double maxVelocity, double maxAcceleration) {
+        if(remainingDistance > 0 && targetVelocity >= 0) {
+            // calculate the maximum velocity if continuing acceleration/deacceleratin regardless of maxVelocity
+            double maxV = Math.sqrt(remainingDistance*maxAcceleration + curentVelocity*curentVelocity + targetVelocity * targetVelocity);
+            // define the max velocity between the calculated on and the provided one
+            maxV = Math.min(maxV, maxVelocity);
+            // calculate the deacceleation time from maxV to targetVelocity
+            double deaccelrateTime = (maxV - targetVelocity) / maxAcceleration;
+            // calculate the required distance for deacceleration
+            double startDeaccelraionDistance = (targetVelocity + maxV) * deaccelrateTime / 2;
+            // check remaining distance and deacceleration distance
+            if(remainingDistance > startDeaccelraionDistance) {
+                return Math.min(maxVelocity, curentVelocity + maxAcceleration * 0.02);
+            } else { // deaccelerating 
+                // calculate the deacceleration needed - ignoring maxAcceleraion
+                double t = 2 * remainingDistance / (curentVelocity + targetVelocity);
+                double a = (curentVelocity - targetVelocity) / t;
+                return Math.max(curentVelocity - a * 0.02, targetVelocity);                    
+            }
+        } else if(remainingDistance < 0 && targetVelocity <= 0) { // we are moving back - do the reverse caclulation
+            return -calculate(-remainingDistance, -curentVelocity, -targetVelocity, maxVelocity, maxAcceleration);
+        } else { // we need to move forward, target is behind - return the target velocity 
+            return targetVelocity;
         }
     }
-
-
-    // Function to calculate the next velocity setpoint, based on remaining distance and current and target velocities
-    public double calculate(double remainingDistance, double curentVelocity) {
-        double d = remainingDistance * dir;
-        double v = curentVelocity * dir;
-        if(d > startDeaccelraionDistance) { // accelerate
-            return (Math.min(maxVelocity, v + maxAcceleration * 0.02))*dir;
-        } else {
-            double t = 2 * d / (v + endVelocity);
-            double a = (v - endVelocity) / t;
-            return Math.max(v - a * 0.02, endVelocity) * dir;
-        }        
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Trapezoid distance %4.2f from %4.2f to %4.2f - accel to %4.2f, keepMax to %4.2f\n", distance, startVelocity, endVelocity, endAccelerationDistance, startDeaccelraionDistance);
-    }
-
     public static void main(String[] args) {
+        double startTime = System.currentTimeMillis();
+        double target = -10000;
+        double pos = 0;
         double v = 0;
-        double remain = -4;
-        Trapezoid2 t = new Trapezoid2(3, 6, v, 0, remain);
-        int n = 0;
-        while(Math.abs(remain) > 0.03) {
-            double nv = t.calculate(remain, v);
-            remain -= (v+nv)/2*0.02;
-            v = nv;
-            System.out.printf("v = %4.2f r = %5.3f\n",v,remain);
-            n++;
+        for(int i = 0; i < 100000; i++) {
+            double tv = calculate(target - pos, v, 0, 2, 4);
+            pos += (v + tv) / 2 * 0.02;
+            v = tv;
         }
-        System.out.println(" time = " + 0.02*n);
-        
+        double endTime = System.currentTimeMillis();
+        System.out.printf("pos=%4.2f v = %4.2f\n", pos, v);
+        System.out.printf("time = %4.2f\n", (endTime - startTime));
+
     }
 }

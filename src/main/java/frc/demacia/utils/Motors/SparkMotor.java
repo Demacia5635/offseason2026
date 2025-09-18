@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.Demacia.utils.Trapezoid2;
 import frc.Demacia.utils.Utilities;
 import frc.Demacia.utils.Elastic.UpdateArray;
 import frc.Demacia.utils.Log.LogManager;
@@ -133,7 +134,7 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
   }
 
   public void setVelocity(double velocity) {
-    setVelocity(velocity, config.pid[slot.value].ks()/12.0*Math.signum(velocity));
+    setVelocity(velocity, config.pid[slot.value].ks()*Math.signum(velocity));
   }
 
   public void setPositionVoltage(double position, double feedForward) {
@@ -267,14 +268,15 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
 
   @Override
   public void setMotion(double position, double feedForward) {
-    super.closedLoopController.setReference(position, ControlType.kMAXMotionPositionControl, slot, feedForward);
+    double currentPosition = getCurrentPosition();
+    setVelocity(Trapezoid2.calculate(position - currentPosition, getCurrentVelocity(), 0, config.maxVelocity, config.maxAcceleration), feedForward);
     controlType = ControlType.kMAXMotionPositionControl;
     setPoint = position;
   }
 
   @Override
   public void setMotion(double position) {
-    setMotion(position, config.pid[slot.value].ks()*Utilities.signumWithDeadband(position - getCurrentPosition(), 0.5));
+    setMotion(position, config.pid[slot.value].ks()*Utilities.signumWithDeadband(position - getCurrentPosition(), config.maxPositionError));
   }
 
   @Override
@@ -283,7 +285,7 @@ public class SparkMotor extends SparkMax implements Sendable, MotorInterface {
   }
   @Override
   public void setAngle(double angle) {
-    setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor));
+    setAngle(angle, 0);
   }
 
   @Override
