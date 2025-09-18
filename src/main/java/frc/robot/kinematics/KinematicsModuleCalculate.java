@@ -23,12 +23,14 @@ public class KinematicsModuleCalculate {
         BACK_RIGHT
     );
 
-    SwerveDriveKinematics[] modol={
+
+    ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(
         FRONT_LEFT,
         FRONT_RIGHT,
         BACK_LEFT,
-        BACK_LEFT
-    };
+        BACK_RIGHT
+    );
+
 
     double velocityX = chassisSpeeds.vxMetersPerSecond;
     double velocityY = chassisSpeeds.vyMetersPerSecond;
