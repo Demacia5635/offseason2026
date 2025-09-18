@@ -1,24 +1,19 @@
 package frc.robot.kinematics;
 
+import com.ctre.phoenix6.swerve.jni.SwerveJNI.ModuleState;
+
 public class KinematicsModuleCalculate {
-    public static double calculateVelocity(double alpha, double distance){
+    private double calculateVelocity(double initialVelocity, double distance, double alpha){
         double velocity = (distance * alpha * 50) / Math.sin(alpha);
-        return velocity;
+        double targetVelocity = 100 * distance - initialVelocity;
+        return targetVelocity;
     }
 
-    public static double wantedAngle(double wantedAngle){
-        return wantedAngle;
+    private double calculateAngle(double currentAngle, double alpha){
+        return currentAngle + alpha * 2;
     }
 
-    public static double currendAngle(double currentAngle){
-        return currentAngle;
-    }
-
-    public static double alpaha(double alpha){
-        return alpha;
-    }
-
-    public static double calculetAngle(double wantedAngle, double currentAngle, double alpha){
-        return wantedAngle*alpha + currentAngle+ alpha * 2;
+    public static ModuleState[] toModuleStates(){
+        return new ModuleState[4];
     }
 }
