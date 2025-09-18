@@ -24,7 +24,7 @@ public class KinematicsModuleCalculate {
     );
 
 
-    ChassisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(
+    ChaxssisSpeeds chassisSpeeds = kinematics.toChassisSpeeds(
         FRONT_LEFT,
         FRONT_RIGHT,
         BACK_LEFT,
