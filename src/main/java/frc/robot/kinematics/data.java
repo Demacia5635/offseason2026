@@ -24,10 +24,14 @@ public class data {
     );
 
     SwerveDriveKinematics[] modol={
-        FRONT_LEFT
-
+        FRONT_LEFT,
+        FRONT_RIGHT,
+        BACK_LEFT,
+        BACK_LEFT
     };
 
-   
+    double velocityX = chassisSpeeds.vxMetersPerSecond;
+    double velocityY = chassisSpeeds.vyMetersPerSecond;
+    double omega     = chassisSpeeds.omegaRadiansPerSecon;
     
 }
