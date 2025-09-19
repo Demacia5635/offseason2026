@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
+  
+  public static boolean isRed = true;
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
 
@@ -33,7 +35,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
+    
     new LogManager();
 
     // Configure the trigger bindings
@@ -51,6 +53,10 @@ public class RobotContainer {
       hasRemovedFromLog = true;
       LogManager.removeInComp();
     }
+  }
+
+  public static boolean isRed(){
+    return isRed;
   }
 
   /**
