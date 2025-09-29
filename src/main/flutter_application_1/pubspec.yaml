@@ -53,7 +53,7 @@ dev_dependencies:
 flutter:
 
   assets:
-    - assets/frcFiled2025.jpeg
+    - assets/frcField2025.jpeg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
