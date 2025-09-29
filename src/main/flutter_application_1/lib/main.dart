@@ -8,7 +8,7 @@ class Code extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text("FRC Field with Background")),
-        body: const FRCField(), // Remove Center widget
+        body: const FRCField(),
       ),
     );
   }
@@ -18,10 +18,10 @@ class FRCField extends StatefulWidget {
   const FRCField({super.key});
 
   @override
-  _FRCFieldState createState() => _FRCFieldState();
+  FRCFieldState createState() => FRCFieldState(); // Removed underscore
 }
 
-class _FRCFieldState extends State<FRCField> {
+class FRCFieldState extends State<FRCField> { // Removed underscore
   static const double scale = 20; // 1 meter = 20 pixels
   static const double fieldLength = 27.0;
   static const double fieldWidth = 16.54;
@@ -54,7 +54,7 @@ class _FRCFieldState extends State<FRCField> {
               children: [
                 // Background image - fills entire available space
                 Image.asset(
-                  'assets/frc_field.png',
+                  'assets/frcFiled2025.jpeg',
                   width: size.width,
                   height: availableHeight,
                   fit: BoxFit.cover, // This will cover the entire space
