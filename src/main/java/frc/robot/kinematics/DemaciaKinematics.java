@@ -16,7 +16,7 @@ public class DemaciaKinematics {
     private Pose2d estimatedPose = Pose2d.kZero;
     private final double DELTA_T = 0.02;
     private final double T_SQUARED = DELTA_T * DELTA_T;
-    private final double MIN_ALPHA = 5 * (Math.PI / 180);
+    private final double MIN_ALPHA = Math.toRadians(5);
 
     
     public DemaciaKinematics(Translation2d[] modulePositions){
@@ -39,16 +39,17 @@ public class DemaciaKinematics {
 
     private SwerveModuleState calculateModuleState(SwerveModuleState currentState, Translation2d modulePositionOnRobot){
         Translation2d estimatedModulePosition = estimatedPose.getTranslation().plus(modulePositionOnRobot.rotateBy(estimatedPose.getRotation()));
-        double alpha = currentState.angle.getRadians() - estimatedModulePosition.getAngle().getRadians();
-        
+        Translation2d fromModuleToEstimatedModule = estimatedModulePosition.minus(modulePositionOnRobot);
+        double alpha = currentState.angle.getRadians() - fromModuleToEstimatedModule.getAngle().getRadians();
+       
         if(Math.abs(alpha) / DELTA_T < MIN_ALPHA) {
-            return new SwerveModuleState(estimatedModulePosition.getNorm()/DELTA_T,
-                estimatedModulePosition.getAngle());
+            return new SwerveModuleState(fromModuleToEstimatedModule.getNorm()/DELTA_T,
+                fromModuleToEstimatedModule.getAngle());
         }
 
         Rotation2d wantedAngle = currentState.angle.plus(new Rotation2d(2 * alpha));
 
-        double arcLength = (estimatedModulePosition.getNorm() * alpha ) /Math.sin(alpha);
+        double arcLength = (fromModuleToEstimatedModule.getNorm() * alpha ) /Math.sin(alpha);
         
         double acceleration = 2 * (arcLength - (currentState.speedMetersPerSecond * DELTA_T))  * (1/T_SQUARED);
         //TODO: add a checking for when acceleration is too high
