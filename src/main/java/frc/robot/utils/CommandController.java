@@ -271,7 +271,7 @@ public class CommandController extends CommandGenericHID{
     public Trigger getPS() {
         switch (controllerType) {
             case kXbox:
-                LogManager.log("Xbox controller does not have PS button", AlertType.kError);
+                
                 return null;
             case kPS5:
                 return button(PS5Controller.Button.kPS.value, CommandScheduler.getInstance().getDefaultButtonLoop());
@@ -283,7 +283,7 @@ public class CommandController extends CommandGenericHID{
     public Trigger getTouchPad() {
         switch (controllerType) {
             case kXbox:
-                LogManager.log("Xbox controller does not have touchpad", AlertType.kError);
+               
                 return null;        
             case kPS5:
                 return button(PS5Controller.Button.kTouchpad.value, CommandScheduler.getInstance().getDefaultButtonLoop());

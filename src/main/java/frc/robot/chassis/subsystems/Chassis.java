@@ -91,12 +91,6 @@ public class Chassis extends SubsystemBase {
         // SmartDashboard.putData("Chassis", this);
     }
 
-    public void checkElectronics() {
-        for (SwerveModule module : modules) {
-            module.checkElectronics();
-        }
-    }
-
     // private Sendable getChassisWidget() {
     //     return new Sendable() {
     //         @Override

@@ -6,8 +6,9 @@ package frc.robot;
 
 import com.ctre.phoenix6.CANBus;
 
-import frc.demacia.utils.Motors.TalonConfig;
-import frc.demacia.utils.Motors.BaseMotorConfig.Canbus;
+import frc.robot.utils.TalonConfig;
+import com.ctre.phoenix6.CANBus;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -26,7 +27,7 @@ public final class Constants {
   public static class motorConstants {
         /* all the main configs of the motor */
         public static final int ID = 5;
-        public static final Canbus CAN_BUS = Canbus.CANIvore;
+        public static final CANBus CAN_BUS = new CANBus("canivore");
         public static final String NAME = "Test Motor";
 
         /* the pid and ff constants of the motor */
@@ -57,10 +58,11 @@ public final class Constants {
         /* The config of the motors based on the constants above */
         public static final TalonConfig CONFIG = new TalonConfig(ID, CAN_BUS, NAME)
                 .withPID(KP, KI, KD, KS, KV, KA, KG)
-                .withMotionParam(MOTION_MAGIC_VELOCITY, MOTION_MAGIC_ACCELERATION, MOTION_MAGIC_JERK)
+                .withMotionMagic(MOTION_MAGIC_VELOCITY, MOTION_MAGIC_ACCELERATION, MOTION_MAGIC_JERK)
                 .withBrake(IS_BRAKE)
                 .withInvert(IS_INVERTED)
-                .withRadiansMotor(GEAR_RATIO)
+                .withMotorRatio(GEAR_RATIO)
+                .withRadiansMotor()
                 .withRampTime(RAMP_TIME);
     }
 }

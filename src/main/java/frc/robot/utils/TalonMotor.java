@@ -61,8 +61,6 @@ public class TalonMotor extends TalonFX {
 		name = config.name;
 		configMotor();
     setSignals();
-		addLog();
-		LogManager.log(name + " motor initialized");
   }
   
   private void configMotor() {
@@ -146,26 +144,6 @@ public class TalonMotor extends TalonFX {
     lastAcceleration = accelerationSignal.getValueAsDouble();
   }
 
-  private void addLog() {    
-    LogManager.addEntry(name + "/Position", getPosition(), 2);
-    LogManager.addEntry(name + "/Velocity", getVelocity(), 2);
-    LogManager.addEntry(name + "/Acceleration", getAcceleration(), 2);
-    LogManager.addEntry(name + "/Voltage", getMotorVoltage(), 2);
-    LogManager.addEntry(name + "/Current", getStatorCurrent(), 2);
-    LogManager.addEntry(name + "/CloseLoopError", getClosedLoopError(), 2);
-    // LogManager.addEntry(name + "/CloseLoopOutput", getClosedLoopOutput(), 1);
-    // LogManager.addEntry(name + "/CloseLoopP", getClosedLoopProportionalOutput(), 1);
-    // LogManager.addEntry(name + "/CloseLoopI", getClosedLoopIntegratedOutput(), 1);
-    // LogManager.addEntry(name + "/CloseLoopD", getClosedLoopDerivativeOutput(), 1);
-    // LogManager.addEntry(name + "/CloseLoopFF", getClosedLoopFeedForward(), 1);
-    LogManager.addEntry(name + "/CloseLoopSP", getClosedLoopReference(), 2);
-  }
-
-  public void checkElectronics() {
-    if (getFaultField().getValue() != 0) {
-      LogManager.log(name + " have fualt num: " + getFaultField().getValue(), AlertType.kError);
-    }
-  }
 
   /**
    * change the slot of the pid and feed forward.
@@ -174,19 +152,16 @@ public class TalonMotor extends TalonFX {
    */
   public void changeSlot(int slot) {    
     if (slot < 0 || slot > 2) {
-      LogManager.log("slot is not between 0 and 2", AlertType.kError); 
+      
       return;
     }
     if (slot == 0 && config.pid == null) {
-      LogManager.log("slot is null, add config for slot 0", AlertType.kError);
       return;
     }
     if (slot == 1 && config.pid1 == null) {
-      LogManager.log("slot is null, add config for slot 1", AlertType.kError);
       return;
     }
     if (slot == 2 && config.pid2 == null) {
-      LogManager.log("slot is null, add config for slot 2", AlertType.kError);
       return;
     }
     velocityVoltage.withSlot(slot);

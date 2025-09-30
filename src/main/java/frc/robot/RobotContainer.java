@@ -4,8 +4,11 @@
 
 package frc.robot;
 
-import frc.demacia.utils.Log.LogManager;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.chassis.commands.Drive;
+import frc.robot.chassis.subsystems.Chassis;
+import frc.robot.utils.CommandController;
+import frc.robot.utils.CommandController.ControllerType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,7 +27,8 @@ public class RobotContainer {
   public static boolean isRed = true;
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
-
+  CommandController controller = new CommandController(0, ControllerType.kXbox);
+  Chassis chassis;
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
 
@@ -35,8 +39,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
-    new LogManager();
+    chassis = new Chassis();
+    chassis.setDefaultCommand(new Drive(chassis, controller));
 
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
@@ -51,7 +55,6 @@ public class RobotContainer {
     RobotContainer.isComp = isComp;
     if(!hasRemovedFromLog && isComp) {
       hasRemovedFromLog = true;
-      LogManager.removeInComp();
     }
   }
 

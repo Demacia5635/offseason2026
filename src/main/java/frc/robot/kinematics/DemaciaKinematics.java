@@ -4,6 +4,8 @@
 
 package frc.robot.kinematics;
 
+import java.util.Arrays;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -29,17 +31,49 @@ public class DemaciaKinematics {
             s.vyMetersPerSecond * DELTA_T,
             new Rotation2d(s.omegaRadiansPerSecond * DELTA_T));
 
+        if(Math.abs(s.vxMetersPerSecond) < 0.01 && Math.abs(s.vyMetersPerSecond) < 0.01){
+            if(Math.abs(s.omegaRadiansPerSecond) < 0.01){
+                for(int i = 0; i < states.length; i++){
+                    states[i] = new SwerveModuleState(0, currentStates[i].angle);
+                }
+                return states;
+            }
+            for(int i = 0; i < states.length; i++){
+                states[i] = new SwerveModuleState(s.omegaRadiansPerSecond * modulePositions[i].getNorm(),
+                    modulePositions[i].getAngle().plus(new Rotation2d(Math.PI/2)));
+            }
+            return states;
+        }
+        if(Math.abs(s.omegaRadiansPerSecond) < 0.01){
+            Arrays.fill(states, new SwerveModuleState(Math.hypot(s.vxMetersPerSecond, s.vyMetersPerSecond), new Rotation2d(s.vxMetersPerSecond, s.vyMetersPerSecond)));
+            return states;
+        }
+
         for(int i = 0; i < states.length; i++){
             states[i] = calculateModuleState(currentStates[i], modulePositions[i]);
         }
+        System.out.println("current state: " + currentStates[0]);
+        System.out.println("wanted state: " + states[0]);
+        System.out.println("Chassis speeds: " + s);
+        Translation2d temp = calculateFromModuleToEstimatedModule(modulePositions[0]);
+        System.out.println("FROM MOD TO ESTIM x: " + temp.getX() + " y: " + temp.getY() + " norm: " + temp.getNorm() + " angle: " + temp.getAngle());
+        
+
 
         return states;
 
     }
+    private Translation2d calculateFromModuleToEstimatedModule( Translation2d modulePositionOnRobot){
+        Translation2d estimatedModulePosition = estimatedPose.getTranslation().plus(modulePositionOnRobot.rotateBy(estimatedPose.getRotation()));
+        return estimatedModulePosition.minus(modulePositionOnRobot);
+    }
 
     private SwerveModuleState calculateModuleState(SwerveModuleState currentState, Translation2d modulePositionOnRobot){
-        Translation2d estimatedModulePosition = estimatedPose.getTranslation().plus(modulePositionOnRobot.rotateBy(estimatedPose.getRotation()));
-        Translation2d fromModuleToEstimatedModule = estimatedModulePosition.minus(modulePositionOnRobot);
+        
+
+        
+        Translation2d fromModuleToEstimatedModule = calculateFromModuleToEstimatedModule(modulePositionOnRobot);
+
         double alpha = currentState.angle.getRadians() - fromModuleToEstimatedModule.getAngle().getRadians();
        
         if(Math.abs(alpha) / DELTA_T < MIN_ALPHA) {
@@ -47,15 +81,16 @@ public class DemaciaKinematics {
                 fromModuleToEstimatedModule.getAngle());
         }
 
-        Rotation2d wantedAngle = currentState.angle.plus(new Rotation2d(2 * alpha));
+        Rotation2d wantedAngle = currentState.angle.minus(new Rotation2d(2 * alpha));
+        
 
         double arcLength = (fromModuleToEstimatedModule.getNorm() * alpha ) /Math.sin(alpha);
         
-        double acceleration = 2 * (arcLength - (currentState.speedMetersPerSecond * DELTA_T))  * (1/T_SQUARED);
+        //double acceleration = 2 * (arcLength - (currentState.speedMetersPerSecond * DELTA_T))  * (1/T_SQUARED);
         //TODO: add a checking for when acceleration is too high
 
-        double wantedVelocity = currentState.speedMetersPerSecond + (acceleration * DELTA_T);
-
+        //double wantedVelocity = currentState.speedMetersPerSecond + (acceleration * DELTA_T);
+        double wantedVelocity = (arcLength * 100) - currentState.speedMetersPerSecond;
         return new SwerveModuleState(wantedVelocity, wantedAngle);
 
 
