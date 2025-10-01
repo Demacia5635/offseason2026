@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/frc_field_screen.dart';
+//import 'screens/frc_field_screen.dart';
 
 void main() {
   runApp(const FRCFieldApp());
@@ -16,7 +16,7 @@ class FRCFieldApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const FRCFieldScreen(),
+      //home: const FRCFieldScreen(),
     );
   }
 }

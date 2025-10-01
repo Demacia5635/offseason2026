@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class InteractiveFieldWidget extends StatefulWidget {
   const InteractiveFieldWidget({super.key});
 
