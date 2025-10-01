@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/point_selection_state.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter_application_1/models/FieldConstants.dart';
+import 'package:flutter_application_1/widgets/field_background_image.dart';
+import 'package:flutter_application_1/widgets/field_overlay_painter.dart';
+import 'package:flutter_application_1/widgets/mouse_coordinates_display.dart';
 
 class InteractiveFieldWidget extends StatefulWidget {
   const InteractiveFieldWidget({super.key});
