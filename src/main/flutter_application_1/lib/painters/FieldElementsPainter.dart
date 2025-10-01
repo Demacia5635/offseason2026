@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FieldPainter extends CustomPainter {
+class FieldElementsPainter extends CustomPainter {
   final scale = (0.7, 0.8);
   final Offset? startPoint;
   final Offset? endPoint;

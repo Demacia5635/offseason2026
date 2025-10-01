@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/constants.dart' show fieldImagePath;
+import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/painters/FieldElementsPainter.dart';
+
 
 class FieldOverlayPainter extends StatelessWidget {
   final double width;
@@ -21,7 +23,7 @@ class FieldOverlayPainter extends StatelessWidget {
     return CustomPaint(
       size: Size(width, height),
       painter: FieldElementsPainter(
-        scale: FizeldConstants.metersToPixelsScale,
+        scale: Constants.metersToPixelsScale,
         startPoint: firstPoint,
         endPoint: secondPoint,
       ),
