@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import 'package:flutter_application_1/utils/constants.dart';
 
 class FieldBackgroundImage extends StatelessWidget {
   final double width;
@@ -14,7 +14,7 @@ class FieldBackgroundImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      FieldConstants.fieldImagePath,
+      Constants.fieldImagePath,
       width: width,
       height: height,
       fit: BoxFit.cover,
