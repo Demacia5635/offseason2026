@@ -54,6 +54,7 @@ flutter:
 
   assets:
     - assets/frcField2025.jpeg
+    - assets/frcTeam5635-2025Robot.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
