@@ -23,7 +23,7 @@ class FieldOverlayPainter extends StatelessWidget {
     return CustomPaint(
       size: Size(width, height),
       painter: FieldElementsPainter(
-        scale: Constants.metersToPixelsScale,
+        scale: (Constants.metersToPixelsScale, Constants.metersToPixelsScale),
         startPoint: firstPoint,
         endPoint: secondPoint,
       ),
