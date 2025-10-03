@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/FieldConstants.dart';
 
 class FieldElementsPainter extends CustomPainter {
   final scale = (0.7, 0.8);
   final Offset? startPoint;
   final Offset? endPoint;
 
-  Fֿ
 
   FieldElementsPainter({
-    required this.scale,
+    required scale,
     this.startPoint,
     this.endPoint,
   });
@@ -24,11 +24,11 @@ class FieldElementsPainter extends CustomPainter {
       ..color = Colors.red.withOpacity(0.5)
       ..style = PaintingStyle.fill;
 
-    final robotRect = _calculateRobotPosition(size);
+    final robotRect = _calculateRobotPosition(size, startPoint);
     canvas.drawRect(robotRect, robotPaint);
   }
 
-  Rect _calculateRobotPosition(Size size) {
+  Rect _calculateRobotPosition(Size size, scale) {
     final robotWidthPixels = FieldConstants.robotWidthMeters * scale;
     final robotHeightPixels = FieldConstants.robotHeightMeters * scale;
 
