@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/back/point_selection_state.dart';
+import 'package:flutter_application_1/back/Point_selection_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 import 'package:flutter_application_1/front/fieldImage.dart';
 import 'package:flutter_application_1/front/painter.dart';
 import 'package:flutter_application_1/front/mouseCoordinatesDisplay.dart';
 
-class mouseState extends StatefulWidget {
-  const mouseState({super.key});
+class MouseState extends StatefulWidget {
+  const MouseState({super.key});
 
   @override
-  mouseStateState createState() => mouseStateState();
+  MouseStateState createState() => MouseStateState();
 }
 
-class mouseStateState extends State<mouseState> {
-  point_selection_state _selectionState = const point_selection_state();
+class MouseStateState extends State<MouseState> {
+  Point_selection_state _selectionState = const Point_selection_state();
   double _mouseXMeters = 0;
   double _mouseYMeters = 0;
 
   void _handleFieldTap(TapDownDetails details) {
     setState(() {
       if (!_selectionState.isWaitingForSecondPoint) {
-        _selectionState = point_selection_state(
+        _selectionState = Point_selection_state(
           firstPoint: details.localPosition,
           secondPoint: null,
           isWaitingForSecondPoint: true,
@@ -69,11 +69,11 @@ class mouseStateState extends State<mouseState> {
           height: fieldHeight,
           child: Stack(
             children: [
-              fieldImage(
+              FieldImage(
                 width: screenSize.width,
                 height: fieldHeight,
               ),
-              painter(
+              Painter(
                 width: screenSize.width,
                 height: fieldHeight,
                 firstPoint: _selectionState.firstPoint,
@@ -90,7 +90,7 @@ class mouseStateState extends State<mouseState> {
     return Positioned(
       top: 10,
       left: 10,
-      child: mouseCoordinatesDisplay(
+      child: MouseCoordinatesDisplay(
         xMeters: _mouseXMeters,
         yMeters: _mouseYMeters,
       ),

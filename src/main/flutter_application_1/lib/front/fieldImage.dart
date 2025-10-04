@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
-class fieldImage extends StatelessWidget {
+class FieldImage extends StatelessWidget {
   final double width;
   final double height;
 
-  const fieldImage({
+  const FieldImage({
     super.key,
     required this.width,
     required this.height,

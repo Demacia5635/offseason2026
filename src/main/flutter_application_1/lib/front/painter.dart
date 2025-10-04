@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
-import 'package:flutter_application_1/back/robotPaintState.dart';
+import 'package:flutter_application_1/back/RobotPaintState.dart';
 
 
-class painter extends StatelessWidget {
+class Painter extends StatelessWidget {
   final double width;
   final double height;
   final Offset? firstPoint;
   final Offset? secondPoint;
   
 
-  const painter({
+  const Painter({
     super.key,
     required this.width,
     required this.height,
@@ -22,7 +22,7 @@ class painter extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(width, height),
-      painter: robotPaintState(
+      painter: RobotPaintState(
         scale: (Constants.metersToPixelsScale, Constants.metersToPixelsScale),
         startPoint: firstPoint,
         endPoint: secondPoint,

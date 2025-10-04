@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
-class robotPaintState extends CustomPainter {
+class RobotPaintState extends CustomPainter {
   final scale = (0.7, 0.8);
   final Offset? startPoint;
   final Offset? endPoint;
 
 
-  robotPaintState({
+  RobotPaintState({
     required scale,
     this.startPoint,
     this.endPoint,
@@ -51,7 +51,7 @@ class robotPaintState extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant robotPaintState oldDelegate) {
+  bool shouldRepaint(covariant RobotPaintState oldDelegate) {
     return oldDelegate.startPoint != startPoint ||
         oldDelegate.endPoint != endPoint;
   }
