@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/constants.dart';
-import 'package:flutter_application_1/painters/robotPaint.dart';
+import 'package:flutter_application_1/utils/utils.dart';
+import 'package:flutter_application_1/paintersState/robotPaintState.dart';
 
 
 class FieldOverlayPainter extends StatelessWidget {

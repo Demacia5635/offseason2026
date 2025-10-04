@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/FieldConstants.dart';
+import 'package:flutter_application_1/utils/utils.dart';
 
 class FieldElementsPainter extends CustomPainter {
   final scale = (0.7, 0.8);

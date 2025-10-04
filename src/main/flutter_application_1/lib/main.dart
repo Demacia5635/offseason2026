@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/point_selection_state.dart';
-import 'package:flutter_application_1/painters/robotPaint.dart';
+import 'package:flutter_application_1/paintersState/point_selection_state.dart';
+import 'package:flutter_application_1/paintersState/robotPaintState.dart';
 import 'package:flutter_application_1/widgets/field_background_image.dart';
-import 'package:flutter_application_1/widgets/field_overlay_painter.dart';
-import 'package:flutter_application_1/widgets/interactive_field_widget.dart';
-import 'package:flutter_application_1/widgets/mouse_coordinates_display.dart';
+import 'package:flutter_application_1/widgets/painter.dart';
+import 'package:flutter_application_1/widgets/mousePozesan.dart';
+import 'package:flutter_application_1/widgets/displayMousePozesan.dart';
 
 void main() {
   PointSelectionState pointSelectionState= PointSelectionState();

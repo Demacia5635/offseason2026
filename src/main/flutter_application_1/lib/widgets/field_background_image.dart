@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/constants.dart';
+import 'package:flutter_application_1/utils/utils.dart';
 
 
 
@@ -17,7 +17,7 @@ class FieldBackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(
+        body: Center(//cange to to the alll scren
           child: Image.asset(
             Constants.fieldImagePath,
             width: width,
@@ -28,8 +28,4 @@ class FieldBackgroundImage extends StatelessWidget {
       ),
     );
   }
-}
-
-void main(){
-  runApp(FieldBackgroundImage(width:1000 ,height: 1000 ));
 }

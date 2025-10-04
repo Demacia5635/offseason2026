@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/point_selection_state.dart';
+import 'package:flutter_application_1/paintersState/point_selection_state.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_application_1/models/FieldConstants.dart';
+import 'package:flutter_application_1/utils/utils.dart';
 import 'package:flutter_application_1/widgets/field_background_image.dart';
-import 'package:flutter_application_1/widgets/field_overlay_painter.dart';
-import 'package:flutter_application_1/widgets/mouse_coordinates_display.dart';
+import 'package:flutter_application_1/widgets/painter.dart';
+import 'package:flutter_application_1/widgets/displayMousePozesan.dart';
 
 class InteractiveFieldWidget extends StatefulWidget {
   const InteractiveFieldWidget({super.key});
@@ -37,8 +37,8 @@ class InteractiveFieldWidgetState extends State<InteractiveFieldWidget> {
 
   void _updateMousePosition(PointerHoverEvent event) {
     setState(() {
-      _mouseXMeters = event.localPosition.dx / FieldConstants.metersToPixelsScale;
-      _mouseYMeters = event.localPosition.dy / FieldConstants.metersToPixelsScale;
+      _mouseXMeters = event.localPosition.dx / Constants.metersToPixelsScale;
+      _mouseYMeters = event.localPosition.dy / Constants.metersToPixelsScale;
     });
   }
 
