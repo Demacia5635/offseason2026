@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MouseCoordinatesDisplay extends StatelessWidget {
+class mouseCoordinatesDisplay extends StatelessWidget {
   final double xMeters;
   final double yMeters;
 
-  const MouseCoordinatesDisplay({
+  const mouseCoordinatesDisplay({
     super.key,
     required this.xMeters,
     required this.yMeters,

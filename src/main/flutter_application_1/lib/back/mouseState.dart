@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/paintersState/point_selection_state.dart';
+import 'package:flutter_application_1/back/point_selection_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/utils/utils.dart';
-import 'package:flutter_application_1/widgets/field_background_image.dart';
-import 'package:flutter_application_1/widgets/painter.dart';
-import 'package:flutter_application_1/widgets/displayMousePozesan.dart';
+import 'package:flutter_application_1/front/fieldImage.dart';
+import 'package:flutter_application_1/front/painter.dart';
+import 'package:flutter_application_1/front/mouseCoordinatesDisplay.dart';
 
-class InteractiveFieldWidget extends StatefulWidget {
-  const InteractiveFieldWidget({super.key});
+class mouseState extends StatefulWidget {
+  const mouseState({super.key});
 
   @override
-  InteractiveFieldWidgetState createState() => InteractiveFieldWidgetState();
+  mouseStateState createState() => mouseStateState();
 }
 
-class InteractiveFieldWidgetState extends State<InteractiveFieldWidget> {
-  PointSelectionState _selectionState = const PointSelectionState();
+class mouseStateState extends State<mouseState> {
+  point_selection_state _selectionState = const point_selection_state();
   double _mouseXMeters = 0;
   double _mouseYMeters = 0;
 
   void _handleFieldTap(TapDownDetails details) {
     setState(() {
       if (!_selectionState.isWaitingForSecondPoint) {
-        _selectionState = PointSelectionState(
+        _selectionState = point_selection_state(
           firstPoint: details.localPosition,
           secondPoint: null,
           isWaitingForSecondPoint: true,
@@ -69,11 +69,11 @@ class InteractiveFieldWidgetState extends State<InteractiveFieldWidget> {
           height: fieldHeight,
           child: Stack(
             children: [
-              FieldBackgroundImage(
+              fieldImage(
                 width: screenSize.width,
                 height: fieldHeight,
               ),
-              FieldOverlayPainter(
+              painter(
                 width: screenSize.width,
                 height: fieldHeight,
                 firstPoint: _selectionState.firstPoint,
@@ -90,7 +90,7 @@ class InteractiveFieldWidgetState extends State<InteractiveFieldWidget> {
     return Positioned(
       top: 10,
       left: 10,
-      child: MouseCoordinatesDisplay(
+      child: mouseCoordinatesDisplay(
         xMeters: _mouseXMeters,
         yMeters: _mouseYMeters,
       ),

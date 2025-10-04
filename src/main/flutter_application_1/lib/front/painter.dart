@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
-import 'package:flutter_application_1/paintersState/robotPaintState.dart';
+import 'package:flutter_application_1/back/robotPaintState.dart';
 
 
-class FieldOverlayPainter extends StatelessWidget {
+class painter extends StatelessWidget {
   final double width;
   final double height;
   final Offset? firstPoint;
   final Offset? secondPoint;
   
 
-  const FieldOverlayPainter({
+  const painter({
     super.key,
     required this.width,
     required this.height,
@@ -22,7 +22,7 @@ class FieldOverlayPainter extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(width, height),
-      painter: FieldElementsPainter(
+      painter: robotPaintState(
         scale: (Constants.metersToPixelsScale, Constants.metersToPixelsScale),
         startPoint: firstPoint,
         endPoint: secondPoint,

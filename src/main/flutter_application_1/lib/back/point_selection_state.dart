@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class PointSelectionState {
+class point_selection_state {
   final Offset? firstPoint;
   final Offset? secondPoint;
   final bool isWaitingForSecondPoint;
 
-  const PointSelectionState({
+  const point_selection_state({
     this.firstPoint,
     this.secondPoint,
     this.isWaitingForSecondPoint = false,
   });
 
-  PointSelectionState copyWith({
+  point_selection_state copyWith({
     Offset? firstPoint,
     Offset? secondPoint,
     bool? isWaitingForSecondPoint,
   }) {
-    return PointSelectionState(
+    return point_selection_state(
       firstPoint: firstPoint ?? this.firstPoint,
       secondPoint: secondPoint ?? this.secondPoint,
       isWaitingForSecondPoint:

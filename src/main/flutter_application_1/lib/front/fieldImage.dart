@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
-
-
-class FieldBackgroundImage extends StatelessWidget {
+class fieldImage extends StatelessWidget {
   final double width;
   final double height;
 
-  const FieldBackgroundImage({
+  const fieldImage({
     super.key,
     required this.width,
     required this.height,

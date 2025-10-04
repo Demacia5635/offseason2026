@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
-class FieldElementsPainter extends CustomPainter {
+class robotPaintState extends CustomPainter {
   final scale = (0.7, 0.8);
   final Offset? startPoint;
   final Offset? endPoint;
 
 
-  FieldElementsPainter({
+  robotPaintState({
     required scale,
     this.startPoint,
     this.endPoint,
@@ -29,8 +29,8 @@ class FieldElementsPainter extends CustomPainter {
   }
 
   Rect _calculateRobotPosition(Size size, scale) {
-    final robotWidthPixels = FieldConstants.robotWidthMeters * scale;
-    final robotHeightPixels = FieldConstants.robotHeightMeters * scale;
+    final robotWidthPixels = Constants.robotWidthMeters * scale;
+    final robotHeightPixels = Constants.robotHeightMeters * scale;
 
     return Rect.fromLTWH(
       size.width - 2 * scale,
@@ -51,7 +51,7 @@ class FieldElementsPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant FieldElementsPainter oldDelegate) {
+  bool shouldRepaint(covariant robotPaintState oldDelegate) {
     return oldDelegate.startPoint != startPoint ||
         oldDelegate.endPoint != endPoint;
   }
