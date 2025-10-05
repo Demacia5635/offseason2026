@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
 class RobotPaintState extends CustomPainter {
-  final scale = (0.7, 0.8);
+  final double scale;
   final Offset? startPoint;
   final Offset? endPoint;
 
 
   RobotPaintState({
-    required scale,
+    required this.scale,
     this.startPoint,
     this.endPoint,
   });

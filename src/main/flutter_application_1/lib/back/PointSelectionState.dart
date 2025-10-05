@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Renamed from PointSelectionState to Point_selection_state
 class Point_selection_state {
   final Offset? firstPoint;
   final Offset? secondPoint;
