@@ -2,26 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 
 class FieldImage extends StatelessWidget {
-  final double width;
-  final double height;
 
-  const FieldImage({
-    super.key,
-    required this.width,
-    required this.height,
-  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(//cange to to the alll scren
-          child: Image.asset(
+        body: Image.asset(//cange to to the alll scren
             Constants.fieldImagePath,
-            width: width,
-            height: height,
+            width: double.infinity,
+            height: double.infinity,
             fit: BoxFit.cover,
-          ),
         ),
       ),
     );
