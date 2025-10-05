@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utils/utils.dart';
 import 'package:flutter_application_1/back/RobotPaintState.dart';
 
-
+// dont work
 class Painter extends StatelessWidget {
   final double width;
   final double height;
@@ -30,3 +30,4 @@ class Painter extends StatelessWidget {
     );
   }
 }
+
