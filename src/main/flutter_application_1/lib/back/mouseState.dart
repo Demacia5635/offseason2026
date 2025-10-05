@@ -69,10 +69,7 @@ class MouseStateState extends State<MouseState> {
           height: fieldHeight,
           child: Stack(
             children: [
-              FieldImage(
-                width: screenSize.width,
-                height: fieldHeight,
-              ),
+              FieldImage(),
               Painter(
                 width: screenSize.width,
                 height: fieldHeight,
