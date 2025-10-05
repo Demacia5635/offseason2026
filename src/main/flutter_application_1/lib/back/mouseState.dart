@@ -5,7 +5,7 @@ import 'package:flutter_application_1/utils/utils.dart';
 import 'package:flutter_application_1/front/fieldImage.dart';
 import 'package:flutter_application_1/front/painter.dart';
 import 'package:flutter_application_1/front/mouseCoordinatesDisplay.dart';
-//delet
+
 class MouseState extends StatefulWidget {
   const MouseState({super.key});
 

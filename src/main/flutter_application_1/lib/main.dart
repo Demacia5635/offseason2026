@@ -10,7 +10,7 @@ void main() {
     runApp(MaterialApp());
     runApp(MouseCoordinatesDisplay(xMeters: 0, yMeters: 0));
     runApp(Painter(height: 200, width: 200, firstPoint: null, secondPoint: null));
-    runApp(FieldImage(height: 1000, width: 1000));
+    runApp(FieldImage());
     runApp(MouseState());
     Point_selection_state state = const Point_selection_state();
     state = state.copyWith(firstPoint: const Offset(10, 10));
