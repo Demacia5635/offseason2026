@@ -23,7 +23,7 @@ class Painter extends StatelessWidget {
     return CustomPaint(
       size: Size(width, height),
       painter: RobotPaintState(
-        scale: (Constants.metersToPixelsScale, Constants.metersToPixelsScale),
+        scale: (Constants.metersToPixelsScale),
         startPoint: firstPoint,
         endPoint: secondPoint,
       ),
