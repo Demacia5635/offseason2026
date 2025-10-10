@@ -14,6 +14,7 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
+    public static final double dtseconds = 0.02;
     
     public static final int kDriverControllerPort = 0;
   }

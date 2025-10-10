@@ -26,7 +26,7 @@ public class CalculatePositionAndAngle {
     private double latency;
     private Supplier<ChassisSpeeds> speeds;
     private Supplier<Rotation2d> getRobotAngle;
-    private double dtseconds = 0.02;
+    private double dtseconds;
     private Camera camera;
      private NetworkTable Table;
 
