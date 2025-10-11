@@ -92,7 +92,8 @@ public class Tag extends SubsystemBase {
     cropEntry = Table.getEntry("crop");
     pipeEntry = Table.getEntry("pipeline");
     camToTagPitch = Table.getEntry("ty").getDouble(0.0);
-    camToTagYaw = (-Table.getEntry("tx").getDouble(0.0)) + camera.getYaw();
+    camToTagYaw = (-Table.getEntry("tx").getDouble(0.0));
+    // need to ajast for the camera mounting angle
     id = getTagId();
 
     latency = Table.getEntry("tl").getDouble(0.0) + Table.getEntry("cl").getDouble(0.0);

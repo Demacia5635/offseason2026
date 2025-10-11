@@ -21,7 +21,7 @@ public class Camera {
     private String tableName;
     private CameraType cameraType;
 
-    public Camera(String name, Translation3d robotToCamPosition, double pitch, double yaw, CameraType cameraType) {
+    public Camera(String name, Translation3d robotToCamPosition, double pitch, double yaw, double rool, CameraType cameraType) {
         this.name = name;
         this.robotToCamPosition = robotToCamPosition;
         this.pitch = pitch;
