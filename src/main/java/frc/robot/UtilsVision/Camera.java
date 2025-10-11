@@ -1,7 +1,6 @@
 package frc.robot.UtilsVision;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 
 public class Camera {
     private String name;
