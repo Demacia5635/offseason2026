@@ -5,7 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.chassis.commands.Drive;
+import frc.robot.chassis.subsystems.Chassis;
+import frc.robot.utils.CommandController;
+import frc.robot.utils.CommandController.ControllerType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -16,12 +22,44 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  
+  public static boolean isRed = true;
+  public static boolean isComp = DriverStation.isFMSAttached();
+  private static boolean hasRemovedFromLog = false;
+  CommandController controller = new CommandController(0, ControllerType.kXbox);
+  Chassis chassis;
+  public static int N_CYCLE = 0;
+  public static double CYCLE_TIME = 0.02;
+
   // The robot's subsystems and commands are defined here...
+
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    chassis = new Chassis();
+    chassis.setDefaultCommand(new Drive(chassis, controller));
+
     // Configure the trigger bindings
+    // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
     configureBindings();
+  }
+
+  public static boolean isComp() {
+    return isComp;
+  }
+
+  public static void setIsComp(boolean isComp) {
+    RobotContainer.isComp = isComp;
+    if(!hasRemovedFromLog && isComp) {
+      hasRemovedFromLog = true;
+    }
+  }
+
+  public static boolean isRed(){
+    return isRed;
   }
 
   /**
@@ -34,6 +72,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
   }
 
   /**
