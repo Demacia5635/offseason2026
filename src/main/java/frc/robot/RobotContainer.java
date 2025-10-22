@@ -9,6 +9,7 @@ import frc.robot.chassis.commands.Drive;
 import frc.robot.chassis.subsystems.Chassis;
 import frc.robot.utils.CommandController;
 import frc.robot.utils.CommandController.ControllerType;
+import frc.robot.vision.Quest;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -27,7 +28,8 @@ public class RobotContainer {
   public static boolean isRed = true;
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
-  CommandController controller = new CommandController(0, ControllerType.kXbox);
+  Quest quest;
+  CommandController controller = new CommandController(1, ControllerType.kXbox);
   Chassis chassis;
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
@@ -41,6 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     chassis = new Chassis();
     chassis.setDefaultCommand(new Drive(chassis, controller));
+    // quest = new Quest();
 
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
