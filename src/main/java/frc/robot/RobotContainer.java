@@ -41,6 +41,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    quest = new Quest();
     chassis = new Chassis();
     chassis.setDefaultCommand(new Drive(chassis, controller));
     // quest = new Quest();
