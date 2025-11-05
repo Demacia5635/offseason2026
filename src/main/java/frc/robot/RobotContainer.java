@@ -29,7 +29,7 @@ public class RobotContainer {
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
   Quest quest;
-  CommandController controller = new CommandController(1, ControllerType.kXbox);
+  CommandController controller = new CommandController(0, ControllerType.kPS5);
   Chassis chassis;
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;

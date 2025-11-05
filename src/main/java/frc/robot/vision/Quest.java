@@ -81,9 +81,14 @@ if (poseFrames.length > 0) {
     currentPose = poseFrames[poseFrames.length - 1].questPose();
 }
     field = new Field2d();
-    field.setRobotPose(currentPose);
-    
+    if(currentPose != null){
+      field.setRobotPose(currentPose);
+      
+    }
     SmartDashboard.putData("Quest Field", field);
+
+    
+
     SmartDashboard.putNumber("Quest X", 0);
     SmartDashboard.putNumber("Quest Y", 0);
   }
@@ -105,11 +110,17 @@ if (poseFrames.length > 0) {
     }
       
       // Position data
+      
+    if(currentPose != null){
       SmartDashboard.putNumber("Quest X",   currentPose.getX());
       SmartDashboard.putNumber("Quest Y", currentPose.getY());
-      if(currentPose != null){
-        field.setRobotPose(currentPose);
-      }
+      
+      field.setRobotPose(currentPose);
+    }
+    else{
+      SmartDashboard.putNumber("Quest X",   0.0);
+      SmartDashboard.putNumber("Quest Y", 0.0);
+    }
 
 
   }
