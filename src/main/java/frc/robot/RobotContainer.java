@@ -5,11 +5,13 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.UtilsForChassis.CalculatePositionAndAngle;
 import frc.robot.chassis.commands.Drive;
 import frc.robot.chassis.subsystems.Chassis;
 import frc.robot.utils.CommandController;
 import frc.robot.utils.CommandController.ControllerType;
 import frc.robot.vision.Quest;
+import frc.robot.vision.Tag;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -24,13 +26,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  
+
   public static boolean isRed = true;
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
   Quest quest;
   CommandController controller = new CommandController(0, ControllerType.kPS5);
+  CalculatePositionAndAngle calcPos;
   Chassis chassis;
+
+
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
 
@@ -41,9 +46,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+
+
     quest = new Quest();
     chassis = new Chassis();
+    calcPos = new CalculatePositionAndAngle(()->);
     chassis.setDefaultCommand(new Drive(chassis, controller));
     // quest = new Quest();
 
