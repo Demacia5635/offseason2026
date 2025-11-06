@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "SysidApp",
+      "request": "launch",
+      "mainClass": "frc.demacia.SysID.SysidApp",
+      "projectName": "offseason2026"
+    },
+    {
+      "type": "java",
       "name": "Sysid",
       "request": "launch",
       "mainClass": "frc.demacia.SysID.Sysid",

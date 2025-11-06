@@ -6,9 +6,12 @@ package frc.robot;
 
 import frc.demacia.utils.Log.LogManager;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.command.MotorCommand;
+import frc.robot.subsystem.MotorForSysid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,6 +22,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  MotorForSysid motor;
+  MotorCommand motorcommand;
 
   public static boolean isComp = DriverStation.isFMSAttached();
   private static boolean hasRemovedFromLog = false;
@@ -35,6 +41,9 @@ public class RobotContainer {
   public RobotContainer() {
 
     new LogManager();
+
+    motor = new MotorForSysid();
+    motorcommand = new MotorCommand(motor);
 
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
@@ -63,7 +72,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    motor.setDefaultCommand(motorcommand);
   }
 
   /**
