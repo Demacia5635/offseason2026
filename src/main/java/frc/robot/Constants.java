@@ -28,6 +28,8 @@ public final class Constants {
         public static final int ID = 5;
         public static final Canbus CAN_BUS = Canbus.CANIvore;
         public static final String NAME = "Test Motor";
+        public static final double MAX_POWER = 0.5;
+        public static final double MIN_POWER = 0.1;
         
         public static final double GEAR_RATIO = 1;
 
