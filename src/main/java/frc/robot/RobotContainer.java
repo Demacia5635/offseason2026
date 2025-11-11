@@ -43,8 +43,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  Motor motor;
-  Set set;
+  // Motor motor;
+  // Set set;
 
   Arm arm;
   Arm clibeb;
@@ -73,8 +73,8 @@ public class RobotContainer {
 
 
 
-    motor = new Motor();
-    set =new Set(motor);
+    // motor = new Motor();
+    // set =new Set(motor);
 
     // setMechanism();
 
@@ -137,7 +137,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // arm.setDefaultCommand(arm.toStateCommand());
-    motor.setDefaultCommand(set);
+    // motor.setDefaultCommand(set);
   }
 
   /**
