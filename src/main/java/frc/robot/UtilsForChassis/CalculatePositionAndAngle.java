@@ -34,6 +34,9 @@ public class CalculatePositionAndAngle {
     public CalculatePositionAndAngle(Supplier<Pose2d> currentPos){
 
     }
+    public CalculatePositionAndAngle(){
+
+    }
 
     public Translation2d computeDeltaPosition(Camera camera,Supplier<ChassisSpeeds> speeds, Supplier<Rotation2d> getRobotAngle, double dtseconds) {
         this.camera = camera;
