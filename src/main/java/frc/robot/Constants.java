@@ -25,12 +25,14 @@ public final class Constants {
 
   public static class motorConstants {
         /* all the main configs of the motor */
-        public static final int ID = 5;
-        public static final Canbus CAN_BUS = Canbus.CANIvore;
+        public static final int ID = 10;
+        public static final Canbus CAN_BUS = Canbus.Rio;
         public static final String NAME = "Test Motor";
-        public static final double MAX_POWER = 0.5;
-        public static final double MIN_POWER = 0.1;
-        
+        public static final double MAX_POWER = 0.6;
+        public static final double MIN_POWER = -0.6;
+        public static final double TIME = 1.5;
+        public static final double JUMP = 0.2;
+
         public static final double GEAR_RATIO = 1;
 
         /* The config of the motors based on the constants above */

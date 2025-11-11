@@ -6,6 +6,7 @@ package frc.robot.command;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.demacia.utils.Log.LogManager;
 import frc.robot.Constants;
 import frc.robot.Constants.motorConstants;
 import frc.robot.subsystem.MotorForSysid;
@@ -22,22 +23,22 @@ public class MotorCommand extends Command {
     this.motor = motor;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(motor);
-    time = 0.5;
+    time = motorConstants.TIME;
+    power = (motorConstants.MIN_POWER);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     timer = new Timer();
-    
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   power = Math.random() *(motorConstants.MAX_POWER-motorConstants.MIN_POWER)+(motorConstants.MIN_POWER) ;
    if (timer.get()>=time){
-    power = Math.random() *(motorConstants.MAX_POWER-motorConstants.MIN_POWER)+(motorConstants.MIN_POWER);
+    power += motorConstants.JUMP;
     timer.reset();
    }
     motor.setPower(power);
@@ -47,11 +48,13 @@ public class MotorCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    motor.setPower(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return power >= motorConstants.MAX_POWER;
   }
 }
