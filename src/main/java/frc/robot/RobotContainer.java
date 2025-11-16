@@ -15,6 +15,10 @@ import frc.demacia.utils.Motors.TalonSRXMotor;
 import frc.demacia.utils.Sensors.OpticalSensor;
 import frc.demacia.utils.Sensors.SensorInterface;
 import frc.demacia.utils.Sensors.UltraSonicSensor;
+import frc.demacia.utils.chassis.Chassis;
+import frc.demacia.utils.chassis.ChassisConfig;
+import frc.robot.testChassis.Constants;
+import frc.robot.testChassis.commands.DriveCommand;
 import frc.robot.testMechanism.ArmConstants;
 import frc.robot.testMechanism.GripperConstants;
 import frc.robot.testMechanism.GripperConstants.GRIPPER_STATES;
@@ -42,14 +46,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-
-  // Motor motor;
-  // Set set;
-
-  Arm arm;
-  Arm clibeb;
-  Intake gripper;
-
   
   public static CommandController driverController;
 
@@ -59,6 +55,8 @@ public class RobotContainer {
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
 
+  Chassis chassis;
+
   // The robot's subsystems and commands are defined here...
 
 
@@ -66,10 +64,11 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
     new LogManager();
+    
+    this.chassis = new Chassis(Constants.CHASSIS_CONFIG);
 
-    driverController = new CommandController(0, ControllerType.kXbox);
+    driverController = new CommandController(0, ControllerType.kPS5);
 
 
 
@@ -136,8 +135,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // arm.setDefaultCommand(arm.toStateCommand());
-    // motor.setDefaultCommand(set);
+    chassis.setDefaultCommand(new DriveCommand(chassis, driverController));
   }
 
   /**

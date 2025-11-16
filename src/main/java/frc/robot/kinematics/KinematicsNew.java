@@ -14,7 +14,7 @@ public class KinematicsNew {
     
     private SwerveModuleState[] swerveStates = new SwerveModuleState[4];
     private Pose2d startRobotPosition;
-    private Pose2d[] modulePositionOnTheRobot;
+    private Translation2d[] modulePositionOnTheRobot;
     private Translation2d velocityVector;
     private double omega;
     private double Vx;
@@ -23,7 +23,7 @@ public class KinematicsNew {
     private double moduleAngleFromRobot;
     private double moduleCurrentAngle;
 
-    public KinematicsNew(Pose2d[] modulePositionOnTheRobot){
+    public KinematicsNew(Translation2d[] modulePositionOnTheRobot){
         this.startRobotPosition = Pose2d.kZero;
         this.modulePositionOnTheRobot = modulePositionOnTheRobot;
     }
@@ -33,12 +33,12 @@ public class KinematicsNew {
         for(int i = 0; i < 4; i++){
             Vx = chassisSpeeds.vxMetersPerSecond;
             Vy = chassisSpeeds.vyMetersPerSecond;
-            Mi = modulePositionOnTheRobot[i].getTranslation().getNorm();
-            moduleAngleFromRobot = modulePositionOnTheRobot[i].getRotation().getRadians();
+            Mi = modulePositionOnTheRobot[i].getNorm();
+            moduleAngleFromRobot = modulePositionOnTheRobot[i].getAngle().getRadians();
             moduleCurrentAngle = startRobotPosition.getRotation().getRadians();
             velocityVector = new Translation2d(
-                Vx - omega * Mi * Math.sin(moduleCurrentAngle + omega * 0.02 + moduleAngleFromRobot),
-                Vy - omega * Mi * Math.cos(moduleCurrentAngle + omega * 0.02 + moduleAngleFromRobot)
+                Vx - omega * Mi * Math.cos(moduleCurrentAngle + omega * 0.02 + moduleAngleFromRobot),
+                Vy - omega * Mi * Math.sin(moduleCurrentAngle + omega * 0.02 + moduleAngleFromRobot)
             );
             swerveStates[i] = new SwerveModuleState(velocityVector.getNorm(), velocityVector.getAngle());
         }

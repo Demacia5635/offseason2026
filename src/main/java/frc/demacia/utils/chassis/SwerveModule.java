@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import frc.demacia.utils.Motors.TalonMotor;
 import frc.demacia.utils.Sensors.Cancoder;
 
@@ -87,8 +88,8 @@ public class SwerveModule {
             vel = -vel;
             diff = diff + Math.PI;
         }
-
-        setSteerPosition(steerMotor.getCurrentPosition() + diff);
+        if (Math.abs(diff) >= 0.1)
+            setSteerPosition(steerMotor.getCurrentPosition() + diff);
         setDriveVelocity(vel);
     }
 
@@ -102,7 +103,7 @@ public class SwerveModule {
      */
     public SwerveModuleState getState() {
         return new SwerveModuleState(getDriveVel(), getSteerRotation());
-    }
+    } 
 
 
     public void stop() {
