@@ -101,7 +101,6 @@ public class Chassis extends SubsystemBase {
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         speeds = ChassisSpeeds.discretize(speeds, chassisConfig.cycleDt);
         SwerveModuleState[] states = kinematics.moduleStates(speeds);
-        //SwerveModuleState[] states = kinematicsOld.toSwerveModuleStates(speeds);
         setModuleStates(states);
     }
 
