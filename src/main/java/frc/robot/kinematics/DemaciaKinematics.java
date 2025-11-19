@@ -4,32 +4,40 @@
 
 package frc.robot.kinematics;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import static frc.robot.kinematics.KinematicsConstants.*;
 
 /** Add your docs here. */
 public class DemaciaKinematics {
 
     private SwerveModuleState[] swerveStates = new SwerveModuleState[4];
-    private final double MAX_ALLOWED_MODULE_VELOCITY = 3;
     private Pose2d startRobotPosition;
     private Translation2d[] modulePositionOnTheRobot;
+
+    private ChassisSpeeds lastSpeeds;
     public DemaciaKinematics(Translation2d[] modulePositionOnTheRobot) {
         this.startRobotPosition = Pose2d.kZero;
         this.modulePositionOnTheRobot = modulePositionOnTheRobot;
+        this.lastSpeeds = new ChassisSpeeds();
+        
     }
 
-    public SwerveModuleState[] moduleStates(ChassisSpeeds chassisSpeeds) {
-        double omega = chassisSpeeds.omegaRadiansPerSecond;
+    public SwerveModuleState[] moduleStates(ChassisSpeeds wantedSpeeds) {
+
+
+
+        double omega = wantedSpeeds.omegaRadiansPerSecond;
         
         for (int i = 0; i < 4; i++) {
             double moduleAngleFromCenter = modulePositionOnTheRobot[i].getAngle().getRadians();
             double moduleCurrentAngle = startRobotPosition.getRotation().getRadians();
             Translation2d velocityVector = new Translation2d(
-                chassisSpeeds.vxMetersPerSecond + omega * modulePositionOnTheRobot[i].getNorm() * Math.sin(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter),
-                chassisSpeeds.vyMetersPerSecond - omega * modulePositionOnTheRobot[i].getNorm() * Math.cos(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter));
+                wantedSpeeds.vxMetersPerSecond + omega * modulePositionOnTheRobot[i].getNorm() * Math.sin(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter),
+                wantedSpeeds.vyMetersPerSecond - omega * modulePositionOnTheRobot[i].getNorm() * Math.cos(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter));
             swerveStates[i] = new SwerveModuleState(velocityVector.getNorm(), velocityVector.getAngle());
         }
 
@@ -56,5 +64,7 @@ public class DemaciaKinematics {
         return swerveStates;
 
     }
+
+
 
 }
