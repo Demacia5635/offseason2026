@@ -4,95 +4,56 @@
 
 package frc.robot.kinematics;
 
-import java.util.Arrays;
-
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 /** Add your docs here. */
 public class DemaciaKinematics {
-    private final Translation2d[] modulePositions;
-    private Pose2d estimatedPose = Pose2d.kZero;
-    private final double DELTA_T = 0.02;
-    private final double T_SQUARED = DELTA_T * DELTA_T;
-    private final double MIN_ALPHA = Math.toRadians(5);
 
-    
-    public DemaciaKinematics(Translation2d[] modulePositions){
-        this.modulePositions = modulePositions;
+    private SwerveModuleState[] swerveStates = new SwerveModuleState[4];
+    private final double MAX_ALLOWED_MODULE_VELOCITY = 3;
+    private Pose2d startRobotPosition;
+    private Translation2d[] modulePositionOnTheRobot;
+    public DemaciaKinematics(Translation2d[] modulePositionOnTheRobot) {
+        this.startRobotPosition = Pose2d.kZero;
+        this.modulePositionOnTheRobot = modulePositionOnTheRobot;
     }
 
-    public SwerveModuleState[] toSwerveModuleState(ChassisSpeeds s, SwerveModuleState[] currentStates){
-        SwerveModuleState[] states = new SwerveModuleState[4];
-        estimatedPose = new Pose2d(s.vxMetersPerSecond * DELTA_T, 
-            s.vyMetersPerSecond * DELTA_T,
-            new Rotation2d(s.omegaRadiansPerSecond * DELTA_T));
-
-        if(Math.abs(s.vxMetersPerSecond) < 0.01 && Math.abs(s.vyMetersPerSecond) < 0.01){
-            if(Math.abs(s.omegaRadiansPerSecond) < 0.01){
-                for(int i = 0; i < states.length; i++){
-                    states[i] = new SwerveModuleState(0, currentStates[i].angle);
-                }
-                return states;
-            }
-            for(int i = 0; i < states.length; i++){
-                states[i] = new SwerveModuleState(s.omegaRadiansPerSecond * modulePositions[i].getNorm(),
-                    modulePositions[i].getAngle().plus(new Rotation2d(Math.PI/2)));
-            }
-            return states;
-        }
-        if(Math.abs(s.omegaRadiansPerSecond) < 0.01){
-            Arrays.fill(states, new SwerveModuleState(Math.hypot(s.vxMetersPerSecond, s.vyMetersPerSecond), new Rotation2d(s.vxMetersPerSecond, s.vyMetersPerSecond)));
-            return states;
-        }
-
-        for(int i = 0; i < states.length; i++){
-            states[i] = calculateModuleState(currentStates[i], modulePositions[i]);
-        }
-        System.out.println("current state: " + currentStates[0]);
-        System.out.println("wanted state: " + states[0]);
-        System.out.println("Chassis speeds: " + s);
-        Translation2d temp = calculateFromModuleToEstimatedModule(modulePositions[0]);
-        System.out.println("FROM MOD TO ESTIM x: " + temp.getX() + " y: " + temp.getY() + " norm: " + temp.getNorm() + " angle: " + temp.getAngle());
+    public SwerveModuleState[] moduleStates(ChassisSpeeds chassisSpeeds) {
+        double omega = chassisSpeeds.omegaRadiansPerSecond;
         
+        for (int i = 0; i < 4; i++) {
+            double moduleAngleFromCenter = modulePositionOnTheRobot[i].getAngle().getRadians();
+            double moduleCurrentAngle = startRobotPosition.getRotation().getRadians();
+            Translation2d velocityVector = new Translation2d(
+                chassisSpeeds.vxMetersPerSecond + omega * modulePositionOnTheRobot[i].getNorm() * Math.sin(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter),
+                chassisSpeeds.vyMetersPerSecond - omega * modulePositionOnTheRobot[i].getNorm() * Math.cos(moduleCurrentAngle + omega * 0.02 + moduleAngleFromCenter));
+            swerveStates[i] = new SwerveModuleState(velocityVector.getNorm(), velocityVector.getAngle());
+        }
 
+        swerveStates = factorModuleVelocities(swerveStates);
 
-        return states;
-
-    }
-    private Translation2d calculateFromModuleToEstimatedModule( Translation2d modulePositionOnRobot){
-        Translation2d estimatedModulePosition = estimatedPose.getTranslation().plus(modulePositionOnRobot.rotateBy(estimatedPose.getRotation()));
-        return estimatedModulePosition.minus(modulePositionOnRobot);
+        return swerveStates;
     }
 
-    private SwerveModuleState calculateModuleState(SwerveModuleState currentState, Translation2d modulePositionOnRobot){
-        
-
-        
-        Translation2d fromModuleToEstimatedModule = calculateFromModuleToEstimatedModule(modulePositionOnRobot);
-
-        double alpha = currentState.angle.getRadians() - fromModuleToEstimatedModule.getAngle().getRadians();
-       
-        if(Math.abs(alpha) / DELTA_T < MIN_ALPHA) {
-            return new SwerveModuleState(fromModuleToEstimatedModule.getNorm()/DELTA_T,
-                fromModuleToEstimatedModule.getAngle());
+    public SwerveModuleState[] factorModuleVelocities(SwerveModuleState[] swerveStates) {
+        double maxVelocityCalculated = 0;
+        for (int i = 0; i < swerveStates.length; i++) {
+            double cur = Math.abs(swerveStates[i].speedMetersPerSecond);
+            if(cur == 0) return swerveStates;
+            if (cur > maxVelocityCalculated) maxVelocityCalculated = cur;
         }
+        double factor = MAX_ALLOWED_MODULE_VELOCITY / maxVelocityCalculated;
 
-        Rotation2d wantedAngle = currentState.angle.minus(new Rotation2d(2 * alpha));
-        
+        if (factor >= 1)
+            return swerveStates;
 
-        double arcLength = (fromModuleToEstimatedModule.getNorm() * alpha ) /Math.sin(alpha);
-        
-        //double acceleration = 2 * (arcLength - (currentState.speedMetersPerSecond * DELTA_T))  * (1/T_SQUARED);
-        //TODO: add a checking for when acceleration is too high
-
-        //double wantedVelocity = currentState.speedMetersPerSecond + (acceleration * DELTA_T);
-        double wantedVelocity = (arcLength * 100) - currentState.speedMetersPerSecond;
-        return new SwerveModuleState(wantedVelocity, wantedAngle);
-
+        for (SwerveModuleState state : swerveStates) {
+            state.speedMetersPerSecond = state.speedMetersPerSecond * factor;
+        }
+        return swerveStates;
 
     }
 
