@@ -5,11 +5,32 @@
 package frc.robot.subSystem;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.demacia.utils.Motors.TalonMotor;
+import frc.robot.Constants;
 
 public class test extends SubsystemBase {
-  /** Creates a new test. */
-  public test() {}
 
+  Constants constants;
+  
+  private TalonMotor motor;
+
+  /** Creates a new test. */
+  public test() {
+    motor = new TalonMotor(constants.config);
+  }
+
+  public void test(){
+    long start = System.currentTimeMillis();
+    motor.setEncoderPosition(0);
+    motor.setAngle(90);
+    long stop = System.currentTimeMillis() - start;
+    motor.setAngle(0);
+    System.out.println(stop);
+  }
+
+  public void stop(){
+    motor.setDuty(0);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
