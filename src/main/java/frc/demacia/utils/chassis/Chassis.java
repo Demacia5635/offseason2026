@@ -30,7 +30,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Utilities;
 import frc.demacia.utils.Sensors.Pigeon;
-import frc.robot.kinematics.KinematicsNew;
+import frc.robot.kinematics.DemaciaKinematics;
+import frc.robot.kinematics.DemaciaKinematics;
 
 public class Chassis extends SubsystemBase {
   
@@ -38,7 +39,7 @@ public class Chassis extends SubsystemBase {
   private SwerveModule[] modules;
   private Pigeon gyro;
 
-  private KinematicsNew kinematics;
+  private DemaciaKinematics kinematics;
   private SwerveDriveKinematics kinematicsOld;
   private SwerveDrivePoseEstimator poseEstimator;
   private Field2d field;
@@ -52,7 +53,7 @@ public class Chassis extends SubsystemBase {
       new SwerveModule(chassisConfig.backRightModuleConfig),
     };
     gyro = new Pigeon(chassisConfig.pigeonConfig);
-    kinematics = new KinematicsNew(new Translation2d[]
+    kinematics = new DemaciaKinematics(new Translation2d[]
       {chassisConfig.frontLeftPosition,
       chassisConfig.frontRightPosition,
       chassisConfig.backLeftPosition,
