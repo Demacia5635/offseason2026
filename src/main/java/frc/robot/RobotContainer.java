@@ -16,16 +16,8 @@ import frc.demacia.utils.Sensors.OpticalSensor;
 import frc.demacia.utils.Sensors.SensorInterface;
 import frc.demacia.utils.Sensors.UltraSonicSensor;
 import frc.demacia.utils.chassis.Chassis;
+import frc.robot.testChassis.ChassisConstants;
 import frc.robot.testChassis.commands.DriveCommand;
-import frc.robot.testMechanism.ArmConstants;
-import frc.robot.testMechanism.GripperConstants;
-import frc.robot.testMechanism.GripperConstants.GRIPPER_STATES;
-import frc.robot.testMechanism.GripperConstants.SensorConstants;
-import frc.robot.testMechanism.ArmConstants.ARM_STATES;
-import frc.robot.testMechanism.ArmConstants.ArmAngleMotorConstants;
-import frc.robot.testMechanism.ArmConstants.GripperAngleMotorConstants;
-import frc.robot.testMechanism.ClimebConstants;
-import frc.robot.testMechanism.ClimebConstants.CLIMB_STATES;
 
 import java.util.function.Supplier;
 
@@ -68,8 +60,10 @@ public class RobotContainer {
   public RobotContainer() {
     
     new LogManager();
-    driverController = new CommandController(0, ControllerType.kXbox);
+    driverController = new CommandController(0, ControllerType.kPS5);
 
+    chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
+    chassis.setDefaultCommand(new DriveCommand(chassis, driverController));
     // chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
     // driveCommand = new DriveCommand(chassis, driverController);
 
@@ -78,37 +72,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
     configureBindings();
-  }
-
-  @SuppressWarnings("unused")
-  private void setMechanism(){
-    arm = new Arm(ArmConstants.NAME, 
-      new MotorInterface[] {new TalonFXMotor(ArmAngleMotorConstants.CONFIG), new TalonFXMotor(GripperAngleMotorConstants.CONFIG)}, 
-      ArmConstants.ARM_STATES.class)
-      .withStartingOption(ARM_STATES.STARTING);
-
-    clibeb = new Arm(ClimebConstants.NAME, 
-    new MotorInterface[]{new TalonFXMotor(ClimebConstants.MOTOR_CONFIG)}, 
-    CLIMB_STATES.class);
-
-    UltraSonicSensor upSensor = new UltraSonicSensor(SensorConstants.UP_CONFIG);
-    OpticalSensor downSensor = new OpticalSensor(SensorConstants.DOWN_CONFOG);
-    gripper = new Intake(GripperConstants.NAME, 
-      new MotorInterface[]{
-      new TalonSRXMotor(GripperConstants.MotorConstants.CONFIG)}, 
-      new SensorInterface[] {
-        upSensor, 
-        downSensor}, 
-      GRIPPER_STATES.class);
-    Supplier<Boolean> isCoralUpSensor = () ->
-      upSensor.get() == 0? false: upSensor.get() > 1? true: upSensor.get() < SensorConstants.CORAL_IN_UP_SENSOR;
-    Supplier<Boolean> isCoralDownSensor = () ->
-      downSensor.get() < SensorConstants.CORAL_IN_DOWN_SENSOR;
-      Supplier<Boolean> isCoral = () -> isCoralUpSensor.get() && isCoralDownSensor.get();
-    gripper.addTrigger(isCoralDownSensor, GRIPPER_STATES.STOPED, GRIPPER_STATES.DROP)
-    .addTrigger(isCoralDownSensor, GRIPPER_STATES.STOPED, GRIPPER_STATES.GRAB)
-    .addTrigger(isCoral, GRIPPER_STATES.STOPED, GRIPPER_STATES.ALIGN_DOWN)
-    .addTrigger(isCoral, GRIPPER_STATES.STOPED, GRIPPER_STATES.ALIGN_UP);
   }
 
   public static boolean isComp() {
