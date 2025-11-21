@@ -12,7 +12,7 @@ public class commandTest extends Command {
   /** Creates a new commandTest. */
 
   test test;
-
+  long start;
   public commandTest(test test) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.test = test;
@@ -21,23 +21,35 @@ public class commandTest extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    start = System.currentTimeMillis();
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    test.test();
+    if(test.getang() != 90){
+      test.setPow(0.2);
+    }else{
+      test.stop();
+    }
+    //double kp = 0.05;
+    //test.setPow(kp* 90 - test.getang());
+  
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    long stop = System.currentTimeMillis() - start;
+    System.out.println(stop);
     test.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return test.getang() > 90;
   }
 }

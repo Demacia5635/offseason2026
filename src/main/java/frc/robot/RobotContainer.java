@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.demacia.utils.Log.LogManager;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subSystem.test;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -26,6 +27,8 @@ public class RobotContainer {
   public static int N_CYCLE = 0;
   public static double CYCLE_TIME = 0.02;
 
+  public static test test;
+  public static commandTest com;
   // The robot's subsystems and commands are defined here...
 
 
@@ -35,6 +38,9 @@ public class RobotContainer {
   public RobotContainer() {
 
     new LogManager();
+
+    test = new test();
+    com = new commandTest(test);
 
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
@@ -73,6 +79,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return com;
   }
 }

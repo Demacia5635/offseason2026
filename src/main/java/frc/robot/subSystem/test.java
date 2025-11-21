@@ -4,30 +4,27 @@
 
 package frc.robot.subSystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Motors.TalonMotor;
 import frc.robot.Constants;
 
 public class test extends SubsystemBase {
-
-  Constants constants;
   
   private TalonMotor motor;
 
   /** Creates a new test. */
   public test() {
-    motor = new TalonMotor(constants.config);
+    motor = new TalonMotor(Constants.config);
+    SmartDashboard.putData("motor", motor);
   }
 
-  public void test(){
-    long start = System.currentTimeMillis();
-    motor.setEncoderPosition(0);
-    motor.setAngle(90);
-    long stop = System.currentTimeMillis() - start;
-    motor.setAngle(0);
-    System.out.println(stop);
+  public double getang(){
+    return motor.getCurrentAngle();
   }
-
+  public void setPow(double pow){
+    motor.set(pow);
+  }
   public void stop(){
     motor.setDuty(0);
   }
