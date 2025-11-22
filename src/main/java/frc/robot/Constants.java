@@ -27,13 +27,14 @@ public final class Constants {
   public static final double kp = -1;
   public static final double KI = 0;
   public static final double KD = 0;
-  public static final double ks = -1; 
-  public static final double kv = -1;
-  public static final double ka = -1;
-  public static final double kg = -1;
+  public static final double ks = 0; 
+  public static final double kv = 0;
+  public static final double ka = 0;
+  public static final double kg = 0;
 
   public static final TalonConfig config = new TalonConfig(20, Canbus.Rio, "engle cange")
   .withBrake(true)
   .withDegreesMotor(64)
+  .withPID(kp, KI, KD, ks, kv, ka, kg)
   .withMotionParam(MAX_VELOCITY, MAX_ACCELERATION, MAX_JERK); 
 }
