@@ -32,7 +32,7 @@ public class ChassisConfig {
     public Translation2d backRightPosition;
 
     public double cycleDt = 0.02;
-    public double maxLinearAccel = 20;
+    public double maxLinearAccel = 14;
     public double maxOmegaVelocity = Math.toRadians(540);
     public double maxRadialAccel = 6;
     public double maxRadius = 0.4;

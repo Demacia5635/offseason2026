@@ -69,6 +69,7 @@ public class RobotContainer {
 
     chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
     chassis.setDefaultCommand(new DriveCommand(chassis, driverController));
+    SmartDashboard.putData("ROTATE STEER", new RunCommand(()->chassis.setSteerPowers(0.5), chassis));
     SmartDashboard.putData("set coast",new InstantCommand(()->chassis.setNeutralMode(false)));
     SmartDashboard.putData("reset gyro", new InstantCommand(()->chassis.setYaw(Rotation2d.kZero)).ignoringDisable(true));
     SmartDashboard.putData("Set modules to 90", new InstantCommand(()->chassis.setModuleStates(new SwerveModuleState[]{s, s, s, s}), chassis));
