@@ -45,7 +45,9 @@ public final class ChassisConstants {
     new TalonFXConfig(2, Canbus.Rio, "frontLeft steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withInvert(true)
     .withBrake(true)
+    
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
     new TalonFXConfig(1, Canbus.Rio, "frontLeft drive")
@@ -60,6 +62,7 @@ public final class ChassisConstants {
     new TalonFXConfig(5, Canbus.Rio, "frontRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withInvert(true)
     .withBrake(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
@@ -75,6 +78,7 @@ public final class ChassisConstants {
     new TalonFXConfig(11, Canbus.Rio, "backLeft steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withInvert(true)
     .withBrake(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
@@ -90,6 +94,7 @@ public final class ChassisConstants {
     new TalonFXConfig(8, Canbus.Rio, "backRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withInvert(true)
     .withBrake(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
@@ -102,10 +107,10 @@ public final class ChassisConstants {
     .withSteerOffset(0.235*2*Math.PI);
   public static final CANBus PIGEO_CANBUS = new CANBus("rio");
   public static final PigeonConfig pigeonConfig = new PigeonConfig(14, PIGEO_CANBUS, NAME + " pigeon");
-  public static final Translation2d frontLeftPosition = new Translation2d(0.34, 0.29);
-  public static final Translation2d frontRightPosition = new Translation2d(0.34, -0.29);
-  public static final Translation2d backLeftPosition = new Translation2d(-0.34, 0.29);
-  public static final Translation2d backRightPosition = new Translation2d(-0.34, -0.29);
+  public static final Translation2d frontLeftPosition = new Translation2d(0.25, 0.3);
+  public static final Translation2d frontRightPosition = new Translation2d(0.25, -0.3);
+  public static final Translation2d backLeftPosition = new Translation2d(-0.25, 0.3);
+  public static final Translation2d backRightPosition = new Translation2d(-0.25, -0.3);
 
   public static final ChassisConfig CHASSIS_CONFIG = new ChassisConfig(
     NAME,
