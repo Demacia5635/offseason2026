@@ -9,6 +9,13 @@
       "name": "SysidApp",
       "request": "launch",
       "mainClass": "frc.demacia.SysID.SysidApp",
+      "projectName": "offseason2026-4"
+    },
+    {
+      "type": "java",
+      "name": "SysidApp",
+      "request": "launch",
+      "mainClass": "frc.demacia.SysID.SysidApp",
       "projectName": "offseason2026"
     },
     {

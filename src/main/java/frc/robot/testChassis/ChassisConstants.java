@@ -20,18 +20,18 @@ public final class ChassisConstants {
     public static final double DRIVE_GEAR_RATIO = 7.03;
     
     public static final double STEER_KP = 4.1;
-    public static final double STEER_KI = 0.9;
+    public static final double STEER_KI = 0;
     public static final double STEER_KD = 0;
-    public static final double STEER_KS = 0.19817640545050964;
-    public static final double STEER_KV = 0.3866402641515461;
-    public static final double STEER_KA = 0.05;
+    public static final double STEER_KS = 0.2;//2.03;
+    public static final double STEER_KV = 0.42;//0.38486;
+    public static final double STEER_KA = 0;
 
-    public static final double DRIVE_KP = 19;
+    public static final double DRIVE_KP = 24;
     public static final double DRIVE_KI = 0;
     public static final double DRIVE_KD = 0;
-    public static final double DRIVE_KS = 0.14677232883614777;
-    public static final double DRIVE_KV = 2.947;
-    public static final double DRIVE_KA = 0.08058;
+    public static final double DRIVE_KS = 0.6;
+    public static final double DRIVE_KV = 2.2;
+    public static final double DRIVE_KA = 0;
 
     public static final double MOTION_MAGIC_VEL = 15 * 2 * Math.PI;
     public static final double MOTION_MAGIC_ACCEL = 8 * 2 * Math.PI;

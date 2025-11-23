@@ -75,7 +75,7 @@ import frc.demacia.utils.Sensors.Pigeon;
  * chassis.setVelocitiesWithAccel(new ChassisSpeeds(vx, vy, omega));
  * </pre>
  */
-public class Chassis extends SubsystemBase implements SendableBuilder{
+public class Chassis extends SubsystemBase implements Sendable{
   
     ChassisConfig chassisConfig;
     private SwerveModule[] modules;
@@ -116,6 +116,11 @@ public class Chassis extends SubsystemBase implements SendableBuilder{
         for (SwerveModule module : modules) {
             module.checkElectronics();
         }
+    }
+    
+
+    public void setModuleAngle(double angle){
+        modules[0].setSteerPosition(Math.toRadians(angle));
     }
     
 
@@ -265,6 +270,17 @@ public class Chassis extends SubsystemBase implements SendableBuilder{
     public void setRobotRelVelocities(ChassisSpeeds speeds) {
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
         setModuleStates(states);
+    }
+
+    public void setDrivePowers(double power){
+        for (SwerveModule swerveModule : modules) {
+            swerveModule.setDrivePower(power);
+        }
+    }
+    public void setSteerPowers(double power){
+        for (SwerveModule swerveModule : modules) {
+            swerveModule.setSteerPower(power);
+        }
     }
 
     public void setDriveVelocities(double[] velocities) {
@@ -462,189 +478,4 @@ public class Chassis extends SubsystemBase implements SendableBuilder{
             new TrajectoryConfig(4.0, 4.0));
     }
 
-    @Override
-    public void close() throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'close'");
-    }
-
-    @Override
-    public void setSmartDashboardType(String type) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSmartDashboardType'");
-    }
-
-    @Override
-    public void setActuator(boolean value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setActuator'");
-    }
-
-    @Override
-    public void setSafeState(Runnable func) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSafeState'");
-    }
-
-    @Override
-    public void addBooleanProperty(String key, BooleanSupplier getter, BooleanConsumer setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addBooleanProperty'");
-    }
-
-    @Override
-    public void publishConstBoolean(String key, boolean value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstBoolean'");
-    }
-
-    @Override
-    public void addIntegerProperty(String key, LongSupplier getter, LongConsumer setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addIntegerProperty'");
-    }
-
-    @Override
-    public void publishConstInteger(String key, long value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstInteger'");
-    }
-
-    @Override
-    public void addFloatProperty(String key, FloatSupplier getter, FloatConsumer setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addFloatProperty'");
-    }
-
-    @Override
-    public void publishConstFloat(String key, float value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstFloat'");
-    }
-
-    @Override
-    public void addDoubleProperty(String key, DoubleSupplier getter, DoubleConsumer setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addDoubleProperty'");
-    }
-
-    @Override
-    public void publishConstDouble(String key, double value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstDouble'");
-    }
-
-    @Override
-    public void addStringProperty(String key, Supplier<String> getter, Consumer<String> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addStringProperty'");
-    }
-
-    @Override
-    public void publishConstString(String key, String value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstString'");
-    }
-
-    @Override
-    public void addBooleanArrayProperty(String key, Supplier<boolean[]> getter, Consumer<boolean[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addBooleanArrayProperty'");
-    }
-
-    @Override
-    public void publishConstBooleanArray(String key, boolean[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstBooleanArray'");
-    }
-
-    @Override
-    public void addIntegerArrayProperty(String key, Supplier<long[]> getter, Consumer<long[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addIntegerArrayProperty'");
-    }
-
-    @Override
-    public void publishConstIntegerArray(String key, long[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstIntegerArray'");
-    }
-
-    @Override
-    public void addFloatArrayProperty(String key, Supplier<float[]> getter, Consumer<float[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addFloatArrayProperty'");
-    }
-
-    @Override
-    public void publishConstFloatArray(String key, float[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstFloatArray'");
-    }
-
-    @Override
-    public void addDoubleArrayProperty(String key, Supplier<double[]> getter, Consumer<double[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addDoubleArrayProperty'");
-    }
-
-    @Override
-    public void publishConstDoubleArray(String key, double[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstDoubleArray'");
-    }
-
-    @Override
-    public void addStringArrayProperty(String key, Supplier<String[]> getter, Consumer<String[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addStringArrayProperty'");
-    }
-
-    @Override
-    public void publishConstStringArray(String key, String[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstStringArray'");
-    }
-
-    @Override
-    public void addRawProperty(String key, String typeString, Supplier<byte[]> getter, Consumer<byte[]> setter) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addRawProperty'");
-    }
-
-    @Override
-    public void publishConstRaw(String key, String typeString, byte[] value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'publishConstRaw'");
-    }
-
-    @Override
-    public BackendKind getBackendKind() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBackendKind'");
-    }
-
-    @Override
-    public boolean isPublished() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isPublished'");
-    }
-
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void clearProperties() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearProperties'");
-    }
-
-    @Override
-    public void addCloseable(AutoCloseable closeable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addCloseable'");
-    }
 }

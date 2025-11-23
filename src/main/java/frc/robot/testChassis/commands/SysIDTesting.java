@@ -4,45 +4,28 @@
 
 package frc.robot.testChassis.commands;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.demacia.utils.Controller.CommandController;
 import frc.demacia.utils.chassis.Chassis;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class DriveCommand extends Command {
-  private Chassis chassis;
-  private CommandController controller;
-  private ChassisSpeeds speeds;
-
-
-  /** Creates a new DriveCommand. */
-  public DriveCommand(Chassis chassis, CommandController controller) {
+public class SysIDTesting extends Command {
+  CommandController controller;
+  Chassis chassis;
+  public SysIDTesting(Chassis chassis, CommandController controller) {
     this.chassis = chassis;
     this.controller = controller;
-    addRequirements(chassis);
+    addRequirements(chassis );
   }
-
-  // Called when the command is initially scheduled.
+  
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double joyX = controller.getLeftY();
-    double joyY = controller.getLeftX();
-    
-    // Calculate r]otation from trigger axes
-    double rot = controller.getLeftTrigger() - controller.getRightTrigger();
-    
-    double velX = Math.pow(joyX, 2) * 4.5 * Math.signum(joyX);
-    double velY = Math.pow(joyY, 2) * 4.5 * Math.signum(joyY);
-    double velRot = Math.pow(rot, 2) * Math.toRadians(360) * Math.signum(rot);
-    
-    speeds = new ChassisSpeeds(velX, velY,velRot);
-
-    chassis.setVelocitiesWithAccel(speeds);
+    chassis.setDrivePowers(controller.getLeftX());
+    chassis.setSteerPowers(controller.getRightY());
   }
 
   // Called once the command ends or is interrupted.
