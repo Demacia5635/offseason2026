@@ -65,6 +65,9 @@ public class DemaciaKinematics {
 
     }
 
+    private ChassisSpeeds limitVelocities(ChassisSpeeds wantedSpeeds){
+        
+    }
 
 
 }
