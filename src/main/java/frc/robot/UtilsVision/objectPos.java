@@ -21,39 +21,49 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class objectPos extends SubsystemBase {
   private Camera camera;
+
+  // private Translation2d originToRobot;
+  private Translation2d originToObject;
   private Translation2d robotToObject;
   private Translation2d cameraToObject;
-  private Supplier<Rotation2d> getRobotAngle;
-  private double ty;
-  private double height;
-  private double distX;
-  private Translation2d originToRobot;
-  private Translation2d originToObject;
-  private Pose2d pose;
-  private Supplier<Pose2d> robotCurrentPose;
-  private Translation3d robotToCamPosition;
-  private double dist;
+
+// NetworkTables communication for each camera
+private NetworkTable Table;
+
   private double tx;
+  private double ty;
+  // private double height;
+
+  // private double dist;
+
+  private Supplier<Rotation2d> getRobotAngle;
+  // private Pose2d pose;
+  private Supplier<Pose2d> robotCurrentPose;
+  // private Translation3d robotToCamPosition;
+
+
   
 
   /** Creates a new objectPos. */
-  public objectPos(Camera camera,Supplier<Pose2d> robotCurrentPose,Translation3d robotToCamPosition, 
-  Supplier<Rotation2d> getRobotAngle, Tag tag) {
+  // we dont need tag class this class(objectPos) uses object pos , tx & ty not tag pos , tx & ty
+  public objectPos(Camera camera,Supplier<Pose2d> robotCurrentPose, 
+  Supplier<Rotation2d> getRobotAngle) {// in the camera there is robotToCamPotition we dont need to take it separately
       this.robotCurrentPose = robotCurrentPose;
       this.getRobotAngle = getRobotAngle;
       this.camera = camera;
-      tx = tag.getCameraToTag().getX();
-
-
+      // tx = tag.getCameraToTag().getX();
+      Table = NetworkTableInstance.getDefault().getTable(camera.getTableName());
+      ty = Table.getEntry("ty").getDouble(0.0);
+      tx = (-Table.getEntry("tx").getDouble(0.0));
       
   }
   
-  private double objectDistanceToCamra(){
-    height = camera.getRobotToCamPosition().getZ();
-    distX = height/Math.tan(Math.toRadians(ty-90));
+  private double objectDistanceToCamra(){// this height variable is redundant(dont need to be used we can take from cam)
+    double height = camera.getHeight();
+    double distX = height*Math.tan(Math.toRadians(ty));
     //dist =distX/Math.cos(Math.toRadians(ty-90));
 
-    return distX/Math.cos(Math.toRadians(ty-90));//dist;
+    return distX/Math.cos(Math.toRadians(tx));//dist;
   }
 
   private Translation2d objectToRobot(){
@@ -64,16 +74,15 @@ public class objectPos extends SubsystemBase {
   }
 
   private Translation2d originToObject(){
-    //robotToObject = objectToRobot().rotateBy(getRobotAngle.get());
-    // = robotToObject.plus(robotCurrentPose.get().getTranslation());
-    return robotCurrentPose.get().getTranslation().minus(objectToRobot());
-    // return objectToRobot().rotateBy(getRobotAngle.get()).plus(robotCurrentPose.get().getTranslation());
+    robotToObject = robotToObject.rotateBy(getRobotAngle.get());
+    originToObject = objectToRobot().plus(robotCurrentPose.get().getTranslation());
+    return originToObject;
+
   }
 
   @Override
   public void periodic() {
     originToObject = originToObject();
-
     
   }
 
