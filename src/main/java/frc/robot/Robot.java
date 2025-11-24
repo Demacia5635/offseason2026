@@ -55,11 +55,11 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     
-    TestCalculatePositionAndAngle.initialize(
-        cam,        // Your Camera object
-        chassis,         // Your Chassis subsystem
-        () -> 0.02         // Your loop time (20ms = 0.02s)
-    );
+    // TestCalculatePositionAndAngle.initialize(
+    //     cam,        // Your Camera object
+    //     chassis,         // Your Chassis subsystem
+    //     () -> 0.02         // Your loop time (20ms = 0.02s)
+    // );
 
     // TestCalculatePositionAndAngle.periodic(chassis.getPose());
   }
