@@ -7,6 +7,9 @@ import frc.robot.vision.Tag;
 import frc.robot.vision.utils.Camera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static edu.wpi.first.units.Units.Newton;
+
+import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
@@ -17,6 +20,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class objectPos extends SubsystemBase {
@@ -27,19 +31,24 @@ public class objectPos extends SubsystemBase {
   private Translation2d robotToObject;
   private Translation2d cameraToObject;
 
+  private Field2d field;
+  public Pose2d pose;
+
 // NetworkTables communication for each camera
 private NetworkTable Table;
 
   private double tx;
   private double ty;
+
   // private double height;
 
   // private double dist;
-
+private double latency;
   private Supplier<Rotation2d> getRobotAngle;
   // private Pose2d pose;
   private Supplier<Pose2d> robotCurrentPose;
   // private Translation3d robotToCamPosition;
+
 
 
   
@@ -55,6 +64,7 @@ private NetworkTable Table;
       Table = NetworkTableInstance.getDefault().getTable(camera.getTableName());
       ty = Table.getEntry("ty").getDouble(0.0);
       tx = (-Table.getEntry("tx").getDouble(0.0));
+      SmartDashboard.putData("field-tag" + camera.getName(), field);
       
   }
   
@@ -82,10 +92,12 @@ private NetworkTable Table;
 
   @Override
   public void periodic() {
-    originToObject = originToObject();
-    
+    if (Table.getEntry("tv").getDouble(0.0) != 0) {
+      originToObject = originToObject();
+      pose = new Pose2d(originToObject(),new Rotation2d());
+      field.setRobotPose(pose);
+    }
   }
-
   public Translation2d getOriginToObject(){
     assert originToObject == null : "vector is null";
     return originToObject;
