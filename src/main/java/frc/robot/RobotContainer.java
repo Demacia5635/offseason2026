@@ -43,7 +43,7 @@ public class RobotContainer {
     com = new commandTest(test);
 
     // Configure the trigger bindings
-    // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
+    //testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
     configureBindings();
   }
 
