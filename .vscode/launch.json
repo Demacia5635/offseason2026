@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Main",
+      "request": "launch",
+      "mainClass": "frc.robot.Main",
+      "projectName": "offseason2026-1"
+    },
+    {
+      "type": "java",
       "name": "Sysid",
       "request": "launch",
       "mainClass": "frc.demacia.SysID.Sysid",

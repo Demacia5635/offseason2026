@@ -3,25 +3,25 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.UtilsVision;
-import frc.robot.vision.Tag;
+//import frc.robot.vision.Tag;
 import frc.robot.vision.utils.Camera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static edu.wpi.first.units.Units.Newton;
+//import static edu.wpi.first.units.Units.Newton;
 
-import java.lang.reflect.Field;
+//import java.lang.reflect.Field;
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.MathUtil;
+//import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
+//import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+//import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class objectPos extends SubsystemBase {
   private Camera camera;
@@ -43,7 +43,7 @@ private NetworkTable Table;
   // private double height;
 
   // private double dist;
-private double latency;
+  private double latency;
   private Supplier<Rotation2d> getRobotAngle;
   // private Pose2d pose;
   private Supplier<Pose2d> robotCurrentPose;
@@ -60,11 +60,13 @@ private double latency;
       this.robotCurrentPose = robotCurrentPose;
       this.getRobotAngle = getRobotAngle;
       this.camera = camera;
+      latency = 0;
       // tx = tag.getCameraToTag().getX();
       Table = NetworkTableInstance.getDefault().getTable(camera.getTableName());
       ty = Table.getEntry("ty").getDouble(0.0);
       tx = (-Table.getEntry("tx").getDouble(0.0));
       SmartDashboard.putData("field-tag" + camera.getName(), field);
+      
       
   }
   
@@ -89,6 +91,9 @@ private double latency;
     return originToObject;
 
   }
+  public double getTimestamp() {
+    return latency;
+  }
 
   @Override
   public void periodic() {
@@ -96,10 +101,12 @@ private double latency;
       originToObject = originToObject();
       pose = new Pose2d(originToObject(),new Rotation2d());
       field.setRobotPose(pose);
+      latency = Table.getEntry("tl").getDouble(0.0) + Table.getEntry("cl").getDouble(0.0);
+
     }
   }
   public Translation2d getOriginToObject(){
-    assert originToObject == null : "vector is null";
+    assert originToObject != null : "vector is null";
     return originToObject;
   }
 }
