@@ -4,6 +4,12 @@
 
 package frc.robot.subSystem;
 
+import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Motors.TalonMotor;
@@ -12,6 +18,10 @@ import frc.robot.Constants;
 public class test extends SubsystemBase {
   
   private TalonMotor motor;
+
+  private StatusSignal<AngularAcceleration> accelerationSignal;
+  private StatusSignal<AngularVelocity> velocitySignal;
+  private StatusSignal<Angle> Angle;
 
   /** Creates a new test. */
   public test() {
@@ -28,6 +38,35 @@ public class test extends SubsystemBase {
   public void stop(){
     motor.setDuty(0);
   }
+
+  public StatusSignal<AngularAcceleration> Acceleration(StatusSignal<AngularAcceleration> accelerationSignal){
+    this.accelerationSignal = accelerationSignal;
+    accelerationSignal = motor.getAcceleration();
+    return accelerationSignal;
+  }
+
+  public StatusSignal<AngularVelocity> velocity (StatusSignal<AngularVelocity> velocitySignal){
+    this.velocitySignal = velocitySignal;
+    velocitySignal = motor.getVelocity();
+    return velocitySignal;
+  }
+
+  public StatusSignal<Angle> position(StatusSignal<Angle> Angle){
+    this.Angle = Angle;
+    Angle = motor.getPosition();
+    return Angle;
+  }
+
+  public void setEnc(){
+    motor.setEncoderPosition(0);
+  }
+
+  public void print(){
+    System.out.println(accelerationSignal);
+    System.out.println(velocitySignal);
+    System.out.println(Angle);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
