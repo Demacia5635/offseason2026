@@ -23,7 +23,7 @@ public class commandTest extends Command {
   @Override
   public void initialize() {
     start = System.currentTimeMillis();
-    test.setEnc();
+    test.setEnc(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,8 +35,6 @@ public class commandTest extends Command {
     }else{
       test.stop();
     }
-    //double kp = 0.05;
-    //test.setPow(kp* 90 - test.getang());
   
   }
 

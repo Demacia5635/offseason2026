@@ -9,7 +9,6 @@ import com.ctre.phoenix6.StatusSignal;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Motors.TalonMotor;
@@ -57,8 +56,8 @@ public class test extends SubsystemBase {
     return Angle;
   }
 
-  public void setEnc(){
-    motor.setEncoderPosition(0);
+  public void setEnc(double Position){
+    motor.setEncoderPosition(Position);
   }
 
   public void print(){
