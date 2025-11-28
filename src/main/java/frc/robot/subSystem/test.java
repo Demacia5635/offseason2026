@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Motors.TalonMotor;
 import frc.robot.Constants;
@@ -18,14 +19,17 @@ public class test extends SubsystemBase {
   
   private TalonMotor motor;
 
-  private StatusSignal<AngularAcceleration> accelerationSignal;
-  private StatusSignal<AngularVelocity> velocitySignal;
-  private StatusSignal<Angle> Angle;
 
   /** Creates a new test. */
   public test() {
     motor = new TalonMotor(Constants.config);
     SmartDashboard.putData("motor", motor);
+    SmartDashboard.putData("motor/setBrake", new InstantCommand(()-> setNeutralMode(true)).ignoringDisable(true));
+    SmartDashboard.putData("motor/setCoast", new InstantCommand(()-> setNeutralMode(false)).ignoringDisable(true));
+  }
+
+  public void setNeutralMode(boolean isBrake) {
+    motor.setNeutralMode(isBrake);
   }
 
   public double getang(){
@@ -38,33 +42,10 @@ public class test extends SubsystemBase {
     motor.setDuty(0);
   }
 
-  public StatusSignal<AngularAcceleration> Acceleration(StatusSignal<AngularAcceleration> accelerationSignal){
-    this.accelerationSignal = accelerationSignal;
-    accelerationSignal = motor.getAcceleration();
-    return accelerationSignal;
-  }
-
-  public StatusSignal<AngularVelocity> velocity (StatusSignal<AngularVelocity> velocitySignal){
-    this.velocitySignal = velocitySignal;
-    velocitySignal = motor.getVelocity();
-    return velocitySignal;
-  }
-
-  public StatusSignal<Angle> position(StatusSignal<Angle> Angle){
-    this.Angle = Angle;
-    Angle = motor.getPosition();
-    return Angle;
-  }
-
   public void setEnc(double Position){
     motor.setEncoderPosition(Position);
   }
 
-  public void print(){
-    System.out.println(accelerationSignal);
-    System.out.println(velocitySignal);
-    System.out.println(Angle);
-  }
 
   @Override
   public void periodic() {

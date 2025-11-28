@@ -29,9 +29,8 @@ public class commandTest extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(test.getang() != 90){
-      test.setPow(0.2);
-      test.print();
+    if(test.getang() != -1.4){
+      test.setPow(-0.3);
     }else{
       test.stop();
     }
@@ -49,6 +48,6 @@ public class commandTest extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return test.getang() > 90;
+    return test.getang() < -1.4;
   }
 }
