@@ -17,7 +17,7 @@ import frc.demacia.utils.chassis.SwerveModuleConfig;
 public final class ChassisConstants {
   public static final String NAME = "test chassis";
   public static final double STEER_GEAR_RATIO = 287.0/11.0;
-    public static final double DRIVE_GEAR_RATIO = 7.03;
+    public static final double DRIVE_GEAR_RATIO = 6.03;
     
     public static final double STEER_KP = 4.1;
     public static final double STEER_KI = 0;
@@ -45,21 +45,24 @@ public final class ChassisConstants {
     new TalonFXConfig(2, Canbus.Rio, "frontLeft steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withCurrent(25)
     .withInvert(true)
     .withBrake(true)
     
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
     new TalonFXConfig(1, Canbus.Rio, "frontLeft drive")
+    .withCurrent(25)
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
     new CancoderConfig(3, new CANBus("rio"), "frontLeft cancoder"))
-    .withSteerOffset(0.455*2*Math.PI);
+    .withSteerOffset(-0.0449*2*Math.PI);
   public static final SwerveModuleConfig frontRightModuleConfig = new SwerveModuleConfig(
     NAME + " frontRight",
     new TalonFXConfig(5, Canbus.Rio, "frontRight steer")
+    .withCurrent(25)
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withInvert(true)
@@ -67,15 +70,17 @@ public final class ChassisConstants {
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
     new TalonFXConfig(4, Canbus.Rio, "frontRight drive")
+    .withCurrent(25)
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
     new CancoderConfig(6, new CANBus("rio"), "frontRight cancoder"))
-    .withSteerOffset(0.527 * 2 * Math.PI);
+    .withSteerOffset(0.028 * 2 * Math.PI);
   public static final SwerveModuleConfig backLeftModuleConfig = new SwerveModuleConfig(
     NAME + " backLeft",
     new TalonFXConfig(11, Canbus.Rio, "backLeft steer")
+    .withCurrent(25)
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withInvert(true)
@@ -83,28 +88,31 @@ public final class ChassisConstants {
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
     new TalonFXConfig(10, Canbus.Rio, "backLeft drive")
+    .withCurrent(25)
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
     new CancoderConfig(9, new CANBus("rio"), "backLeft cancoder"))
-    .withSteerOffset(-0.246*2*Math.PI);
+    .withSteerOffset(0.253*2*Math.PI);
   public static final SwerveModuleConfig backRightModuleConfig = new SwerveModuleConfig(
     NAME + " backRight",
     new TalonFXConfig(8, Canbus.Rio, "backRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
+    .withCurrent(25)
     .withInvert(true)
     .withBrake(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
     new TalonFXConfig(7, Canbus.Rio, "backRight drive")
+    .withCurrent(25)
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
     new CancoderConfig(12, new CANBus("rio"), "backRight cancoder"))
-    .withSteerOffset(0.235*2*Math.PI);
+    .withSteerOffset(-0.2651*2*Math.PI);
   public static final CANBus PIGEO_CANBUS = new CANBus("rio");
   public static final PigeonConfig pigeonConfig = new PigeonConfig(14, PIGEO_CANBUS, NAME + " pigeon");
   public static final Translation2d frontLeftPosition = new Translation2d(0.25, 0.3);

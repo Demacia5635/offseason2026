@@ -40,7 +40,7 @@ public class DriveCommand extends Command {
     double velY = Math.pow(joyY, 2) * 4.5 * Math.signum(joyY);
     double velRot = Math.pow(rot, 2) * Math.toRadians(360) * Math.signum(rot);
     
-    speeds = new ChassisSpeeds(velX, velY,velRot);
+    speeds = new ChassisSpeeds(velX, velY,-velRot);
 
     chassis.setVelocitiesWithAccel(speeds);
   }

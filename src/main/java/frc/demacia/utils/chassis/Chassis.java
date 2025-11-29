@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Utilities;
+import frc.demacia.utils.Log.LogManager;
 import frc.demacia.utils.Sensors.Pigeon;
 
 /**
@@ -88,17 +89,17 @@ public class Chassis extends SubsystemBase implements Sendable{
     public Chassis(ChassisConfig chassisConfig) {
         this.chassisConfig = chassisConfig;
         modules = new SwerveModule[] {
-        new SwerveModule(chassisConfig.frontLeftModuleConfig),
-        new SwerveModule(chassisConfig.frontRightModuleConfig),
-        new SwerveModule(chassisConfig.backLeftModuleConfig),
-        new SwerveModule(chassisConfig.backRightModuleConfig),
+            new SwerveModule(chassisConfig.frontLeftModuleConfig),
+            new SwerveModule(chassisConfig.frontRightModuleConfig),
+            new SwerveModule(chassisConfig.backLeftModuleConfig),
+            new SwerveModule(chassisConfig.backRightModuleConfig),
         };
         gyro = new Pigeon(chassisConfig.pigeonConfig);
         kinematics = new SwerveDriveKinematics(
-        chassisConfig.frontLeftPosition,
-        chassisConfig.frontRightPosition,
-        chassisConfig.backLeftPosition,
-        chassisConfig.backRightPosition
+            chassisConfig.frontLeftPosition,
+            chassisConfig.frontRightPosition,
+            chassisConfig.backLeftPosition,
+            chassisConfig.backRightPosition
         );
         poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), new Pose2d());
 
@@ -107,6 +108,7 @@ public class Chassis extends SubsystemBase implements Sendable{
         field = new Field2d();
         
         SmartDashboard.putData(this);
+
     }
 
     /**
@@ -319,6 +321,7 @@ public class Chassis extends SubsystemBase implements Sendable{
         poseEstimator.update(gyroAngle, getModulePositions());
 
         field.setRobotPose(poseEstimator.getEstimatedPosition());
+        
     }
 
     /**
@@ -465,9 +468,6 @@ public class Chassis extends SubsystemBase implements Sendable{
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addDoubleArrayProperty("STEER MODULES", ()->getSteerPositions(), null);
-        builder.addDoubleArrayProperty("STEER ABS", ()->getSteerAbsPositions(), null);
-        
     }
 
     public Trajectory vector(Translation2d start, Translation2d end){
