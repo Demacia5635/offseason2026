@@ -16,6 +16,7 @@ import frc.demacia.utils.Sensors.OpticalSensor;
 import frc.demacia.utils.Sensors.SensorInterface;
 import frc.demacia.utils.Sensors.UltraSonicSensor;
 import frc.demacia.utils.chassis.Chassis;
+import frc.demacia.utils.chassis.ChassisConfig;
 import frc.robot.testChassis.ChassisConstants;
 import frc.robot.testChassis.commands.DriveCommand;
 
@@ -40,10 +41,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 
-  Arm arm;
-  Arm clibeb;
-  Intake gripper;
-
   Chassis chassis;
   DriveCommand driveCommand;
 
@@ -63,25 +60,41 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    SwerveModuleState s = new SwerveModuleState(0, Rotation2d.kCW_90deg);
     new LogManager();
     driverController = new CommandController(0, ControllerType.kPS5);
 
+    configMechanism();
+    configureCommands();
+    configureBindings();
+  }
+
+  private void configMechanism() {
     chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
-    chassis.setDefaultCommand(new DriveCommand(chassis, driverController));
+  }
+  
+  private void configureCommands() {
+    
+    driveCommand = new DriveCommand(chassis, driverController);
+    chassis.setDefaultCommand(driveCommand);
+
     SmartDashboard.putData("ROTATE STEER", new RunCommand(()->chassis.setSteerPowers(0.5), chassis));
     SmartDashboard.putData("set coast",new InstantCommand(()->chassis.setNeutralMode(false)));
     SmartDashboard.putData("reset gyro", new InstantCommand(()->chassis.setYaw(Rotation2d.kZero)).ignoringDisable(true));
-    SmartDashboard.putData("Set modules to 90", new InstantCommand(()->chassis.setModuleStates(new SwerveModuleState[]{s, s, s, s}), chassis));
+    // SmartDashboard.putData("Set modules to 90", new InstantCommand(()->chassis.setModuleStates(new SwerveModuleState[]{s, s, s, s}), chassis));
     
-    // chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
-    // driveCommand = new DriveCommand(chassis, driverController);
-
-    // setMechanism();
-
-    // Configure the trigger bindings
-    // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
-    configureBindings();
+  }
+  
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
+   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  private void configureBindings() {
+    // arm.setDefaultCommand(arm.toStateCommand());
   }
 
   public static boolean isComp() {
@@ -96,18 +109,6 @@ public class RobotContainer {
     }
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // arm.setDefaultCommand(arm.toStateCommand());
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

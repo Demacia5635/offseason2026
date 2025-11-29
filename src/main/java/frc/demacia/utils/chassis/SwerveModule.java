@@ -4,6 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.demacia.utils.Motors.TalonFXMotor;
 import frc.demacia.utils.Sensors.Cancoder;
 
@@ -35,6 +37,8 @@ public class SwerveModule {
         name = config.name;
 
         steerMotor.setPosition(getAbsoluteAngle() - config.steerOffset);
+        SmartDashboard.putData("Set Brake", new InstantCommand(() -> setNeutralMode(true)).ignoringDisable(true));
+        SmartDashboard.putData("Set Coast", new InstantCommand(() -> setNeutralMode(false)).ignoringDisable(true));
     }
 
     /**

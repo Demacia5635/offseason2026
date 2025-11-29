@@ -76,7 +76,7 @@ import frc.demacia.utils.Sensors.Pigeon;
  * chassis.setVelocitiesWithAccel(new ChassisSpeeds(vx, vy, omega));
  * </pre>
  */
-public class Chassis extends SubsystemBase implements Sendable{
+public class Chassis extends SubsystemBase{
   
     ChassisConfig chassisConfig;
     private SwerveModule[] modules;
@@ -94,21 +94,23 @@ public class Chassis extends SubsystemBase implements Sendable{
             new SwerveModule(chassisConfig.backLeftModuleConfig),
             new SwerveModule(chassisConfig.backRightModuleConfig),
         };
+
         gyro = new Pigeon(chassisConfig.pigeonConfig);
+
         kinematics = new SwerveDriveKinematics(
             chassisConfig.frontLeftPosition,
             chassisConfig.frontRightPosition,
             chassisConfig.backLeftPosition,
             chassisConfig.backRightPosition
         );
-        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), new Pose2d());
+
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), Pose2d.kZero);
 
         SimpleMatrix std = new SimpleMatrix(new double[] { 0.02, 0.02, 0 });
         poseEstimator.setVisionMeasurementStdDevs(new Matrix<>(std));
         field = new Field2d();
         
-        SmartDashboard.putData(this);
-
+        SmartDashboard.putData("chassis", this);
     }
 
     /**
@@ -468,6 +470,9 @@ public class Chassis extends SubsystemBase implements Sendable{
 
     @Override
     public void initSendable(SendableBuilder builder) {
+        builder.addDoubleArrayProperty("STEER MODULES", ()->getSteerPositions(), null);
+        builder.addDoubleArrayProperty("STEER ABS", ()->getSteerAbsPositions(), null);
+        
     }
 
     public Trajectory vector(Translation2d start, Translation2d end){

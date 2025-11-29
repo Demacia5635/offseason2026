@@ -6,6 +6,8 @@ package frc.demacia.utils.Sensors;
 
 import com.ctre.phoenix6.CANBus;
 
+import frc.demacia.utils.Motors.BaseMotorConfig.Canbus;
+
 /**
  * Configuration for CTRE CANcoder absolute encoder.
  * 
@@ -35,7 +37,7 @@ public class CancoderConfig extends BaseSensorConfig<CancoderConfig>{
      * @param canbus CANBus instance (typically CANivore for swerve)
      * @param name Descriptive name for logging
      */
-    public CancoderConfig(int id, CANBus canbus, String name) {
+    public CancoderConfig(int id, Canbus canbus, String name) {
         super(id, canbus, name);
         sensorType = Cancoder.class;
     }

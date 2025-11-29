@@ -2,6 +2,8 @@ package frc.demacia.utils.Sensors;
 
 import com.ctre.phoenix6.CANBus;
 
+import frc.demacia.utils.Motors.BaseMotorConfig.Canbus;
+
 /**
  * Configuration for CTRE Pigeon2 IMU.
  * 
@@ -36,7 +38,7 @@ public class PigeonConfig extends BaseSensorConfig<PigeonConfig>{
      * @param canbus CANBus instance
      * @param name Descriptive name for logging
      */
-    public PigeonConfig(int id, CANBus canbus, String name) {
+    public PigeonConfig(int id, Canbus canbus, String name) {
         super(id, canbus, name);
         sensorType = Pigeon.class;
     }
