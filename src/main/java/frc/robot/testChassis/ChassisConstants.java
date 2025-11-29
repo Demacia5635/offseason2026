@@ -39,7 +39,7 @@ public final class ChassisConstants {
 
     public static final double RAMP_TIME_STEER = 0.25;
     public static final double wheelDiameter = 0.1;
-    public static final Canbus CANBUS = Canbus.CANIvore;
+    public static final Canbus CANBUS = Canbus.Rio;
 
   public static final SwerveModuleConfig frontLeftModuleConfig = new SwerveModuleConfig(
     NAME + " frontLeft",
@@ -93,12 +93,13 @@ public final class ChassisConstants {
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
+
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
     new CancoderConfig(9, CANBUS, "backLeft cancoder"))
     .withSteerOffset(0.253*2*Math.PI);
   public static final SwerveModuleConfig backRightModuleConfig = new SwerveModuleConfig(
     NAME + " backRight",
-    new TalonFXConfig(11, CANBUS, "backRight steer")
+    new TalonFXConfig(8, CANBUS, "backRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withCurrent(25)

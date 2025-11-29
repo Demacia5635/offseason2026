@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Utilities;
 import frc.demacia.utils.Log.LogManager;
 import frc.demacia.utils.Sensors.Pigeon;
+import frc.demacia.utils.chassis.Kinematics.DemaciaKinematics;
 
 /**
  * Main swerve drive chassis controller.
@@ -83,6 +84,7 @@ public class Chassis extends SubsystemBase{
     private Pigeon gyro;
 
     private SwerveDriveKinematics kinematics;
+    private DemaciaKinematics demaciaKinematics;
     private SwerveDrivePoseEstimator poseEstimator;
     private Field2d field;
 
@@ -103,6 +105,11 @@ public class Chassis extends SubsystemBase{
             chassisConfig.backLeftPosition,
             chassisConfig.backRightPosition
         );
+        demaciaKinematics = new DemaciaKinematics(new Translation2d[]{
+            chassisConfig.frontLeftPosition,
+            chassisConfig.frontRightPosition,
+            chassisConfig.backLeftPosition,
+            chassisConfig.backRightPosition});
 
         poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), Pose2d.kZero);
 
@@ -187,6 +194,12 @@ public class Chassis extends SubsystemBase{
         setModuleStates(states);
     }
 
+
+    public void testSetVelocities(ChassisSpeeds speeds){
+        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
+
+        setModuleStates(demaciaKinematics.toSwerveModuleState(speeds, getChassisSpeedsFieldRel()));
+    }
     private double calculateLinearVelocity(double wantedSpeeds, double currentSpeeds) {
         double deltaV = wantedSpeeds - currentSpeeds;
         double maxDelta = chassisConfig.maxLinearAccel * chassisConfig.cycleDt;
