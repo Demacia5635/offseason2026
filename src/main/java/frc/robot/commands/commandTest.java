@@ -30,7 +30,7 @@ public class commandTest extends Command {
   @Override
   public void execute() {
     if(test.getang() != -1.4){
-      test.setPow(-0.3);
+      test.setPow(0.5);
     }else{
       test.stop();
     }
@@ -41,7 +41,7 @@ public class commandTest extends Command {
   @Override
   public void end(boolean interrupted) {
     long stop = System.currentTimeMillis() - start;
-    System.out.println(stop);
+    System.out.println("time: " + stop);
     test.stop();
   }
 
