@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.UtilsVision.Camera;
 
@@ -74,4 +75,20 @@ public class object extends SubsystemBase {
     OriginToObject = robotToObject.plus(robotCurrentPose.get().getTranslation());
     return OriginToObject;
   }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+      builder.addDoubleProperty("X", this::getX, null);
+      builder.addDoubleProperty("Y", this::getY, null);
+  }
+
+  public double getX(){
+    return this.OriginToObject.getX();
+  }
+
+  public double getY(){
+    return this.OriginToObject.getY();
+  }
+
+  
 }
