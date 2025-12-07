@@ -105,8 +105,18 @@ private NetworkTable Table;
 
     }
   }
-  public Translation2d getOriginToObject(){
-    assert originToObject != null : "vector is null";
-    return originToObject;
+  
+  @Override
+  public void initSendable(SendableBuilder builder) {
+      builder.addDoubleProperty("X", this::getX, null);
+      builder.addDoubleProperty("Y", this::getY, null);
+  }
+
+  public double getX(){
+    return this.OriginToObject.getX();
+  }
+
+  public double getY(){
+    return this.OriginToObject.getY();
   }
 }
