@@ -9,5 +9,6 @@ public class step1 {
     public static final double minRobotPower = 0.1;//this is the min power the robot can get in the random function
     public static final double gear_ratio = 1; //this is the robots gear ratio
     public static final Canbus canbus = Canbus.CANIvore;// this is the robots canbus
-    
+    public static final double TIME = 0.7;//this is the time between velocity changes
+    public static final double JUMP = 0.1;// this is the jump difference
 }

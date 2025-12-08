@@ -31,6 +31,8 @@ public final class Constants {
         public static final String NAME = "Test Motor";
         public static final double MAX_POWER = step1.maxRobotPower;
         public static final double MIN_POWER = step1.minRobotPower;
+        public static final double TIME =step1.TIME;
+        public static final double JUMP = step1.JUMP;
         
         public static final double GEAR_RATIO = step1.gear_ratio;
 
