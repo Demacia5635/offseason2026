@@ -8,6 +8,7 @@ import com.ctre.phoenix6.CANBus;
 
 import frc.demacia.utils.Motors.TalonConfig;
 import frc.demacia.utils.Motors.BaseMotorConfig.Canbus;
+import frc.instructions.step1;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -25,15 +26,13 @@ public final class Constants {
 
   public static class motorConstants {
         /* all the main configs of the motor */
-        public static final int ID = 10;
-        public static final Canbus CAN_BUS = Canbus.Rio;
+        public static final int ID = step1.id;
+        public static final Canbus CAN_BUS = step1.canbus;
         public static final String NAME = "Test Motor";
-        public static final double MAX_POWER = 0.6;
-        public static final double MIN_POWER = -0.6;
-        public static final double TIME = 1.5;
-        public static final double JUMP = 0.2;
-
-        public static final double GEAR_RATIO = 1;
+        public static final double MAX_POWER = step1.maxRobotPower;
+        public static final double MIN_POWER = step1.minRobotPower;
+        
+        public static final double GEAR_RATIO = step1.gear_ratio;
 
         /* The config of the motors based on the constants above */
         public static final TalonConfig CONFIG = new TalonConfig(ID, CAN_BUS, NAME)
