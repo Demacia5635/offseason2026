@@ -9,14 +9,14 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SysidApp {
+class SysidApp {
     public static void main(String[] args) {
         Sysid app = new Sysid();
         app.show();
     }
 }
 
-class Sysid implements Consumer<File> {
+public class Sysid implements Consumer<File> {
     JFrame frame = new JFrame("Sysid");
     FileChooserPanel fileChooser = new FileChooserPanel(this);
     DefaultListModel<MotorData> listModel = new DefaultListModel<>();

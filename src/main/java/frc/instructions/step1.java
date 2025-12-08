@@ -11,4 +11,6 @@ public class step1 {
     public static final Canbus canbus = Canbus.CANIvore;// this is the robots canbus
     public static final double TIME = 0.7;//this is the time between velocity changes
     public static final double JUMP = 0.1;// this is the jump difference
+
+    //change this peremeters, deploy and enable
 }
