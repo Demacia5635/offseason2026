@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.UtilsForChassis.CalculatePositionAndAngle;
+import frc.robot.UtilsForChassis.TestCalculatePositionAndAngle;
 import frc.robot.chassis.commands.Drive;
 import frc.robot.chassis.subsystems.Chassis;
 import frc.robot.utils.CommandController;
@@ -40,7 +41,7 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-
+  private CalculatePositionAndAngle clac;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -50,6 +51,7 @@ public class RobotContainer {
   //  calcPos = new CalculatePositionAndAngle(()->);
     chassis.setDefaultCommand(new Drive(chassis, controller));
     // quest = new Quest();
+    // clac = new CalculatePositionAndAngle();
 
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
