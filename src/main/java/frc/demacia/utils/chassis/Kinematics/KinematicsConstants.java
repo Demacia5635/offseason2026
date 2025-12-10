@@ -15,7 +15,7 @@ public class KinematicsConstants {
     public static final double MAX_ALLOWED_MODULE_VELOCITY = 3;
     
     public static final double CYCLE_DT = 0.02;
-    public static final double MAX_LINEAR_VELOCITY = 3;
+    public static final double MAX_LINEAR_VELOCITY = 5;
     public static final double MAX_LINEAR_ACCEL = 10;
     public static final double MAX_OMEGA_ACCEL = Math.toRadians(720);
     public static final double MAX_OMEGA_VELOCITY = Math.toRadians(360);

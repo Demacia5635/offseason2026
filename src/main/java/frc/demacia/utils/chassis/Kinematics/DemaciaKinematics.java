@@ -21,6 +21,7 @@ public class DemaciaKinematics {
     private SwerveModuleState[] swerveStates = new SwerveModuleState[4];
     private Pose2d startRobotPosition;
     private Translation2d[] modulePositionOnTheRobot;
+    private double lastAngle = 0;
 
     public DemaciaKinematics(Translation2d[] modulePositionOnTheRobot) {
         this.startRobotPosition = Pose2d.kZero;
@@ -28,89 +29,36 @@ public class DemaciaKinematics {
     }
 
     public SwerveModuleState[] toSwerveModuleState(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds) {
+        Translation2d wantedSpeedsVector = new Translation2d(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
+        Translation2d currentSpeedsVector = new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
 
-        ChassisSpeeds limitedSpeeds = limitSpeeds(wantedSpeeds, currentSpeeds);
+        Translation2d wantedAccel = (wantedSpeedsVector.minus(currentSpeedsVector)).div(CYCLE_DT);
+        wantedAccel = limitAccel(wantedAccel, currentSpeedsVector, wantedSpeedsVector);
 
+
+        if(wantedSpeedsVector.getNorm() < 0.05 && currentSpeedsVector.getNorm() < 0.05){
+            if(Math.abs(wantedSpeeds.omegaRadiansPerSecond) < 0.1) return convertSpeedsToStates(new ChassisSpeeds());
+            return convertSpeedsToStates(new ChassisSpeeds(0, 0, wantedSpeeds.omegaRadiansPerSecond));
+
+
+        } 
+        ChassisSpeeds limitedSpeeds = new ChassisSpeeds(
+                currentSpeeds.vxMetersPerSecond + wantedAccel.getX() * CYCLE_DT,
+                currentSpeeds.vyMetersPerSecond + wantedAccel.getY() * CYCLE_DT,
+                wantedSpeeds.omegaRadiansPerSecond
+        );
         return convertSpeedsToStates(limitedSpeeds);
-
     }
-
-    private ChassisSpeeds limitSpeeds(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds) {
-        // Translation2d limitedRadialVelocities = limitRadialVelocities(wantedSpeeds,
-        // currentSpeeds);
-
-        // ChassisSpeeds nextWantedSpeeds = new ChassisSpeeds(
-        // limitedRadialVelocities.getX(),
-        // limitedRadialVelocities.getY(),
-        // wantedSpeeds.omegaRadiansPerSecond);
-
-        return limitLinearSpeeds(wantedSpeeds, currentSpeeds);
+    
+    private Translation2d limitAccel(Translation2d wantedAccel, Translation2d currentSpeedsVector, Translation2d wantedSpeedsVector){
+        // //double maxForwardAccel = MAX_LINEAR_ACCEL;
+        // double maxForwardAccel = MAX_LINEAR_ACCEL * (1 - (currentSpeedsVector.getNorm() / MAX_LINEAR_VELOCITY));
+        // return wantedAccel.div(wantedAccel.getNorm()).times(maxForwardAccel);
+        if(wantedAccel.getNorm() > MAX_LINEAR_ACCEL) return new Translation2d(MAX_LINEAR_ACCEL, wantedAccel.getAngle());
+        return wantedAccel;
     }
-
-    private Translation2d limitRadialVelocities(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds) {
-        Translation2d currentSpeedsVector = new Translation2d(currentSpeeds.vxMetersPerSecond,
-                currentSpeeds.vyMetersPerSecond);
-        Translation2d wantedSpeedsVector = new Translation2d(wantedSpeeds.vxMetersPerSecond,
-                wantedSpeeds.vyMetersPerSecond);
-
-        Translation2d wantedAccel = wantedSpeedsVector.minus(currentSpeedsVector);
-        return currentSpeedsVector.plus(new Translation2d(MAX_SKID_ACCEL * CYCLE_DT, wantedAccel.getAngle()));
-
-    }
-
-    private double limitLinearAccel(double maxVel, double currentVel) {
-        return MAX_LINEAR_ACCEL * (1 - (Math.abs(currentVel) / maxVel));
-    }
-
-    private Rotation2d lastVelocityAngle = Rotation2d.kZero;
-
 
     
-    private ChassisSpeeds limitLinearSpeeds(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds) {
-
-        
-
-        double wantedOmegaAccel = (wantedSpeeds.omegaRadiansPerSecond - currentSpeeds.omegaRadiansPerSecond) / CYCLE_DT;
-        double limitedOmegaAccel = MathUtil.clamp(wantedOmegaAccel, -MAX_OMEGA_ACCEL, MAX_OMEGA_ACCEL);
-        double wantedDeltaOmega = limitedOmegaAccel * CYCLE_DT;
-        double wantedOmegaVelocity = currentSpeeds.omegaRadiansPerSecond + wantedDeltaOmega;
-
-        
-
-        double wantedSpeedsNorm = Math.hypot(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
-        double currentSpeedsNorm = Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-        double wantedSpeedsAngle = Utilities.angleFromTranslation2d(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
-        double currentSpeedsAngle = Utilities.angleFromTranslation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-        
-        
-        if(wantedSpeedsNorm == 0 && currentSpeedsNorm == 0) return new ChassisSpeeds(0, 0, wantedOmegaVelocity);
-        
-        
-
-        double wantedLinearAccel = Math.hypot(wantedSpeeds.vxMetersPerSecond - currentSpeeds.vxMetersPerSecond,
-                wantedSpeeds.vyMetersPerSecond - currentSpeeds.vyMetersPerSecond) / CYCLE_DT;
-
-        double maxLimitedAccel = limitLinearAccel(MAX_LINEAR_VELOCITY,
-                Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond));
-        double limitedAccel = MathUtil.clamp(wantedLinearAccel, -maxLimitedAccel, maxLimitedAccel);
-        double wantedDeltaV = limitedAccel * CYCLE_DT;
-
-
-        
-        
-        
-        if(wantedSpeedsNorm == 0.0 && currentSpeedsNorm > 0.1){
-            Translation2d velocity = new Translation2d(currentSpeedsNorm + wantedDeltaV, lastVelocityAngle);
-            return new ChassisSpeeds(velocity.getX(), velocity.getY(), wantedOmegaVelocity);
-        }
-
-        
-
-        lastVelocityAngle = Rotation2d.fromRadians(currentSpeedsAngle);
-        return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond + wantedDeltaV,
-                currentSpeeds.vyMetersPerSecond + wantedDeltaV,
-                wantedOmegaVelocity);
-    }
 
     private SwerveModuleState[] convertSpeedsToStates(ChassisSpeeds limitedSpeeds) {
         double omega = limitedSpeeds.omegaRadiansPerSecond;
