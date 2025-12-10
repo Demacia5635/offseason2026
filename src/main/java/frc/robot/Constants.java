@@ -7,7 +7,6 @@ package frc.robot;
 import com.ctre.phoenix6.CANBus;
 
 import frc.robot.utils.TalonConfig;
-import com.ctre.phoenix6.CANBus;
 
 
 /**

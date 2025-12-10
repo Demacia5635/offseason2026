@@ -4,15 +4,10 @@
 
 package frc.robot;
 
-import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.UtilsForChassis.CalculatePositionAndAngle;
-import frc.robot.UtilsForChassis.TestCalculatePositionAndAngle; // ADD THIS IMPORT
-import frc.robot.UtilsVision.Camera;
-import frc.robot.chassis.subsystems.Chassis;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -24,9 +19,7 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
 
-  private Camera cam;
-  private Chassis chassis;
-  private Supplier<Double> dt;
+  
 
 
   /**

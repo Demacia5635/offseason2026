@@ -20,7 +20,6 @@ import java.util.function.Supplier;
  * the latency period.
  */
 public class CalculatePositionAndAngle {
-    private final Camera camera;
     private final Supplier<ChassisSpeeds> speedsSupplier;
     private final Supplier<Rotation2d> robotAngleSupplier;
     private final Supplier<Pose2d> currentPoseSupplier;
@@ -39,7 +38,6 @@ public class CalculatePositionAndAngle {
                                      Supplier<Rotation2d> getRobotAngle, 
                                      Supplier<Pose2d> currentPose2d, 
                                      double dtseconds) {
-        this.camera = camera;
         this.speedsSupplier = speeds;
         this.robotAngleSupplier = getRobotAngle;
         this.currentPoseSupplier = currentPose2d;

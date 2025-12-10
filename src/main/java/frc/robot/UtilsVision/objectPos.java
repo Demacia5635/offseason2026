@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 //import java.lang.reflect.Field;
 import java.util.function.Supplier;
-
 //import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 //import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -113,10 +113,10 @@ private NetworkTable Table;
   }
 
   public double getX(){
-    return this.OriginToObject.getX();
+    return this.originToObject.getX();
   }
 
   public double getY(){
-    return this.OriginToObject.getY();
+    return this.originToObject.getY();
   }
 }
