@@ -14,6 +14,6 @@ public class KinematicsConstants {
 
     public static final double MAX_ALLOWED_MODULE_VELOCITY = 3;
     public static final double CYCLE_DT = 0.02;
-    public static final double MAX_FORWARD_ACCEL = 10;
+    // public static final double MAX_FORWARD_ACCEL = 10;
 
 }

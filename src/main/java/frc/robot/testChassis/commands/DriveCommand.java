@@ -42,7 +42,7 @@ public class DriveCommand extends Command {
     
     speeds = new ChassisSpeeds(velX, velY,velRot);
 
-    chassis.setVelocitiesWithAccel(speeds);
+    chassis.setVelocities(speeds);
   }
 
   // Called once the command ends or is interrupted.

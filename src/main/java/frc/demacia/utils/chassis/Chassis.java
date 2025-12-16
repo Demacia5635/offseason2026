@@ -70,7 +70,8 @@ public class Chassis extends SubsystemBase {
     field = new Field2d();
 
     SmartDashboard.putData("chassis/setCoast", new InstantCommand(()->setNeutralMode(false)).ignoringDisable(true));
-  }
+    SmartDashboard.putData("chassis/Reset Gyro", new InstantCommand(()->setYaw(new Rotation2d())).ignoringDisable(true));
+}
 
   public void checkElectronics() {
     for (SwerveModule module : modules) {
@@ -88,6 +89,8 @@ public class Chassis extends SubsystemBase {
     return poseEstimator.getEstimatedPosition();
   }
 
+
+
   Translation2d lastWantedSpeeds = new Translation2d();
     public void setVelocitiesWithAccel(ChassisSpeeds wantedSpeeds){
         ChassisSpeeds currentSpeeds = getChassisSpeedsFieldRel();
@@ -98,6 +101,11 @@ public class Chassis extends SubsystemBase {
 
     }
 
+    public void setVelocitiesTest(ChassisSpeeds speeds){
+        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
+        SwerveModuleState[] states = kinematics.toSwerveModuleState(speeds, getChassisSpeedsFieldRel());
+        setModuleStates(states);
+    }
     public void setVelocities(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         speeds = ChassisSpeeds.discretize(speeds, chassisConfig.cycleDt);

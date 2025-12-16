@@ -42,64 +42,68 @@ public final class Constants {
 
   public static final SwerveModuleConfig frontLeftModuleConfig = new SwerveModuleConfig(
     NAME + " frontLeft",
-    new TalonConfig(2, Canbus.CANIvore, "frontLeft steer")
+    new TalonConfig(2, Canbus.Rio, "frontLeft steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withBrake(true)
+    .withInvert(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
-    new TalonConfig(1, Canbus.CANIvore, "frontLeft drive")
+    new TalonConfig(1, Canbus.Rio, "frontLeft drive")
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
-    new CancoderConfig(3, new CANBus("canivore"), "frontLeft cancoder"))
-    .withSteerOffset(-0.33594306881897095016176430754761);
+    new CancoderConfig(3, new CANBus("rio"), "frontLeft cancoder"))
+    .withSteerOffset(0.456055*2*Math.PI);
   public static final SwerveModuleConfig frontRightModuleConfig = new SwerveModuleConfig(
     NAME + " frontRight",
-    new TalonConfig(5, Canbus.CANIvore, "frontRight steer")
+    new TalonConfig(5, Canbus.Rio, "frontRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withBrake(true)
+    .withInvert(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
-    new TalonConfig(4, Canbus.CANIvore, "frontRight drive")
+    new TalonConfig(4, Canbus.Rio, "frontRight drive")
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
-    new CancoderConfig(6, new CANBus("canivore"), "frontRight cancoder"))
-    .withSteerOffset(0.86976877570225579682781359652123);
+    new CancoderConfig(6, new CANBus("rio"), "frontRight cancoder"))
+    .withSteerOffset(0.53 * 2 * Math.PI);
   public static final SwerveModuleConfig backLeftModuleConfig = new SwerveModuleConfig(
     NAME + " backLeft",
-    new TalonConfig(8, Canbus.CANIvore, "backLeft steer")
+    new TalonConfig(11, Canbus.Rio, "backLeft steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withBrake(true)
+    .withInvert(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
-    new TalonConfig(7, Canbus.CANIvore, "backLeft drive")
+    new TalonConfig(10, Canbus.Rio, "backLeft drive")
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
-    new CancoderConfig(9, new CANBus("canivore"), "backLeft cancoder"))
-    .withSteerOffset(-0.39729837334357961210893973282306);
+    new CancoderConfig(9, new CANBus("rio"), "backLeft cancoder"))
+    .withSteerOffset(1.754883*2*Math.PI);
   public static final SwerveModuleConfig backRightModuleConfig = new SwerveModuleConfig(
     NAME + " backRight",
-    new TalonConfig(11, Canbus.CANIvore, "backRight steer")
+    new TalonConfig(8, Canbus.Rio, "backRight steer")
     .withPID(STEER_KP, STEER_KI, STEER_KD, STEER_KS, STEER_KV, STEER_KA, 0)
     .withMotionParam(MOTION_MAGIC_VEL, MOTION_MAGIC_ACCEL, MOTION_MAGIC_JERK)
     .withBrake(true)
+    .withInvert(true)
     .withRadiansMotor(STEER_GEAR_RATIO)
     .withRampTime(RAMP_TIME_STEER),
-    new TalonConfig(10, Canbus.CANIvore, "backRight drive")
+    new TalonConfig(7, Canbus.Rio, "backRight drive")
     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
     .withBrake(true)
     .withInvert(true)
     .withMeterMotor(DRIVE_GEAR_RATIO, wheelDiameter),
-    new CancoderConfig(12, new CANBus("canivore"), "backRight cancoder"))
-    .withSteerOffset(-1.4818264228452336747180596310253);
+    new CancoderConfig(12, new CANBus("rio"), "backRight cancoder"))
+    .withSteerOffset(1.233643*2*Math.PI);
   public static final CANBus PIGEO_CANBUS = new CANBus("rio");
   public static final PigeonConfig pigeonConfig = new PigeonConfig(14, PIGEO_CANBUS, NAME + " pigeon");
   public static final Translation2d frontLeftPosition = new Translation2d(0.34, 0.29);
