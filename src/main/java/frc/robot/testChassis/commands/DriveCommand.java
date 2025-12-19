@@ -8,6 +8,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.demacia.utils.Controller.CommandController;
 import frc.demacia.utils.chassis.Chassis;
+import frc.robot.kinematics.KinematicsConstants;
+import frc.robot.kinematics.KinematicsConstants.KinematicsConfig;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DriveCommand extends Command {
@@ -36,13 +38,13 @@ public class DriveCommand extends Command {
     // Calculate r]otation from trigger axes
     double rot = controller.getLeftTrigger() - controller.getRightTrigger();
     
-    double velX = Math.pow(joyX, 2) * 3.6 * Math.signum(joyX);
-    double velY = Math.pow(joyY, 2) * 3.6 * Math.signum(joyY);
+    double velX = Math.pow(joyX, 2) * KinematicsConstants.config.MAX_VELOCITY() * Math.signum(joyX);
+    double velY = Math.pow(joyY, 2) * KinematicsConstants.config.MAX_VELOCITY()* Math.signum(joyY);
     double velRot = Math.pow(rot, 2) * Math.toRadians(360) * Math.signum(rot);
     
-    speeds = new ChassisSpeeds(velX, velY,velRot);
+    speeds = new ChassisSpeeds(velX, velY,-velRot);
 
-    chassis.setVelocities(speeds);
+    chassis.setVelocitiesTest(speeds);
   }
 
   // Called once the command ends or is interrupted.

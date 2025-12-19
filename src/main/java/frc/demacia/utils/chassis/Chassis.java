@@ -103,13 +103,13 @@ public class Chassis extends SubsystemBase {
 
     public void setVelocitiesTest(ChassisSpeeds speeds){
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
-        SwerveModuleState[] states = kinematics.toSwerveModuleState(speeds, getChassisSpeedsFieldRel());
+        SwerveModuleState[] states = kinematics.toSwerveModuleStatesWithLimit(speeds, getChassisSpeedsFieldRel());
         setModuleStates(states);
     }
     public void setVelocities(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         speeds = ChassisSpeeds.discretize(speeds, chassisConfig.cycleDt);
-        SwerveModuleState[] states = kinematics.moduleStates(speeds);
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
         setModuleStates(states);
     }
 
@@ -192,7 +192,7 @@ public class Chassis extends SubsystemBase {
 
     public void setRobotRelVelocities(ChassisSpeeds speeds) {
 
-        SwerveModuleState[] states = kinematics.moduleStates(speeds);
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
         setModuleStates(states);
     }
 

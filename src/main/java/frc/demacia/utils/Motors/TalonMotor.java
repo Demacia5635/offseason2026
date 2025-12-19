@@ -77,9 +77,9 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         cfg.MotorOutput.NeutralMode = config.brake ? NeutralModeValue.Brake : NeutralModeValue.Coast;
         cfg.MotorOutput.PeakForwardDutyCycle = config.maxVolt / 12.0;
         cfg.MotorOutput.PeakReverseDutyCycle = config.minVolt / 12.0;
-        if(config.motorRatio < 0.2) {
-            unitMultiplier = 100.0;
-        }
+        // if(config.motorRatio < 0.2) {
+        //     unitMultiplier = 100.0;
+        // }
         cfg.Feedback.SensorToMechanismRatio = config.motorRatio * unitMultiplier;
         updatePID(false);
         cfg.Voltage.PeakForwardVoltage = config.maxVolt;
