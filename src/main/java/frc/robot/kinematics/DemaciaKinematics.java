@@ -12,8 +12,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.demacia.utils.Utilities;
+import frc.demacia.utils.Log.LogManager;
 import frc.robot.kinematics.KinematicsConstants.KinematicsConfig;
 
+import static edu.wpi.first.units.Units.derive;
 import static frc.robot.kinematics.KinematicsConstants.*;
 
 import java.util.spi.CurrencyNameProvider;
@@ -27,7 +29,7 @@ public class DemaciaKinematics {
     private KinematicsConfig config;
     private double lastVelAngle;
     private SwerveModuleState[] lastStates = new SwerveModuleState[4]; 
-
+    private final SwerveModuleState[] kZeroStates = {new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState(), new SwerveModuleState()};
 
     public DemaciaKinematics(Translation2d[] modulePositionOnTheRobot) {
         this.startRobotPosition = Pose2d.kZero;
@@ -43,33 +45,39 @@ public class DemaciaKinematics {
 
 
     public SwerveModuleState[] toSwerveModuleStatesWithLimit(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
-        if(KinematicsUtilities.isInRange(wantedSpeeds, 0.05) && KinematicsUtilities.isInRange(wantedSpeeds, 0.05)) return lastStates;
-        Translation2d limitedWantedVel = limitVelocities(wantedSpeeds, currentSpeeds);
-        ChassisSpeeds limitedSpeeds = new ChassisSpeeds(limitedWantedVel.getX(), limitedWantedVel.getY(), wantedSpeeds.omegaRadiansPerSecond);
-        swerveStates = toSwerveModuleStates(limitedSpeeds);
-        lastStates = swerveStates;
+        if(KinematicsUtilities.isInRange(currentSpeeds, 0.05) && KinematicsUtilities.isInRange(wantedSpeeds, 0.05)) return kZeroStates;
+        ChassisSpeeds limitedWantedVel = limitVelocities(wantedSpeeds, currentSpeeds);
+        swerveStates = toSwerveModuleStates(limitedWantedVel);
         return swerveStates;
     }
 
-    private Translation2d limitVelocities(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
+    private ChassisSpeeds limitVelocities(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
         Translation2d currentVel = new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         Translation2d wantedVel = new Translation2d(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
 
-        Translation2d skidLimitVelocity = limitSkidAccel(currentVel, wantedVel);
-        Translation2d linearLimitVelocity = limitLinearVelocity(currentVel, skidLimitVelocity);
-
-        return skidLimitVelocity;
+        Translation2d wantedAccel = (wantedVel.minus(currentVel)).div(CYCLE_DT);
+        LogManager.log("wanted accel pre: " + wantedAccel);
+        LogManager.log("pre norm: " + wantedAccel.getNorm());
+        // wantedAccel = limitTiltAccel(wantedAccel);
+        wantedAccel = limitSkidAccel(wantedAccel);
+        LogManager.log("wanted accel after: " + wantedAccel);
+        
+        LogManager.log("after norm: " + wantedAccel.getNorm());
+        Translation2d deltaV = wantedAccel.times(CYCLE_DT);
+        
+        
+        return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond + deltaV.getX(), currentSpeeds.vyMetersPerSecond + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
 
     }
-    private Translation2d limitSkidAccel(Translation2d currentVel, Translation2d wantedVel){
-        if (KinematicsUtilities.isInRange(wantedVel.getNorm(), 0.05) && KinematicsUtilities.isInRange(currentVel.getNorm(), 0.05)) {
-            return Translation2d.kZero;
-        }
-        Translation2d wantedAccel = (wantedVel.minus(currentVel)).div(CYCLE_DT);
-        Translation2d limitedAccel = KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
-        return currentVel.plus((limitedAccel.times(CYCLE_DT)));
+    private Translation2d limitSkidAccel(Translation2d wantedAccel){
+        return KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
     }
     
+    private Translation2d limitTiltAccel(Translation2d wantedAccel){
+        double frontAccel = Math.min(wantedAccel.getX(), config.MAX_FRONT_ACCEL());
+        double sideAccel = Math.min(wantedAccel.getY(), config.MAX_SIDE_ACCEL());
+        return new Translation2d(frontAccel, sideAccel);
+    }
 
     private Translation2d limitLinearVelocity(Translation2d currentVel, Translation2d wantedVel){
         double wantedSpeedsNorm = KinematicsUtilities.getNorm(wantedVel.getX(), wantedVel.getY());

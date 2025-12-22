@@ -240,7 +240,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public ChassisSpeeds getChassisSpeedsFieldRel() {
-        return ChassisSpeeds.fromRobotRelativeSpeeds(kinematicsOld.toChassisSpeeds(getModuleStates()), getGyroAngle());
+        return ChassisSpeeds.fromRobotRelativeSpeeds(kinematicsOld.toChassisSpeeds(getModuleStates()), getPose().getRotation());
     }
 
     /**
