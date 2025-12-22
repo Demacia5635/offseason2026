@@ -5,6 +5,7 @@
 package frc.robot.kinematics;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 /** Add your docs here. */
 public class KinematicsUtilities {
@@ -27,5 +28,8 @@ public class KinematicsUtilities {
     }
     public static boolean isInRange(double value, double limit){
         return Math.abs(value) <= limit;
+    }
+    public static boolean isInRange(ChassisSpeeds speeds, double limit){
+        return Math.abs(speeds.vxMetersPerSecond) <= limit && Math.abs(speeds.vyMetersPerSecond) <= limit && Math.abs(speeds.omegaRadiansPerSecond) <= limit;
     }
 }

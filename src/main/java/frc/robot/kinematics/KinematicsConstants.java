@@ -7,10 +7,10 @@ package frc.robot.kinematics;
 /** Add your docs here. */
 public class KinematicsConstants {
 
-    public record KinematicsConfig(double MAX_VELOCITY, double MAX_LINEAR_ACCEL, double MAX_RADIAL_ACCEL) {
+    public record KinematicsConfig(double MAX_VELOCITY, double MAX_LINEAR_ACCEL, double MAX_SKID_ACCEL) {
     }
 
-    public static final KinematicsConfig config = new KinematicsConfig(5, 15, 10);
+    public static final KinematicsConfig config = new KinematicsConfig(5, 15, 100);
 
     public static final double MAX_ALLOWED_MODULE_VELOCITY = 5;
     public static final double CYCLE_DT = 0.02;

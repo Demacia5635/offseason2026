@@ -71,7 +71,8 @@ public class Chassis extends SubsystemBase {
 
     SmartDashboard.putData("chassis/setCoast", new InstantCommand(()->setNeutralMode(false)).ignoringDisable(true));
     SmartDashboard.putData("chassis/Reset Gyro", new InstantCommand(()->setYaw(new Rotation2d())).ignoringDisable(true));
-}
+        SmartDashboard.putData("chassis", this);
+    }
 
   public void checkElectronics() {
     for (SwerveModule module : modules) {
@@ -320,6 +321,7 @@ public class Chassis extends SubsystemBase {
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
+        builder.addDoubleProperty("vel", () -> Math.sqrt(getRobotRelVelocities().vxMetersPerSecond*getRobotRelVelocities().vxMetersPerSecond + getRobotRelVelocities().vyMetersPerSecond*getRobotRelVelocities().vyMetersPerSecond), null);
     }
 
     public Trajectory vector(Translation2d start, Translation2d end){
