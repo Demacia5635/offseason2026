@@ -15,8 +15,8 @@ import frc.demacia.utils.Motors.TalonSRXMotor;
 import frc.demacia.utils.Sensors.OpticalSensor;
 import frc.demacia.utils.Sensors.SensorInterface;
 import frc.demacia.utils.Sensors.UltraSonicSensor;
-import frc.demacia.utils.chassis.Chassis;
 import frc.demacia.utils.chassis.ChassisConfig;
+import frc.robot.chassis.subsystems.Chassis;
 import frc.robot.testChassis.Constants;
 import frc.robot.testChassis.commands.DriveCommand;
 import frc.robot.testMechanism.ArmConstants;
@@ -33,7 +33,10 @@ import frc.robot.testMechanism.ClimebConstants.CLIMB_STATES;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -45,11 +48,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements Sendable{
   
   public static CommandController driverController;
 
   public static boolean isComp = DriverStation.isFMSAttached();
+  public static boolean isRed = false;
   private static boolean hasRemovedFromLog = false;
 
   public static int N_CYCLE = 0;
@@ -66,7 +70,7 @@ public class RobotContainer {
   public RobotContainer() {
     new LogManager();
     
-    this.chassis = new Chassis(Constants.CHASSIS_CONFIG);
+    this.chassis = new Chassis();
 
     driverController = new CommandController(0, ControllerType.kPS5);
 
@@ -80,6 +84,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
     configureBindings();
+    SmartDashboard.putData("RC", this);
   }
 
   // @SuppressWarnings("unused")
@@ -123,6 +128,19 @@ public class RobotContainer {
       hasRemovedFromLog = true;
       LogManager.removeInComp();
     }
+  }
+
+  public static boolean isRed() {
+    return isRed;
+  }
+
+  public static void setIsRed(boolean isRed) {
+    RobotContainer.isRed = isRed;
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+      builder.addBooleanProperty("isRed", RobotContainer::isRed, RobotContainer::setIsRed);
   }
 
   /**

@@ -7,7 +7,7 @@ package frc.robot.testChassis.commands;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.demacia.utils.Controller.CommandController;
-import frc.demacia.utils.chassis.Chassis;
+import frc.robot.chassis.subsystems.Chassis;
 import frc.robot.kinematics.KinematicsConstants;
 import frc.robot.kinematics.KinematicsConstants.KinematicsConfig;
 
@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
     
     speeds = new ChassisSpeeds(velX, velY,-velRot);
 
-    chassis.setVelocitiesTest(speeds);
+    chassis.setVelocities(speeds);
   }
 
   // Called once the command ends or is interrupted.

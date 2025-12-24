@@ -55,50 +55,37 @@ public class DemaciaKinematics {
         Translation2d currentVel = new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         Translation2d wantedVel = new Translation2d(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
 
+        SmartDashboard.putNumber("CurrentVel/x", currentVel.getX());
+        SmartDashboard.putNumber("CurrentVel/y", currentVel.getY());
+        SmartDashboard.putNumber("WantedVel/x", wantedVel.getX());
+        SmartDashboard.putNumber("WantedVel/y", wantedVel.getY());
         Translation2d wantedAccel = (wantedVel.minus(currentVel)).div(CYCLE_DT);
-        LogManager.log("wanted accel pre: " + wantedAccel);
-        LogManager.log("pre norm: " + wantedAccel.getNorm());
         // wantedAccel = limitTiltAccel(wantedAccel);
-        wantedAccel = limitSkidAccel(wantedAccel);
-        LogManager.log("wanted accel after: " + wantedAccel);
-        
-        LogManager.log("after norm: " + wantedAccel.getNorm());
+        wantedAccel = limitAccel(wantedAccel);
         Translation2d deltaV = wantedAccel.times(CYCLE_DT);
-        
+        SmartDashboard.putNumber("Delta v/x", deltaV.getX());
+        SmartDashboard.putNumber("Delta v/y", deltaV.getY());
         
         return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond + deltaV.getX(), currentSpeeds.vyMetersPerSecond + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
 
     }
-    private Translation2d limitSkidAccel(Translation2d wantedAccel){
-        return KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
+
+
+    private Translation2d limitAccel(Translation2d wantedAccel){
+        SmartDashboard.putNumber("pre wantedACc/x", wantedAccel.getX());
+        SmartDashboard.putNumber("pre wantedACc/y", wantedAccel.getY());
+        wantedAccel = limitTiltAccel(wantedAccel);
+
+        return wantedAccel;
+
+
     }
-    
+
     private Translation2d limitTiltAccel(Translation2d wantedAccel){
-        double frontAccel = Math.min(wantedAccel.getX(), config.MAX_FRONT_ACCEL());
-        double sideAccel = Math.min(wantedAccel.getY(), config.MAX_SIDE_ACCEL());
+        double frontAccel = MathUtil.clamp(wantedAccel.getX(), -config.MAX_FRONT_ACCEL(), config.MAX_FRONT_ACCEL());
+        SmartDashboard.putNumber("Front Accel", frontAccel);
+        double sideAccel = MathUtil.clamp(wantedAccel.getY(), -config.MAX_SIDE_ACCEL(), config.MAX_SIDE_ACCEL());
         return new Translation2d(frontAccel, sideAccel);
-    }
-
-    private Translation2d limitLinearVelocity(Translation2d currentVel, Translation2d wantedVel){
-        double wantedSpeedsNorm = KinematicsUtilities.getNorm(wantedVel.getX(), wantedVel.getY());
-        double currentSpeedsNorm = KinematicsUtilities.getNorm(currentVel.getX(), currentVel.getY());
-        double wantedSpeedsAngle = KinematicsUtilities.getAngleFromVector(wantedVel.getX(), wantedVel.getY());
-        double currentSpeedsAngle = KinematicsUtilities.getAngleFromVector(currentVel.getX(), currentVel.getY());
-
-        if(KinematicsUtilities.isInRange(wantedSpeedsNorm, 0.05) && KinematicsUtilities.isInRange(currentSpeedsNorm, 0.05)) return Translation2d.kZero; //case for no movement
-        if(KinematicsUtilities.isInRange(wantedSpeedsNorm, 0.05) && !KinematicsUtilities.isInRange(currentSpeedsNorm, 0.05)) 
-            return new Translation2d(applyLinearLimit(currentSpeedsNorm, wantedSpeedsNorm), new Rotation2d(lastVelAngle)); //case for "gliding" to stoppage
-
-        lastVelAngle = currentSpeedsAngle;
-        return new Translation2d(applyLinearLimit(currentSpeedsNorm, wantedSpeedsNorm), new Rotation2d(wantedSpeedsAngle));
-
-        
-    }
-    private double applyLinearLimit(double currentSpeedsNorm, double wantedSpeedsNorm){
-        double wantedDeltaV = wantedSpeedsNorm - currentSpeedsNorm;
-        if(Math.abs(wantedDeltaV) > MAX_DELTA_V) return currentSpeedsNorm + (MAX_DELTA_V * Math.signum(wantedDeltaV));
-        
-        return wantedSpeedsNorm;
     }
 
     
