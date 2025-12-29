@@ -98,7 +98,7 @@ public class ChassisConstants {
                     .withPID(DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KS, DRIVE_KV, DRIVE_KA, 0)
                     .withBrake(true)
                     .withInvert(true)
-                    .withMeterMotor(DRIVE_GEAR_RATIO ,wheelDiameter * Math.PI);
+                    .withMeterMotor(DRIVE_GEAR_RATIO ,wheelDiameter);
             CANCODER_CONFIG = new CancoderConfig(swerveId * 3 + 3, CAN_BUS, NAME + " Cancoder");
             POSITION = new Translation2d(
                     swerveId == 0 || swerveId == 1 ? 0.34 : -0.34,
@@ -110,22 +110,22 @@ public class ChassisConstants {
     public static final SwerveModuleConfigs FRONT_LEFT = new SwerveModuleConfigs(
             0,
             -0.33747616603392276926213407751865,
-            0.1
+            4*0.0254
 
     );
 
     public static final SwerveModuleConfigs FRONT_RIGHT = new SwerveModuleConfigs(
             1,
             0.90198266677216553669500954177338,
-            0.1);
+            4*0.0254);
 
     public static final SwerveModuleConfigs BACK_LEFT = new SwerveModuleConfigs(
             2,
             -0.40037085095879042989615619805191,
-            0.1);
+            4*0.0254);
 
     public static final SwerveModuleConfigs BACK_RIGHT = new SwerveModuleConfigs(
             3,
             -1.5063685446550771394969298011355,
-            0.1);
+            4*0.0254);
 }

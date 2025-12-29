@@ -73,7 +73,7 @@ public class SwerveModule {
     }
 
     public double getDriveVel() {
-        return driveMotor.getCurrentVelocity();
+        return driveMotor.getCurrentVelocity() - (getSteerVel() * 0.14);
     }
 
     public void setState(SwerveModuleState state) {
@@ -94,7 +94,7 @@ public class SwerveModule {
     }
 
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(driveMotor.getCurrentPosition(), Rotation2d.fromRadians(steerMotor.getCurrentPosition()));
+        return new SwerveModulePosition(driveMotor.getCurrentPosition() - (steerMotor.getCurrentPosition() * 0.14), Rotation2d.fromRadians(steerMotor.getCurrentPosition()));
     }
 
     /**

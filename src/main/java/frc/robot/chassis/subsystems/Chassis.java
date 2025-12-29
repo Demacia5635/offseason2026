@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.demacia.utils.Log.LogManager;
 import frc.robot.RobotContainer;
 import static frc.robot.chassis.utils.ChassisConstants.*;
 
@@ -80,13 +81,14 @@ public class Chassis extends SubsystemBase {
         poseEstimator.setVisionMeasurementStdDevs(new Matrix<>(std));
         field = new Field2d();
 
-        
-    
 
+        
+        
+        SmartDashboard.putData("chassis", this);
         SmartDashboard.putData("reset gyro", new InstantCommand(() -> setYaw(Rotation2d.kZero)).ignoringDisable(true));
         SmartDashboard.putData("reset gyro 180", new InstantCommand(() -> setYaw(Rotation2d.kPi)).ignoringDisable(true));
-        SmartDashboard.putData("Chassis/set coast", new InstantCommand(() -> setNeutralMode(false)).ignoringDisable(true));
-        SmartDashboard.putData("Chassis/set brake", new InstantCommand(() -> setNeutralMode(true)).ignoringDisable(true));
+        SmartDashboard.putData("chassis/set coast", new InstantCommand(() -> setNeutralMode(false)).ignoringDisable(true));
+        SmartDashboard.putData("chassis/set brake", new InstantCommand(() -> setNeutralMode(true)).ignoringDisable(true));
         // SmartDashboard.putData(getName() + "/Swerve Drive", getChassisWidget());
         // SmartDashboard.putData("Chassis", this);
     }
@@ -138,11 +140,11 @@ public class Chassis extends SubsystemBase {
     public void setVelocities(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         // speeds = ChassisSpeeds.discretize(speeds, CYCLE_DT);
-        
         SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStatesWithLimit(speeds, getChassisSpeedsRobotRel());
         setModuleStates(states);
     }
 
+    
 
     public void setSteerPositions(double[] positions) {
         for (int i = 0; i < positions.length; i++) {
@@ -221,11 +223,12 @@ public class Chassis extends SubsystemBase {
 
 
     public ChassisSpeeds getChassisSpeedsRobotRel() {
-        return kinematics.toChassisSpeeds(getModuleStates());
+        return demaciaKinematics.toChassisSpeeds(getModuleStates(), Math.toRadians(gyro.getAngularVelocityZWorld().getValueAsDouble()));
+        // return kinematics.toChassisSpeeds(getModuleStates());
     }
 
     public ChassisSpeeds getChassisSpeedsFieldRel() {
-        return ChassisSpeeds.fromRobotRelativeSpeeds(kinematics.toChassisSpeeds(getModuleStates()), getGyroAngle());
+        return ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeedsRobotRel(), getGyroAngle());
     }
 
     /**
@@ -257,7 +260,9 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
+        builder.addDoubleProperty("chassis/vx", ()->getChassisSpeedsRobotRel().vxMetersPerSecond, null);
+        
+        builder.addDoubleProperty("chassis/vy", ()->getChassisSpeedsRobotRel().vyMetersPerSecond, null);
     }
 
     public Trajectory vector(Translation2d start, Translation2d end){

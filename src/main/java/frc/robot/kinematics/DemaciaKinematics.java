@@ -45,7 +45,7 @@ public class DemaciaKinematics {
 
 
     public SwerveModuleState[] toSwerveModuleStatesWithLimit(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
-        if(KinematicsUtilities.isInRange(currentSpeeds, 0.05) && KinematicsUtilities.isInRange(wantedSpeeds, 0.05)) return kZeroStates;
+        
         ChassisSpeeds limitedWantedVel = limitVelocities(wantedSpeeds, currentSpeeds);
         swerveStates = toSwerveModuleStates(limitedWantedVel);
         return swerveStates;
@@ -55,26 +55,23 @@ public class DemaciaKinematics {
         Translation2d currentVel = new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         Translation2d wantedVel = new Translation2d(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
 
-        SmartDashboard.putNumber("CurrentVel/x", currentVel.getX());
-        SmartDashboard.putNumber("CurrentVel/y", currentVel.getY());
-        SmartDashboard.putNumber("WantedVel/x", wantedVel.getX());
-        SmartDashboard.putNumber("WantedVel/y", wantedVel.getY());
         Translation2d wantedAccel = (wantedVel.minus(currentVel)).div(CYCLE_DT);
         // wantedAccel = limitTiltAccel(wantedAccel);
-        wantedAccel = limitAccel(wantedAccel);
-        Translation2d deltaV = wantedAccel.times(CYCLE_DT);
-        SmartDashboard.putNumber("Delta v/x", deltaV.getX());
-        SmartDashboard.putNumber("Delta v/y", deltaV.getY());
-        
-        return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond + deltaV.getX(), currentSpeeds.vyMetersPerSecond + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
+        Translation2d limitedAccel = limitAccel(wantedAccel);
 
+        Translation2d deltaV = limitedAccel.times(CYCLE_DT);
+      
+        return new ChassisSpeeds(currentVel.getX() + deltaV.getX(), currentVel.getY() + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
     }
 
+    private Translation2d limitSkidAccel(Translation2d wantedAccel){
+        return KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
+    }
 
     private Translation2d limitAccel(Translation2d wantedAccel){
         SmartDashboard.putNumber("pre wantedACc/x", wantedAccel.getX());
         SmartDashboard.putNumber("pre wantedACc/y", wantedAccel.getY());
-        wantedAccel = limitTiltAccel(wantedAccel);
+        wantedAccel = limitSkidAccel(wantedAccel);
 
         return wantedAccel;
 
@@ -91,6 +88,26 @@ public class DemaciaKinematics {
     
     
 
+    public ChassisSpeeds toChassisSpeeds(SwerveModuleState[] swerveStates, double omegaFromGyro){
+        double sumVx = 0;
+        double sumVy = 0;
+
+
+        for(int i = 0; i < 4; i++){
+            double angleFromCenter = modulePositionOnTheRobot[i].getAngle().getRadians();
+            double distanceFromCenter = modulePositionOnTheRobot[i].getNorm();
+            double currentAngle = swerveStates[i].angle.getRadians();
+            double moduleVx = swerveStates[i].speedMetersPerSecond * Math.cos(currentAngle);
+            double moduleVy = swerveStates[i].speedMetersPerSecond * Math.sin(currentAngle);
+
+            double chassisVx = moduleVx - (omegaFromGyro * distanceFromCenter * Math.sin(currentAngle + (omegaFromGyro * 0.02) + angleFromCenter));
+            double chassisVy = moduleVy + (omegaFromGyro * distanceFromCenter * Math.cos(currentAngle + (omegaFromGyro * 0.02) + angleFromCenter));
+
+            sumVx += chassisVx;
+            sumVy += chassisVy;
+        }
+        return new ChassisSpeeds(sumVx / 4.0, sumVy / 4.0, omegaFromGyro);
+    }
 
     public SwerveModuleState[] toSwerveModuleStates(ChassisSpeeds wantedSpeeds) {
 
