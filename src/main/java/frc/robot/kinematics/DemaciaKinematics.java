@@ -57,6 +57,7 @@ public class DemaciaKinematics {
 
         Translation2d wantedAccel = (wantedVel.minus(currentVel)).div(CYCLE_DT);
         // wantedAccel = limitTiltAccel(wantedAccel);
+        
         Translation2d limitedAccel = limitAccel(wantedAccel);
 
         Translation2d deltaV = limitedAccel.times(CYCLE_DT);
@@ -64,23 +65,22 @@ public class DemaciaKinematics {
         return new ChassisSpeeds(currentVel.getX() + deltaV.getX(), currentVel.getY() + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
     }
 
-    private Translation2d limitSkidAccel(Translation2d wantedAccel){
-        return KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
-    }
 
     private Translation2d limitAccel(Translation2d wantedAccel){
-        SmartDashboard.putNumber("pre wantedACc/x", wantedAccel.getX());
-        SmartDashboard.putNumber("pre wantedACc/y", wantedAccel.getY());
+        wantedAccel = limitTiltAccel(wantedAccel);
         wantedAccel = limitSkidAccel(wantedAccel);
 
         return wantedAccel;
 
 
     }
+    
+    private Translation2d limitSkidAccel(Translation2d wantedAccel){
+        return KinematicsUtilities.limitVector(wantedAccel, config.MAX_SKID_ACCEL());
+    }
 
     private Translation2d limitTiltAccel(Translation2d wantedAccel){
         double frontAccel = MathUtil.clamp(wantedAccel.getX(), -config.MAX_FRONT_ACCEL(), config.MAX_FRONT_ACCEL());
-        SmartDashboard.putNumber("Front Accel", frontAccel);
         double sideAccel = MathUtil.clamp(wantedAccel.getY(), -config.MAX_SIDE_ACCEL(), config.MAX_SIDE_ACCEL());
         return new Translation2d(frontAccel, sideAccel);
     }

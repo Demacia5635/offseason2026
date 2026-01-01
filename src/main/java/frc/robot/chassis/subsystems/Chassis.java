@@ -85,6 +85,8 @@ public class Chassis extends SubsystemBase {
         
         
         SmartDashboard.putData("chassis", this);
+        LogManager.addEntry("chassis/vx robot rel", ()->getChassisSpeedsRobotRel().vxMetersPerSecond);
+        LogManager.addEntry("chassis/vy robot rel", ()->getChassisSpeedsRobotRel().vyMetersPerSecond);
         SmartDashboard.putData("reset gyro", new InstantCommand(() -> setYaw(Rotation2d.kZero)).ignoringDisable(true));
         SmartDashboard.putData("reset gyro 180", new InstantCommand(() -> setYaw(Rotation2d.kPi)).ignoringDisable(true));
         SmartDashboard.putData("chassis/set coast", new InstantCommand(() -> setNeutralMode(false)).ignoringDisable(true));
@@ -140,7 +142,7 @@ public class Chassis extends SubsystemBase {
     public void setVelocities(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         // speeds = ChassisSpeeds.discretize(speeds, CYCLE_DT);
-        SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStatesWithLimit(speeds, getChassisSpeedsRobotRel());
+        SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStates(speeds);//, getChassisSpeedsRobotRel());
         setModuleStates(states);
     }
 
