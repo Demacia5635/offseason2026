@@ -5,6 +5,7 @@
 package frc.demacia.utils.chassis;
 
 import java.util.List;
+import java.util.logging.LogManager;
 
 import org.ejml.simple.SimpleMatrix;
 
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.demacia.utils.Utilities;
 import frc.demacia.utils.Sensors.Pigeon;
+import frc.robot.UtilsForChassis.CalculatePositionAndAngle;
 
 /**
  * Main swerve drive chassis controller.
@@ -93,6 +95,7 @@ public class Chassis extends SubsystemBase {
         SimpleMatrix std = new SimpleMatrix(new double[] { 0.02, 0.02, 0 });
         poseEstimator.setVisionMeasurementStdDevs(new Matrix<>(std));
         field = new Field2d();
+        frc.demacia.utils.Log.LogManager.addEntry("EstimatedPoseAtTime", ()-> estimatedPoseAtTimeTesting);
     }
 
     /**
@@ -280,6 +283,7 @@ public class Chassis extends SubsystemBase {
     }
 
     Rotation2d gyroAngle;
+    Pose2d estimatedPoseAtTimeTesting = Pose2d.kZero;
 
     @Override
     public void periodic() {
@@ -287,6 +291,9 @@ public class Chassis extends SubsystemBase {
         poseEstimator.update(gyroAngle, getModulePositions());
 
         field.setRobotPose(poseEstimator.getEstimatedPosition());
+        estimatedPoseAtTimeTesting = CalculatePositionAndAngle.computeFuturePosition(getChassisSpeedsFieldRel(), getPose(), 0.02);
+
+
     }
 
     /**
