@@ -229,6 +229,10 @@ public class TalonMotor extends TalonFX implements MotorInterface {
     public void setVelocity(double velocity, double feedForward) {
         setControl(velocityVoltage.withVelocity(velocity/unitMultiplier).withFeedForward(feedForward));
     }
+    public void setVelocityWithAcceleration(double velocity) {
+        double a = (velocity - getCurrentVelocity())/0.02;
+        setControl(velocityVoltage.withVelocity(velocity/unitMultiplier).withFeedForward(0).withAcceleration(a/unitMultiplier));
+    }
 
     public void setVelocity(double velocity) {
         setVelocity(velocity, 0);

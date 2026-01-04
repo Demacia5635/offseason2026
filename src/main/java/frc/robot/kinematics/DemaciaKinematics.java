@@ -4,22 +4,16 @@
 
 package frc.robot.kinematics;
 
-import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.demacia.utils.Utilities;
-import frc.demacia.utils.Log.LogManager;
 import frc.robot.kinematics.KinematicsConstants.KinematicsConfig;
 
-import static edu.wpi.first.units.Units.derive;
 import static frc.robot.kinematics.KinematicsConstants.*;
 
-import java.util.spi.CurrencyNameProvider;
 
 /** Add your docs here. */
 public class DemaciaKinematics {
@@ -76,7 +70,7 @@ public class DemaciaKinematics {
     final double maxFastTurnAngle = maxRadialA / maxLinearA; // if heading change is lower than this value - don't slow - accelerate to target velocity
     final double minReverseAngle = Math.PI - maxFastTurnAngle; // if heading is bigger than this - deaccelerate and turn to reverse (optimize)
     final double maxR = 1.0; // if need to change direction and fast - reduce velocity to this radius
-    final double maxRotationV = Math.sqrt(maxRadialA / maxR); // max velocity to use the preferred radius
+    final double maxRotationV = Math.sqrt(maxRadialA * maxR); // max velocity to use the preferred radius
 
     private ChassisSpeeds limitVelocitiesUdi(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
         double currentV = Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
