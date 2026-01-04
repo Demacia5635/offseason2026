@@ -48,29 +48,11 @@ public class LogEntryBuilder<T> implements AutoCloseable {
         this.consumer = consumer;
         return this;
     }
-    
-    public LogEntry2<T> build() {
-        if (LogManager2.logManager == null) {
-            throw new IllegalStateException("LogManager2 not initialized. Create LogManager2 instance before building log entries.");
-        }
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Log entry name cannot be null or empty");
-        }
-        if (logLevel < 1 || logLevel > 4) {
-            throw new IllegalArgumentException("Log level must be between 1 and 4, got: " + logLevel);
-        }
-        built = true;
-        LogEntry2<T> entry = LogManager2.logManager.add(name, data, logLevel, metadata);
-        if (consumer != null) {
-            entry.setConsumer(consumer);
-        }
-        return entry;
-    }
-    
+
     @Override
-    public void close() {
-        if (!built) {
-            build();
-        }
+    public void close() throws Exception {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'close'");
     }
+    
 }

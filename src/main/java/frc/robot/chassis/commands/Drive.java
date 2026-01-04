@@ -26,9 +26,11 @@ public class Drive extends Command {
     public static void invertPrecisionMode() {
         setPrecisionMode(!precisionMode);
     }
+
     public static void setPrecisionMode(boolean precisionMode) {
         Drive.precisionMode = precisionMode;
     }
+
     public static boolean getPrecisionMode() {
         return precisionMode;
     }
@@ -39,22 +41,22 @@ public class Drive extends Command {
         direction = isRed ? 1 : -1;
         double joyX = controller.getLeftY() * direction;
         double joyY = controller.getLeftX() * direction;
-        
+
         // Calculate r]otation from trigger axes
         double rot = controller.getLeftTrigger() - controller.getRightTrigger();
-        
+
         double velX = Math.pow(joyX, 2) * ChassisConstants.MAX_DRIVE_VELOCITY * Math.signum(joyX);
         double velY = Math.pow(joyY, 2) * ChassisConstants.MAX_DRIVE_VELOCITY * Math.signum(joyY);
         double velRot = Math.pow(rot, 2) * ChassisConstants.MAX_ROTATIONAL_VELOCITY * Math.signum(rot);
-        if(precisionMode){
+        if (precisionMode) {
             velX /= 4;
             velY /= 4;
             velRot /= 4;
         }
-        
-        speeds = new ChassisSpeeds(velX, velY,velRot);
- 
+
+        speeds = new ChassisSpeeds(velX, velY, -velRot);
+
         chassis.setVelocities(speeds);
-        
+
     }
 }

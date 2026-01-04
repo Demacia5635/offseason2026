@@ -7,29 +7,16 @@ package frc.robot;
 import frc.demacia.utils.Controller.CommandController;
 import frc.demacia.utils.Controller.CommandController.ControllerType;
 import frc.demacia.utils.Log.LogManager;
-import frc.demacia.utils.Mechanisms.Arm;
-import frc.demacia.utils.Mechanisms.Intake;
 import frc.demacia.utils.Motors.MotorInterface;
 import frc.demacia.utils.Motors.TalonMotor;
 import frc.demacia.utils.Motors.TalonSRXMotor;
 import frc.demacia.utils.Sensors.OpticalSensor;
 import frc.demacia.utils.Sensors.SensorInterface;
 import frc.demacia.utils.Sensors.UltraSonicSensor;
-import frc.demacia.utils.chassis.ChassisConfig;
+import frc.robot.chassis.commands.Drive;
 import frc.robot.chassis.subsystems.Chassis;
-import frc.robot.testChassis.Constants;
-import frc.robot.testChassis.commands.DriveCommand;
-import frc.robot.testMechanism.ArmConstants;
-import frc.robot.testMechanism.GripperConstants;
-import frc.robot.testMechanism.GripperConstants.GRIPPER_STATES;
-import frc.robot.testMechanism.GripperConstants.SensorConstants;
 import frc.robot.testMotors.talonFX.commands.Set;
 import frc.robot.testMotors.talonFX.subsystems.Motor;
-import frc.robot.testMechanism.ArmConstants.ARM_STATES;
-import frc.robot.testMechanism.ArmConstants.ArmAngleMotorConstants;
-import frc.robot.testMechanism.ArmConstants.GripperAngleMotorConstants;
-import frc.robot.testMechanism.ClimebConstants;
-import frc.robot.testMechanism.ClimebConstants.CLIMB_STATES;
 
 import java.util.function.Supplier;
 
@@ -153,7 +140,7 @@ public class RobotContainer implements Sendable{
    * joysticks}.
    */
   private void configureBindings() {
-    chassis.setDefaultCommand(new DriveCommand(chassis, driverController));
+    chassis.setDefaultCommand(new Drive(chassis, driverController));
   }
 
   /**
