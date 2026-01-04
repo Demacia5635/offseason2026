@@ -4,6 +4,7 @@
 
 package frc.robot.kinematics;
 
+import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -63,6 +64,66 @@ public class DemaciaKinematics {
         Translation2d deltaV = limitedAccel.times(CYCLE_DT);
       
         return new ChassisSpeeds(currentVel.getX() + deltaV.getX(), currentVel.getY() + deltaV.getY(), wantedSpeeds.omegaRadiansPerSecond);
+    }
+    
+
+    // Constants for Udi Velocities Limiter
+    final double minV = 0.01; // slower is 0
+    final double maxRadialA = 6.0; // centrifugal force
+    final double maxLinearA = 10.0; // normal acceleration
+    final double CT = 0.02; // cycle time
+    final double maxDeltaV = maxLinearA * CT; // max velocity change in 1 cycle
+    final double maxFastTurnAngle = maxRadialA / maxLinearA; // if heading change is lower than this value - don't slow - accelerate to target velocity
+    final double minReverseAngle = Math.PI - maxFastTurnAngle; // if heading is bigger than this - deaccelerate and turn to reverse (optimize)
+    final double maxR = 1.0; // if need to change direction and fast - reduce velocity to this radius
+    final double maxRotationV = Math.sqrt(maxRadialA / maxR); // max velocity to use the preferred radius
+
+    private ChassisSpeeds limitVelocitiesUdi(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds){
+        double currentV = Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
+        double wantedV =  Math.hypot(wantedSpeeds.vxMetersPerSecond, wantedSpeeds.vyMetersPerSecond);
+        if(currentV < minV) { // we are standing
+            if(wantedV < minV) { // target is standing
+                return new ChassisSpeeds(0,0,wantedSpeeds.omegaRadiansPerSecond);
+            } else { // target is moving
+                // we are moving to the required heading and accelerating
+                // calculate the ratio that we will do in this cycle
+                double ratio = MathUtil.clamp(wantedV, currentV, currentV + maxDeltaV) / wantedV;
+                return new ChassisSpeeds(wantedSpeeds.vxMetersPerSecond *ratio, wantedSpeeds.vyMetersPerSecond * ratio, wantedSpeeds.omegaRadiansPerSecond);
+            }
+        }
+        if(wantedV < minV) { // target is stop
+            // just deaccelrate to 0
+            double ratio = Math.max(currentV-maxDeltaV, wantedV) / currentV;
+            return new ChassisSpeeds(currentSpeeds.vxMetersPerSecond *ratio, currentSpeeds.vyMetersPerSecond * ratio, wantedSpeeds.omegaRadiansPerSecond);
+        }
+        // we are moving and target is moving
+        double currentAngle = Math.atan2(currentSpeeds.vyMetersPerSecond, currentSpeeds.vxMetersPerSecond);
+        double targetAngle = Math.atan2(wantedSpeeds.vyMetersPerSecond, wantedSpeeds.vxMetersPerSecond);
+        double alpha = MathUtil.angleModulus(targetAngle - currentAngle);
+        double targetV = wantedV;
+
+        if(Math.abs(alpha) < maxFastTurnAngle) { // small heading change
+            // accelerate to target v
+            targetV = MathUtil.clamp(targetV, currentV - maxDeltaV, currentV + maxDeltaV);
+        } else if(Math.abs(alpha) > minReverseAngle) { // optimization - deaccdelerate and turn the other way
+            targetV = currentV - maxDeltaV;
+            if(alpha > minReverseAngle) {
+                alpha = alpha - Math.PI;
+            } else {
+                alpha = alpha + Math.PI;
+            }
+        } else  { // we slow to a good heading change velocity
+            targetV = MathUtil.clamp(Math.min(maxRotationV, targetV), currentV - maxDeltaV, currentV + maxDeltaV);
+        }
+        if(targetV < minV) {
+            return new ChassisSpeeds(0, 0, wantedSpeeds.omegaRadiansPerSecond);
+        }
+        // calculate the maximum heading change using the target velocity and allowed radial acceleration
+        double maxAngleChange = maxRadialA / targetV * CT;
+        // set the target angle
+        targetAngle = MathUtil.clamp(targetAngle, currentAngle - maxAngleChange, currentAngle + maxAngleChange);
+        // return the speeds - using target velocity and target angle
+        return new ChassisSpeeds(targetV * Math.cos(targetAngle), targetV*Math.sin(targetAngle), wantedSpeeds.omegaRadiansPerSecond);
     }
 
 
