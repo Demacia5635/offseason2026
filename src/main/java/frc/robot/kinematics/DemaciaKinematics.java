@@ -27,6 +27,8 @@ public class DemaciaKinematics {
     private final SwerveModuleState[] kZeroStates = { new SwerveModuleState(), new SwerveModuleState(),
             new SwerveModuleState(), new SwerveModuleState() };
 
+    
+
     public DemaciaKinematics(Translation2d[] modulePositionOnTheRobot) {
         this.startRobotPosition = Pose2d.kZero;
         this.modulePositionOnTheRobot = modulePositionOnTheRobot;
@@ -40,6 +42,14 @@ public class DemaciaKinematics {
     }
 
     public SwerveModuleState[] udiTest(ChassisSpeeds wantedSpeeds, ChassisSpeeds currentSpeeds) {
+        if(Math.abs(wantedSpeeds.vxMetersPerSecond) < 0.05 && Math.abs(wantedSpeeds.vyMetersPerSecond) < 0.05 && Math.abs(wantedSpeeds.omegaRadiansPerSecond)>0.01){
+            SwerveModuleState[] rotationStates = new SwerveModuleState[4];
+            for(int i = 0; i < 4; i++){
+                rotationStates[i] = new SwerveModuleState(wantedSpeeds.omegaRadiansPerSecond * modulePositionOnTheRobot[i].getNorm(), modulePositionOnTheRobot[i].getAngle().plus(Rotation2d.kCW_90deg));
+            }
+            return rotationStates;
+        }
+
         ChassisSpeeds limitedWantedVel = limitVelocitiesUdi(wantedSpeeds, currentSpeeds);
         swerveStates = toSwerveModuleStates(limitedWantedVel);
         return swerveStates;
@@ -69,7 +79,7 @@ public class DemaciaKinematics {
 
     // Constants for Udi Velocities Limiter
     final double minV = 0.01; // slower is 0
-    final double maxRadialA = 6.0; // centrifugal force
+    final double maxRadialA = 6; // centrifugal force
     final double maxLinearA = 10.0; // normal acceleration
     final double CT = 0.02; // cycle time
     final double maxDeltaV = maxLinearA * CT; // max velocity change in 1 cycle
@@ -119,6 +129,7 @@ public class DemaciaKinematics {
                 alpha = alpha + Math.PI;
             }
         } else { // we slow to a good heading change velocity
+            LogManager.log("entereddd");
             targetV = MathUtil.clamp(Math.min(maxRotationV, targetV), currentV - maxDeltaV, currentV + maxDeltaV);
         }
         if (targetV < minV) {
@@ -126,7 +137,7 @@ public class DemaciaKinematics {
         }
         // calculate the maximum heading change using the target velocity and allowed
         // radial acceleration
-        double maxAngleChange = maxRadialA / targetV * CT;
+        double maxAngleChange = (maxRadialA / targetV) * CT * 2;
         // set the target angle
         alpha = MathUtil.clamp(alpha, - maxAngleChange, maxAngleChange);
         double newTargetAngle = currentAngle + alpha;
@@ -195,7 +206,7 @@ public class DemaciaKinematics {
         }
 
         swerveStates = factorModuleVelocities(swerveStates);
-
+        LogManager.log("state: " + swerveStates[0]);
         return swerveStates;
     }
 
