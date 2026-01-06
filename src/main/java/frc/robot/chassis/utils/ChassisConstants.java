@@ -10,20 +10,10 @@ import frc.demacia.utils.Sensors.CancoderConfig;
 public class ChassisConstants {
     public static final double CYCLE_DT = 0.02;
     public static final double MAX_DRIVE_VELOCITY = 3.6;
-    public static final double MAX_ROTATIONAL_VELOCITY = Math.toRadians(360);
+    public static final double MAX_ROTATIONAL_VELOCITY = Math.toRadians(270);
     public static final double MIN_DRIVE_VELOCITY_FOR_ROTATION = 0.2;
 
-    public static class AccelConstants {
-        public static final double MAX_LINEAR_ACCEL = 10;
-
-        public static final double MAX_OMEGA_VELOCITY = Math.toRadians(540);
-        public static final double MAX_RADIAL_ACCEL = 6;
-        public static final double MAX_RADIUS = 0.4;
-        public static final double MIN_OMEGA_DIFF = Math.toRadians(20);
-        public static final double MAX_DELTA_VELOCITY = MAX_LINEAR_ACCEL * CYCLE_DT;
-        public static final double MAX_VELOCITY_TO_IGNORE_RADIUS = MAX_RADIUS * MAX_OMEGA_VELOCITY;
-        public static final double MIN_VELOCITY = 1.5;
-    }
+   
 
     public static final int GYRO_ID = 14;
     public static final CANBus CAN_BUS = new CANBus("canivore");
@@ -31,8 +21,8 @@ public class ChassisConstants {
     public static final double STEER_GEAR_RATIO = 151.0 / 7.0;
     public static final double DRIVE_GEAR_RATIO = 8.14;
 
-    public static final double STEER_KP = 3;
-    public static final double STEER_KI = 0.9;
+public static final double STEER_KP = 6.25;
+    public static final double STEER_KI = 0;
     public static final double STEER_KD = 0;
     public static final double STEER_KS = 0.14817640545050964;
     public static final double STEER_KV = 0.3866402641515461;

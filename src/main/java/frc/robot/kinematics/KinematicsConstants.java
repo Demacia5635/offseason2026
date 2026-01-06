@@ -7,14 +7,17 @@ package frc.robot.kinematics;
 /** Add your docs here. */
 public class KinematicsConstants {
 
-    public record KinematicsConfig(double MAX_VELOCITY, double MAX_FRONT_ACCEL, double MAX_SIDE_ACCEL, double MAX_SKID_ACCEL) {
-    }
-
-    public static final KinematicsConfig config = new KinematicsConfig(4,  10, 8, 30);
-
     public static final double MAX_ALLOWED_MODULE_VELOCITY = 4;
     public static final double CYCLE_DT = 0.02;
-    //public static final double MAX_DELTA_V = 10 * CYCLE_DT;
-    // public static final double MAX_FORWARD_ACCEL = 10;
+    
+    public static final double MIN_VELOCITY = 0.01; // slower is 0
+    
+    public static final double MAX_RADIAL_ACCEL = 8;
+    public static final double MAX_LINEAR_ACCEL = 10.0; 
+    public static final double MAX_DELTA_V = MAX_LINEAR_ACCEL * CYCLE_DT;
+    public static final double MAX_FAST_TURN_ANGLE = MAX_RADIAL_ACCEL / MAX_LINEAR_ACCEL; //if angle is lower, no need to slow down to turn (max angle the robot can keep it's speeds while rotating)
+    public static final double MIN_REVERSE_ANGLE = Math.PI - MAX_FAST_TURN_ANGLE; // if heading is bigger than this - deaccelerate and turn to reverse (instead of doing 180 turn)
+    public static final double MAX_TURNING_RADIUS = 0.8; // if need to change direction and fast - reduce velocity to this radius
+    public static final double MAX_ROTATION_VELOCITY = Math.sqrt(MAX_RADIAL_ACCEL * MAX_TURNING_RADIUS); // max velocity to use the preferred radius
 
 }

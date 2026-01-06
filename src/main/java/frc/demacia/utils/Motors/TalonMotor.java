@@ -60,7 +60,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         setSignals();
         addLog();
         LogManager.log(name + " motor initialized");
-        SmartDashboard.putData(name,this);
+        // SmartDashboard.putData(name, this);
     }
 
     private void configMotor() {
@@ -78,14 +78,13 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         cfg.MotorOutput.PeakForwardDutyCycle = config.maxVolt / 12.0;
         cfg.MotorOutput.PeakReverseDutyCycle = config.minVolt / 12.0;
         // if(config.motorRatio < 0.2) {
-        //     unitMultiplier = 100.0;
+        // unitMultiplier = 100.0;
         // }
         cfg.Feedback.SensorToMechanismRatio = config.motorRatio * unitMultiplier;
         updatePID(false);
         cfg.Voltage.PeakForwardVoltage = config.maxVolt;
         cfg.Voltage.PeakReverseVoltage = config.minVolt;
         configureMotionMagic(false);
-
 
         getConfigurator().apply(cfg);
     }
@@ -94,20 +93,20 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         cfg.MotionMagic.MotionMagicAcceleration = config.maxAcceleration / unitMultiplier;
         cfg.MotionMagic.MotionMagicCruiseVelocity = config.maxVelocity / unitMultiplier;
         cfg.MotionMagic.MotionMagicJerk = config.maxJerk / unitMultiplier;
-        if(config.maxAcceleration > 0) {
+        if (config.maxAcceleration > 0) {
             cfg.MotionMagic.MotionMagicExpo_kA = 12.0 / config.maxAcceleration * unitMultiplier;
         } else {
             cfg.MotionMagic.MotionMagicExpo_kA = config.pid[slot].ka() * unitMultiplier;
         }
-        if(config.maxVelocity > 0) {
-            cfg.MotionMagic.MotionMagicExpo_kV = 12.0 / config.maxVelocity  * unitMultiplier;
+        if (config.maxVelocity > 0) {
+            cfg.MotionMagic.MotionMagicExpo_kV = 12.0 / config.maxVelocity * unitMultiplier;
         } else {
             cfg.MotionMagic.MotionMagicExpo_kV = config.pid[slot].kv() * unitMultiplier;
         }
-        if(apply) {
+        if (apply) {
             getConfigurator().apply(cfg.MotionMagic);
-            System.out.println(" motion param " + config.maxVelocity + " , " + config.maxAcceleration + " k=" 
-                + cfg.MotionMagic.MotionMagicExpo_kV + ", " + cfg.MotionMagic.MotionMagicExpo_kA);
+            System.out.println(" motion param " + config.maxVelocity + " , " + config.maxAcceleration + " k="
+                    + cfg.MotionMagic.MotionMagicExpo_kV + ", " + cfg.MotionMagic.MotionMagicExpo_kA);
         }
 
     }
@@ -138,7 +137,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         cfg.Slot0.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
         cfg.Slot1.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
         cfg.Slot2.StaticFeedforwardSign = StaticFeedforwardSignValue.UseClosedLoopSign;
-        if(apply) {
+        if (apply) {
             getConfigurator().apply(cfg.Slot0);
             getConfigurator().apply(cfg.Slot1);
             getConfigurator().apply(cfg.Slot2);
@@ -159,17 +158,19 @@ public class TalonMotor extends TalonFX implements MotorInterface {
 
     @SuppressWarnings("unchecked")
     private void addLog() {
-        LogManager.addEntry(name + "/Position and Velocity and Acceleration and Voltage and Current and CloseLoopError and CloseLoopSP",  new StatusSignal[] {
-            positionSignal.getSignal(),
-            velocitySignal.getSignal(),
-            accelerationSignal.getSignal(),
-            voltageSignal.getSignal(),
-            currentSignal.getSignal(),
-            closedLoopErrorSignal.getSignal(),
-            closedLoopSPSignal.getSignal(),
-            }, 3,"motor");
-            LogManager.addEntry(name + "/ControlMode", 
-            controlModeSignal.getSignal(), 3, "motor");
+        LogManager.addEntry(name
+                + "/Position and Velocity and Acceleration and Voltage and Current and CloseLoopError and CloseLoopSP",
+                new StatusSignal[] {
+                        positionSignal.getSignal(),
+                        velocitySignal.getSignal(),
+                        accelerationSignal.getSignal(),
+                        voltageSignal.getSignal(),
+                        currentSignal.getSignal(),
+                        closedLoopErrorSignal.getSignal(),
+                        closedLoopSPSignal.getSignal(),
+                }, 3, "motor");
+        LogManager.addEntry(name + "/ControlMode",
+                controlModeSignal.getSignal(), 3, "motor");
     }
 
     public void checkElectronics() {
@@ -227,11 +228,13 @@ public class TalonMotor extends TalonFX implements MotorInterface {
      *                    defaults to 0
      */
     public void setVelocity(double velocity, double feedForward) {
-        setControl(velocityVoltage.withVelocity(velocity/unitMultiplier).withFeedForward(feedForward));
+        setControl(velocityVoltage.withVelocity(velocity / unitMultiplier).withFeedForward(feedForward));
     }
+
     public void setVelocityWithAcceleration(double velocity) {
-        double a = (velocity - getCurrentVelocity())/0.02;
-        setControl(velocityVoltage.withVelocity(velocity/unitMultiplier).withFeedForward(0).withAcceleration(a/unitMultiplier));
+        double a = (velocity - getCurrentVelocity()) / 0.02;
+        setControl(velocityVoltage.withVelocity(velocity / unitMultiplier).withFeedForward(0)
+                .withAcceleration(a / unitMultiplier));
     }
 
     public void setVelocity(double velocity) {
@@ -250,7 +253,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
      *                    to 0
      */
     public void setMotion(double position, double feedForward) {
-        setControl(motionMagicExpoVoltage.withPosition(position/unitMultiplier).withFeedForward(feedForward));  
+        setControl(motionMagicExpoVoltage.withPosition(position / unitMultiplier).withFeedForward(feedForward));
     }
 
     public void setMotion(double position) {
@@ -259,20 +262,23 @@ public class TalonMotor extends TalonFX implements MotorInterface {
 
     @Override
     public void setAngle(double angle, double feedForward) {
-      setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor), feedForward);
+        setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor), feedForward);
     }
 
     @Override
     public void setAngle(double angle) {
-      setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor));
+        setMotion(MotorUtils.getPositionForAngle(getCurrentPosition(), angle, config.isRadiansMotor));
     }
-  
+
     public void setPositionVoltage(double position, double feedForward) {
-        setControl(positionVoltage.withPosition(position/unitMultiplier).withFeedForward(feedForward));
+        setControl(positionVoltage.withPosition(position / unitMultiplier).withFeedForward(feedForward));
     }
 
     public void setPositionVoltage(double position) {
-        setPositionVoltage(position, 0);
+        if (Math.toDegrees(Math.abs(position - getCurrentPosition())) < 0.5)
+        setDuty(0);
+        else
+            setPositionVoltage(position, 0);
     }
 
     public void setVelocityWithFeedForward(double velocity) {
@@ -299,41 +305,41 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         Double value = closedLoopSPSignal.getDouble();
         return value != null ? value * unitMultiplier : 0.0;
     }
-    
+
     public double getCurrentClosedLoopError() {
         Double value = closedLoopErrorSignal.getDouble();
         return value != null ? value * unitMultiplier : 0.0;
     }
-    
+
     public double getCurrentPosition() {
         Double value = positionSignal.getDouble();
         return value != null ? value * unitMultiplier : 0.0;
     }
-    
+
     public double getCurrentVelocity() {
         Double value = velocitySignal.getDouble();
         return value != null ? value * unitMultiplier : 0.0;
     }
-    
+
     public double getCurrentAcceleration() {
         Double value = accelerationSignal.getDouble();
         return value != null ? value * unitMultiplier : 0.0;
     }
-    
+
     public double getCurrentAngle() {
-        if(config.isRadiansMotor) {
+        if (config.isRadiansMotor) {
             return MathUtil.angleModulus(getCurrentPosition());
-        } else if(config.isDegreesMotor) {
+        } else if (config.isDegreesMotor) {
             return MathUtil.inputModulus(getCurrentPosition(), -180, 180);
         }
         return 0;
     }
-    
+
     public double getCurrentVoltage() {
         Double value = voltageSignal.getDouble();
         return value != null ? value : 0.0;
     }
-    
+
     public double getCurrentCurrent() {
         Double value = currentSignal.getDouble();
         return value != null ? value : 0.0;
@@ -346,8 +352,9 @@ public class TalonMotor extends TalonFX implements MotorInterface {
      */
     public void showConfigPIDFSlotCommand(int slot) {
         CloseLoopParam p = config.pid[slot];
-        if(p != null) {
-            UpdateArray.show(name + " PID " + slot , CloseLoopParam.PARAMETER_NAMES, p.toArray(),(double[] array)->updatePID(true));
+        if (p != null) {
+            UpdateArray.show(name + " PID " + slot, CloseLoopParam.PARAMETER_NAMES, p.toArray(),
+                    (double[] array) -> updatePID(true));
         }
     }
 
@@ -356,97 +363,95 @@ public class TalonMotor extends TalonFX implements MotorInterface {
      */
     public void showConfigMotionVelocitiesCommand() {
         UpdateArray.show(name + "MOTION PARAM",
-            new String[] {"Velocity", "Acceleration", "Jerk"},
-            new double[] {config.maxVelocity, config.maxAcceleration, config.maxJerk},
-            (double[] array)->{
-                config.maxVelocity = array[0];
-                config.maxAcceleration = array[1];
-                config.maxJerk = array[2];
-                configureMotionMagic(true);
-            });
+                new String[] { "Velocity", "Acceleration", "Jerk" },
+                new double[] { config.maxVelocity, config.maxAcceleration, config.maxJerk },
+                (double[] array) -> {
+                    config.maxVelocity = array[0];
+                    config.maxAcceleration = array[1];
+                    config.maxJerk = array[2];
+                    configureMotionMagic(true);
+                });
     }
 
     public void showConfigMotorCommand() {
         UpdateArray.show(name + " MOTOR CONFIG",
-            new String[] {
-                "Max Current",
-                "Ramp Time (s)",
-                "Max Volt",
-                "Brake (0/1)",
-                "Invert (0/1)",
-                "Motor Ratio",
-                "Slot"
-            },
-            new double[] {
-                config.maxCurrent,
-                config.rampUpTime,
-                config.maxVolt,
-                config.brake ? 1.0 : 0.0,
-                config.inverted ? 1.0 : 0.0,
-                config.motorRatio,
-                slot
-            },
-            (double[] array) -> {
-                config.withCurrent(array[0])
-                      .withRampTime(array[1])
-                      .withVolts(array[2])
-                      .withBrake(array[3] > 0.5)
-                      .withInvert(array[4] > 0.5);
-    
-                config.motorRatio = array[5];
-    
-                configMotor();
-                changeSlot(slot);
-    
-                System.out.println("[HOT RELOAD] Motor config updated for " + name);
-            }
-        );
+                new String[] {
+                        "Max Current",
+                        "Ramp Time (s)",
+                        "Max Volt",
+                        "Brake (0/1)",
+                        "Invert (0/1)",
+                        "Motor Ratio",
+                        "Slot"
+                },
+                new double[] {
+                        config.maxCurrent,
+                        config.rampUpTime,
+                        config.maxVolt,
+                        config.brake ? 1.0 : 0.0,
+                        config.inverted ? 1.0 : 0.0,
+                        config.motorRatio,
+                        slot
+                },
+                (double[] array) -> {
+                    config.withCurrent(array[0])
+                            .withRampTime(array[1])
+                            .withVolts(array[2])
+                            .withBrake(array[3] > 0.5)
+                            .withInvert(array[4] > 0.5);
+
+                    config.motorRatio = array[5];
+
+                    configMotor();
+                    changeSlot(slot);
+
+                    System.out.println("[HOT RELOAD] Motor config updated for " + name);
+                });
     }
 
     public void showControlCommand() {
         UpdateArray.show(name + " CONTROL",
-            new String[] {
-                "ControlMode (0=Duty, 1=Voltage, 2=Velocity, 3=MotionMagic, 4=angle, 5=positionVoltage, 6=velocityWithFeedForward, 7=motionWithFeedForward)",
-                "Value"
-            },
-            new double[] {
-                0, // default control mode: Duty
-                0  // default value
-            },
-            (double[] array) -> {
-                int mode = (int) array[0];
-                double value = array[1];
-    
-                switch (mode) {
-                    case 0: // Duty cycle [-1, 1]
-                        setDuty(value);
-                        break;
-                    case 1: // Voltage
-                        setVoltage(value);
-                        break;
-                    case 2: // Velocity
-                        setVelocity(value);
-                        break;
-                    case 3: // MotionMagic
-                        setMotion(value);
-                        break;
-                    case 4: // angle
-                        setAngle(value);
-                        break;
-                    case 5: // positionVoltage
-                        setPositionVoltage(value);
-                        break;
-                    case 6: // velocityWithFeedForward
-                        setVelocityWithFeedForward(value);
-                        break;
-                    case 7: // MotionMagic
-                        setMotionWithFeedForward(value);
-                        break;
-                    default:
-                        System.out.println("[CONTROL] Invalid mode: " + mode);
-                }
-            }
-        );
+                new String[] {
+                        "ControlMode (0=Duty, 1=Voltage, 2=Velocity, 3=MotionMagic, 4=angle, 5=positionVoltage, 6=velocityWithFeedForward, 7=motionWithFeedForward)",
+                        "Value"
+                },
+                new double[] {
+                        0, // default control mode: Duty
+                        0 // default value
+                },
+                (double[] array) -> {
+                    int mode = (int) array[0];
+                    double value = array[1];
+
+                    switch (mode) {
+                        case 0: // Duty cycle [-1, 1]
+                            setDuty(value);
+                            break;
+                        case 1: // Voltage
+                            setVoltage(value);
+                            break;
+                        case 2: // Velocity
+                            setVelocity(value);
+                            break;
+                        case 3: // MotionMagic
+                            setMotion(value);
+                            break;
+                        case 4: // angle
+                            setAngle(value);
+                            break;
+                        case 5: // positionVoltage
+                            setPositionVoltage(value);
+                            break;
+                        case 6: // velocityWithFeedForward
+                            setVelocityWithFeedForward(value);
+                            break;
+                        case 7: // MotionMagic
+                            setMotionWithFeedForward(value);
+                            break;
+                        default:
+                            System.out.println("[CONTROL] Invalid mode: " + mode);
+                    }
+                });
     }
 
     /**
@@ -468,7 +473,7 @@ public class TalonMotor extends TalonFX implements MotorInterface {
         builder.addDoubleProperty("Acceleration", this::getCurrentAcceleration, null);
         builder.addDoubleProperty("Voltage", this::getCurrentVoltage, null);
         builder.addDoubleProperty("Current", this::getCurrentCurrent, null);
-        if(config.isDegreesMotor || config.isRadiansMotor) {
+        if (config.isDegreesMotor || config.isRadiansMotor) {
             builder.addDoubleProperty("Angle", this::getCurrentAngle, null);
         }
         builder.addStringProperty("ControlMode", this::getCurrentControlMode, null);
@@ -484,26 +489,33 @@ public class TalonMotor extends TalonFX implements MotorInterface {
 
     @Override
     public void setEncoderPosition(double position) {
-      setPosition(position / unitMultiplier);   
+        setPosition(position / unitMultiplier);
     }
+
     public Data<Double> getClosedLoopErrorSignal() {
         return closedLoopErrorSignal;
     }
+
     public Data<Double> getClosedLoopSPSignal() {
         return closedLoopSPSignal;
     }
+
     public Data<Angle> getPositionSignal() {
         return positionSignal;
     }
+
     public Data<AngularVelocity> getVelocitySignal() {
         return velocitySignal;
     }
+
     public Data<AngularAcceleration> getAccelerationSignal() {
         return accelerationSignal;
     }
+
     public Data<Voltage> getVoltageSignal() {
         return voltageSignal;
     }
+
     public Data<Current> getCurrentSignal() {
         return currentSignal;
     }

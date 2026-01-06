@@ -37,7 +37,6 @@ import frc.demacia.utils.Log.LogManager;
 import frc.robot.RobotContainer;
 import static frc.robot.chassis.utils.ChassisConstants.*;
 
-import frc.robot.chassis.utils.ChassisConstants.AccelConstants;
 import frc.robot.kinematics.DemaciaKinematics;
 
 public class Chassis extends SubsystemBase {
@@ -73,6 +72,8 @@ public class Chassis extends SubsystemBase {
                 FRONT_RIGHT.POSITION,
                 BACK_LEFT.POSITION,
                 BACK_RIGHT.POSITION });
+
+        
 
         poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), new Pose2d());
 
@@ -146,12 +147,17 @@ public class Chassis extends SubsystemBase {
     }
 
     public void setVelocities(ChassisSpeeds speeds) {
-        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
+        // speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
+        
         // speeds = ChassisSpeeds.discretize(speeds, CYCLE_DT);
-        SwerveModuleState[] states = demaciaKinematics.udiTest(speeds, getChassisSpeedsRobotRel());// , getChassisSpeedsRobotRel());
-        if(Math.abs(getModuleStates()[0].speedMetersPerSecond) > 0.2)LogManager.log("real state: " + getModuleStates()[0]);
+        SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStatesWithLimit(speeds, getChassisSpeedsFieldRel(), getGyroAngle());
+        // SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStates(speeds);
         setModuleStates(states);
     }
+
+
+    
+    
 
     public void setSteerPositions(double[] positions) {
         for (int i = 0; i < positions.length; i++) {
