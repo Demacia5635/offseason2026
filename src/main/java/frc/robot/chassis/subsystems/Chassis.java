@@ -147,9 +147,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public void setVelocities(ChassisSpeeds speeds) {
-        // speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getGyroAngle());
         
-        // speeds = ChassisSpeeds.discretize(speeds, CYCLE_DT);
         SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStatesWithLimit(speeds, getChassisSpeedsFieldRel(), getGyroAngle());
         // SwerveModuleState[] states = demaciaKinematics.toSwerveModuleStates(speeds);
         setModuleStates(states);
