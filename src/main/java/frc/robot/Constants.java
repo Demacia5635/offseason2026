@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.CANBus;
+
+import frc.robot.utils.TalonConfig;
+
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -14,6 +19,51 @@ package frc.robot;
  */
 public final class Constants {
   public static class OperatorConstants {
+    public static final double dtseconds = 0.02;
+    
     public static final int kDriverControllerPort = 0;
   }
+
+
+  public static class motorConstants {
+        /* all the main configs of the motor */
+        public static final int ID = 5;
+        public static final CANBus CAN_BUS = new CANBus("canivore");
+        public static final String NAME = "Test Motor";
+
+        /* the pid and ff constants of the motor */
+        public static final double KP = 0;
+        public static final double KI = 0;
+        public static final double KD = 0;
+        public static final double KS = 0;
+        public static final double KV = 0;
+        public static final double KA = 0;
+        public static final double KG = 0;
+
+        /* the motion magic constants of the motor */
+        public static final double MOTION_MAGIC_VELOCITY = 1.5;
+        public static final double MOTION_MAGIC_ACCELERATION = 3;
+        public static final double MOTION_MAGIC_JERK = 6;
+
+        /* the channel of the limit switch of the arm angle motor */
+        public static final int LIMIT_SWITCH_CHANNEL = 0;
+
+        /* the basic configues of the motor */
+        public static final boolean IS_BRAKE = true;
+        public static final boolean IS_INVERTED = false;
+        public static final double GEAR_RATIO = 1;
+
+        /* the ramp time of the motor */
+        public static final double RAMP_TIME = 0.5;
+
+        /* The config of the motors based on the constants above */
+        public static final TalonConfig CONFIG = new TalonConfig(ID, CAN_BUS, NAME)
+                .withPID(KP, KI, KD, KS, KV, KA, KG)
+                .withMotionMagic(MOTION_MAGIC_VELOCITY, MOTION_MAGIC_ACCELERATION, MOTION_MAGIC_JERK)
+                .withBrake(IS_BRAKE)
+                .withInvert(IS_INVERTED)
+                .withMotorRatio(GEAR_RATIO)
+                .withRadiansMotor()
+                .withRampTime(RAMP_TIME);
+    }
 }

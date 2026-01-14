@@ -4,11 +4,24 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.demacia.utils.Log.LogManager;
+import frc.robot.UtilsForChassis.CalculatePositionAndAngle;
+import frc.demacia.utils.chassis.Chassis;
+import frc.robot.utils.CommandController;
+import frc.robot.utils.CommandController.ControllerType;
+import frc.robot.vision.Quest;
+import frc.robot.UtilsVision.Camera;
+import frc.robot.testChassis.ChassisConstants;
+
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -16,12 +29,58 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+
+  public static boolean isRed = true;
+  public static boolean isComp = DriverStation.isFMSAttached();
+  private static boolean hasRemovedFromLog = false;
+  private Supplier<ChassisSpeeds> speedsSupplier;
+  private Supplier<Rotation2d> robotAngleSupplier;
+  private Supplier<Pose2d> currentPoseSupplier;
+  private double dtSeconds;
+  Quest quest;
+  CommandController controller = new CommandController(0, ControllerType.kXbox);
+  CalculatePositionAndAngle calcPos;
+  Chassis chassis;
+  Camera camera;
+
+
+  public static int N_CYCLE = 0;
+  public static double CYCLE_TIME = 0.02;
+
   // The robot's subsystems and commands are defined here...
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    new LogManager();
+
+    quest = new Quest();
+    chassis = new Chassis(ChassisConstants.CHASSIS_CONFIG);
+  //  calcPos = new CalculatePositionAndAngle(()->);
+    chassis.setDefaultCommand(new Drive(chassis, controller));
+
+    // quest = new Quest();
+    // clac = new CalculatePositionAndAngle();
+
     // Configure the trigger bindings
+    // testMotor.setDefaultCommand(new TestMotorCommand(testMotor,5););
     configureBindings();
+  }
+
+  public static boolean isComp() {
+    return isComp;
+  }
+
+  public static void setIsComp(boolean isComp) {
+    RobotContainer.isComp = isComp;
+    if(!hasRemovedFromLog && isComp) {
+      hasRemovedFromLog = true;
+    }
+  }
+
+  public static boolean isRed(){
+    return isRed;
   }
 
   /**
@@ -34,6 +93,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
   }
 
   /**
